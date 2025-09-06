@@ -1,0 +1,30 @@
+/* استيراد الخط العربي لضمان توفره في كل الصفحات */
+@import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+
+.page-container {
+  /* --- استخدام نفس الخلفية الخضراء --- */
+  background-image: url('/islamic_background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* تثبيت الخلفية أثناء التمرير */
+  min-height: 100vh;
+  padding: 20px;
+  padding-top: 80px; /* إضافة مساحة للشريط العلوي (Navbar) */
+}
+
+.content-wrapper {
+  /* --- صندوق أبيض شبه شفاف للمحتوى --- */
+  background-color: rgba(255, 255, 255, 0.9); /* أبيض مع شفافية بسيطة */
+  border-radius: 15px;
+  padding: 25px;
+  max-width: 900px; /* تحديد عرض أقصى للمحتوى */
+  margin: 0 auto; /* توسيط الصندوق */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* --- تعديل بسيط على تصميم شريط التنقل العلوي ليتناسب مع التصميم الجديد --- */
+/* هذا الكود يفترض أن ملف Navbar.css موجود، وهو يعدل عليه */
+.navbar {
+  background-color: rgba(4, 22, 46, 0.8) !important; /* لون كحلي شبه شفاف */
+  backdrop-filter: blur(5px); /* تأثير ضبابي جميل للخلفية خلف الشريط */
+}
