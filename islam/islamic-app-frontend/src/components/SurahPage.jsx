@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './SurahPage.css';
+import './SurahPage.css'; // 👈 *** هذا هو السطر الأهم للتأكد من وجوده وصحته ***
 
 const SurahPage = () => {
   const { surahNumber } = useParams();
@@ -10,13 +10,11 @@ const SurahPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // تحويل رقم السورة إلى عدد صحيح للعمليات الحسابية
   const currentSurahNum = parseInt(surahNumber, 10);
 
   useEffect(() => {
-    // التأكد من أن رقم السورة ضمن النطاق الصحيح (1-114)
-    if (currentSurahNum < 1 || currentSurahNum > 114) {
-      navigate('/quran'); // إذا كان الرقم خاطئًا، ارجع للفهرس
+    if (isNaN(currentSurahNum) || currentSurahNum < 1 || currentSurahNum > 114) {
+      navigate('/quran'); 
       return;
     }
 
@@ -35,9 +33,10 @@ const SurahPage = () => {
     };
 
     fetchSurah();
-  }, [currentSurahNum, navigate]); // نعتمد على الرقم الصحيح الآن
+    // 👇 إضافة window.scrollTo للتأكد من أن الصفحة تبدأ من الأعلى عند التنقل 👇
+    window.scrollTo(0, 0); 
+  }, [currentSurahNum, navigate]);
 
-  // --- دوال التنقل ---
   const goToNextSurah = () => {
     if (currentSurahNum < 114) {
       navigate(`/quran/${currentSurahNum + 1}`);
@@ -49,7 +48,6 @@ const SurahPage = () => {
       navigate(`/quran/${currentSurahNum - 1}`);
     }
   };
-
 
   if (loading) {
     return <div className="loading-message">جاري تحميل السورة...</div>;
@@ -77,12 +75,11 @@ const SurahPage = () => {
         </div>
       ))}
 
-      {/* 👇 --- شريط التنقل الجديد في الأسفل --- 👇 */}
       <div className="surah-navigation-toolbar">
         <button 
           onClick={goToPrevSurah} 
           className="nav-arrow-btn"
-          disabled={currentSurahNum === 1} // تعطيل الزر في سورة الفاتحة
+          disabled={currentSurahNum === 1}
         >
           السابق
         </button>
@@ -92,7 +89,7 @@ const SurahPage = () => {
         <button 
           onClick={goToNextSurah} 
           className="nav-arrow-btn"
-          disabled={currentSurahNum === 114} // تعطيل الزر في سورة الناس
+          disabled={currentSurahNum === 114}
         >
           التالي
         </button>
