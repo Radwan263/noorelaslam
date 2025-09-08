@@ -5,18 +5,20 @@ import './HomePage.css';
 // --- المكونات المنبثقة (Pop-ups) ---
 
 const SideMenu = ({ isOpen, onClose }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // استدعاء useNavigate هنا
   if (!isOpen) return null;
 
+  // 👇 دالة جديدة للتعامل مع التنقل وإغلاق القائمة 👇
   const handleNavigate = (path) => {
-    navigate(path);
-    onClose();
+    navigate(path); // أولاً، انتقل إلى الصفحة المطلوبة
+    onClose();      // ثانيًا، أغلق القائمة الجانبية
   };
 
   return (
     <div className="side-menu-overlay" onClick={onClose}>
       <div className="side-menu" onClick={(e) => e.stopPropagation()}>
         <h3>القائمة الرئيسية</h3>
+        {/* 👇 استخدام الدالة الجديدة عند النقر 👇 */}
         <a onClick={() => handleNavigate('/login')}>تسجيل الدخول</a>
         <a onClick={() => handleNavigate('/register')}>إنشاء حساب</a>
         {/* يمكن إضافة روابط أخرى هنا مستقبلاً */}
@@ -50,7 +52,7 @@ const PrayerTimesWidget = () => {
 };
 
 
-// --- المكون الرئيسي للصفحة ---
+// --- المكون الرئيسي للصفحة (لا تغيير هنا) ---
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -59,13 +61,11 @@ const HomePage = () => {
 
   return (
     <div className="home-container">
-      {/* 👇 الأيقونات العلوية للبحث والقائمة 👇 */}
       <div className="top-nav-bar">
         <button className="top-nav-btn" onClick={() => setMenuOpen(true)}>☰</button>
         <button className="top-nav-btn" onClick={() => setSearchOpen(true)}>🔍</button>
       </div>
 
-      {/* استدعاء المكونات المنبثقة */}
       <SideMenu isOpen={isMenuOpen} onClose={() => setMenuOpen(false)} />
       <SearchModal isOpen={isSearchOpen} onClose={() => setSearchOpen(false)} />
 
@@ -74,7 +74,6 @@ const HomePage = () => {
         <p className="home-subtitle">وجهتك الإيمانية المتكاملة</p>
       </header>
       
-      {/* 👇 استعادة تصميم البطاقات الأصلي والجميل 👇 */}
       <main className="menu-container">
         <div className="menu-item" onClick={() => navigate('/quran')}>
           <div className="menu-item-icon">📖</div>
@@ -113,7 +112,6 @@ const HomePage = () => {
         </div>
       </main>
 
-      {/* قسم مواقيت الصلاة في الأسفل */}
       <div className="prayer-times-section">
         <PrayerTimesWidget />
       </div>
