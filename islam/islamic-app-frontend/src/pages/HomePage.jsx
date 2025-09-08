@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './HomePage.css'; // تأكد من أن هذا الملف موجود ومستورد
+import './HomePage.css';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -24,6 +24,13 @@ const HomePage = () => {
           <div className="menu-item-icon">📜</div>
           <h2 className="menu-item-title">الأحاديث النبوية</h2>
           <p className="menu-item-description">تصفح كتب الحديث الشريف</p>
+        </div>
+
+        {/* 👇 البطاقة الجديدة لقسم الأذكار 👇 */}
+        <div className="menu-item" onClick={() => navigate('/azkar')}>
+          <div className="menu-item-icon">🤲</div>
+          <h2 className="menu-item-title">الأذكار</h2>
+          <p className="menu-item-description">حصن المسلم اليومي</p>
         </div>
       </main>
     </div>
