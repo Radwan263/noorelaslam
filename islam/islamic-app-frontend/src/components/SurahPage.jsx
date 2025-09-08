@@ -1,70 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import styles from './SurahPage.module.css'; // 👈 تغيير هنا
-import surahStarts from '../data/surah-page-starts.json';
+/* src/components/SurahPage.css - بناء جديد وبسيط */
 
-const SurahPage = () => {
-  const { surahNumber } = useParams();
-  const navigate = useNavigate();
+.surah-display-container {
+  color: white;
+  padding: 2rem 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Amiri', serif;
+}
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isComponentLoading, setIsComponentLoading] = useState(true);
-  const [isImageLoading, setIsImageLoading] = useState(true);
+.surah-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #00796b;
+  padding-bottom: 1rem;
+}
 
-  useEffect(() => {
-    const startingPage = surahStarts[surahNumber];
-    if (startingPage) {
-      setCurrentPage(startingPage);
-    }
-    setIsComponentLoading(false);
-  }, [surahNumber]);
+.surah-header h1 {
+  font-size: 3rem;
+  margin: 0;
+}
 
-  const handleImageLoad = () => setIsImageLoading(false);
-  const handleImageError = () => setIsImageLoading(false);
+.surah-header p {
+  font-size: 1.2rem;
+  color: #ccc;
+  margin: 0.5rem 0 0 0;
+}
 
-  useEffect(() => {
-    setIsImageLoading(true);
-  }, [currentPage]);
+.ayah-container {
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid #004d40;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem; /* 👇 هذا هو الفاصل بين الآيات 👇 */
+}
 
-  const goToNextPage = () => {
-    if (currentPage < 604) setCurrentPage(prev => prev + 1);
-  };
+.ayah-text {
+  font-size: 1.8rem;
+  line-height: 2.5; /* زيادة المسافة بين السطور لتسهيل القراءة */
+  text-align: right;
+}
 
-  const goToPreviousPage = () => {
-    if (currentPage > 1) setCurrentPage(prev => prev - 1);
-  };
+.ayah-number {
+  color: #00bfa5;
+  font-size: 1.2rem;
+  margin-left: 0.5rem;
+}
 
-  const imageUrl = `https://images.quran.com/images/p${currentPage}.png`;
+.loading-message, .error-message {
+  color: white;
+  text-align: center;
+  font-size: 1.5rem;
+  padding: 5rem 0;
+}
 
-  if (isComponentLoading) {
-    return <div className={styles['loading-message']}>جاري تهيئة المصحف...</div>;
-  }
-
-  return (
-    <div className={styles['mushaf-container']}>
-      <div className={styles['mushaf-page-wrapper']}>
-        {isImageLoading && <div className={styles['image-loading-spinner']}></div>}
-        <img
-          key={imageUrl}
-          src={imageUrl}
-          alt={`صفحة رقم ${currentPage}`}
-          className={styles['mushaf-page-image']}
-          onLoad={handleImageLoad}
-          onError={handleImageError}
-          style={{ visibility: isImageLoading ? 'hidden' : 'visible' }}
-        />
-        <button className={`${styles['nav-button']} ${styles['prev-page']}`} onClick={goToPreviousPage}>&#9664;</button>
-        <button className={`${styles['nav-button']} ${styles['next-page']}`} onClick={goToNextPage}>&#9654;</button>
-      </div>
-
-      <div className={styles['mushaf-toolbar']}>
-        <button onClick={() => navigate('/quran')} className={styles['back-to-index-btn']}>
-          العودة للفهرس
-        </button>
-        <span className={styles['page-number-display']}>صفحة {currentPage}</span>
-      </div>
-    </div>
-  );
-};
-
-export default SurahPage;
+.back-button-surah {
+  display: block;
+  width: fit-content;
+  margin: 2rem auto 0 auto;
+  background-color: #00796b;
+  color: white;
+  border: none;
+  padding: 0.7rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-family: 'Amiri', serif;
+}
