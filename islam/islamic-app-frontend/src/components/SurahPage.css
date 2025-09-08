@@ -1,95 +1,93 @@
 /* src/components/SurahPage.css */
-.surah-page-container {
+
+.mushaf-container {
+  width: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 2rem;
-  background-color: #1a1a1a;
+  background-color: #212121; /* خلفية داكنة للمصحف */
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
-.mushaf-page {
+.mushaf-page-wrapper {
+  position: relative;
   width: 100%;
-  max-width: 800px;
-  aspect-ratio: 3 / 4;
-  background-image: url('../assets/mushaf-frame.png');
-  background-size: 100% 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  padding: 10%;
+  max-width: 500px; /* يمكنك تعديل العرض الأقصى حسب رغبتك */
+  margin: 0 auto;
+  flex-grow: 1;
   display: flex;
-  flex-direction: column;
-  color: black;
-  font-family: 'Amiri', serif;
+  align-items: center;
+  justify-content: center;
 }
 
-.page-header {
-  text-align: center;
-  border-bottom: 2px solid #8B4513;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
+.mushaf-page-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.page-header h1 {
-  font-size: 2rem;
-  margin: 0;
-}
-
-/* 👇 تم حذف 'flex-grow: 1' من هنا لإصلاح تشوه النص 👇 */
-.page-content {
-  overflow-y: auto;
-  text-align: right;
-  direction: rtl;
-  font-size: 1.6rem;
-  line-height: 2.5;
-}
-
-/* 👇 تنسيق جديد للبسملة 👇 */
-.basmala {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  line-height: 1.5;
-  color: #333;
-}
-
-.ayah-text {
-  margin: 0 5px;
-}
-
-.ayah-number {
-  font-size: 1rem;
-  color: #8B4513;
-}
-
-.page-footer {
-  text-align: center;
-  border-top: 2px solid #8B4513;
-  padding-top: 10px;
-  margin-top: 15px;
-  font-size: 0.9rem;
-}
-
-/* 👇 تنسيق جديد لحاوية الأزرار 👇 */
-.navigation-buttons {
-  display: flex;
-  gap: 1rem; /* مسافة بين الأزرار */
-  margin-top: 2rem;
-}
-
-.back-button {
-  padding: 0.8rem 1.5rem;
-  background-color: #004d40;
+.nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1.5rem;
   cursor: pointer;
-  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.3s;
-  font-family: 'Amiri', serif; /* استخدام نفس الخط للجمالية */
+  z-index: 10;
 }
 
-.back-button:hover {
+.nav-button:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.prev-page {
+  left: -20px;
+}
+
+.next-page {
+  right: -20px;
+}
+
+.mushaf-toolbar {
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.back-to-index-btn {
   background-color: #00796b;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Amiri', serif;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.back-to-index-btn:hover {
+  background-color: #00bfa5;
+}
+
+.page-number-display {
+  color: #ccc;
+  font-size: 1.1rem;
+  font-family: 'Amiri', serif;
 }
