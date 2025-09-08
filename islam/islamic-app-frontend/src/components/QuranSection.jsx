@@ -1,7 +1,7 @@
 // src/components/QuranSection.jsx
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { surahs as fallbackSurahs } from '../data/surahs-fallback'; // استيراد البيانات الاحتياطية
+import { fallbackSurahs } from '../data/surahs-fallback.js'; // استيراد البيانات الاحتياطية
 
 function QuranSection() {
   const [surahs, setSurahs] = useState([]);
