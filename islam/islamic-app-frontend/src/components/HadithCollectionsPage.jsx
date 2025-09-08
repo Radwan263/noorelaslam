@@ -33,9 +33,12 @@ const HadithCollectionsPage = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleCollectionClick = (collectionName) => {
-    alert(`تم اختيار كتاب: ${collectionName}`);
-  };
+  // استبدل الدالة القديمة بهذه
+const handleCollectionClick = (collectionName) => {
+  // الاسم الذي نرسله في الرابط يجب أن يكون بالإنجليزية (مثل 'bukhari')
+  navigate(`/hadith/${collectionName}`);
+};
+
 
   return (
     <div className="hadith-page-container">
