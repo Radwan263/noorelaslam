@@ -1,58 +1,75 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import './SurahPage.css'; // سنقوم بتحديث هذا الملف أيضًا
-
-// هذا الملف يحتوي على رقم الصفحة التي تبدأ فيها كل سورة
+import './SurahPage.css';
 import surahStarts from '../data/surah-page-starts.json';
 
 const SurahPage = () => {
   const { surahNumber } = useParams();
   const navigate = useNavigate();
 
-  // الحالة لتتبع رقم الصفحة الحالية
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [isComponentLoading, setIsComponentLoading] = useState(true); // تحميل المكون الأولي
+  const [isImageLoading, setIsImageLoading] = useState(true); // 👇 حالة جديدة لتحميل الصورة 👇
 
   useEffect(() => {
-    // عند تحميل المكون، ابحث عن الصفحة التي تبدأ بها السورة
     const startingPage = surahStarts[surahNumber];
     if (startingPage) {
       setCurrentPage(startingPage);
     }
-    setLoading(false);
+    setIsComponentLoading(false);
   }, [surahNumber]);
 
-  // دالة لتقليب الصفحات
+  // 👇 دالة جديدة يتم استدعاؤها عند اكتمال تحميل الصورة 👇
+  const handleImageLoad = () => {
+    setIsImageLoading(false);
+  };
+
+  // 👇 دالة جديدة يتم استدعاؤها عند حدوث خطأ في تحميل الصورة 👇
+  const handleImageError = () => {
+    console.error("خطأ في تحميل صورة الصفحة.");
+    setIsImageLoading(false); // إيقاف التحميل حتى لو حدث خطأ لعرض رسالة بديلة
+  };
+
+  // عند تغيير الصفحة، أعد ضبط حالة تحميل الصورة
+  useEffect(() => {
+    setIsImageLoading(true);
+  }, [currentPage]);
+
   const goToNextPage = () => {
-    if (currentPage > 1) { // صفحات المصحف معكوسة، فالصفحة التالية رقمها أقل
+    if (currentPage > 1) {
       setCurrentPage(prev => prev - 1);
     }
   };
 
   const goToPreviousPage = () => {
-    if (currentPage < 604) { // 604 هو عدد صفحات مصحف المدينة
+    if (currentPage < 604) {
       setCurrentPage(prev => prev + 1);
     }
   };
 
-  // دالة لتنسيق رقم الصفحة (e.g., 1 -> 001, 12 -> 012, 123 -> 123)
-  const formatPageNumber = (num) => {
-    return num.toString().padStart(3, '0');
-  };
+  // 👇 استخدام مصدر الصور الجديد والموثوق من quran.com 👇
+  const imageUrl = `https://images.quran.com/images/p${currentPage}.png`;
 
-  // رابط صورة الصفحة الحالية
-  const imageUrl = `https://everyayah.com/data/images_png/1/${formatPageNumber(currentPage)}.png`;
-
-  if (loading) {
-    return <div className="loading-message">جاري تحميل المصحف...</div>;
+  if (isComponentLoading) {
+    return <div className="loading-message">جاري تهيئة المصحف...</div>;
   }
 
   return (
     <div className="mushaf-container">
       <div className="mushaf-page-wrapper">
-        <img src={imageUrl} alt={`صفحة رقم ${currentPage}`} className="mushaf-page-image" />
+        {/* 👇 إظهار مؤشر التحميل أثناء تحميل الصورة 👇 */}
+        {isImageLoading && <div className="image-loading-spinner"></div>}
         
-        {/* أزرار التقليب */}
+        <img
+          key={imageUrl} // استخدام key لإجبار React على إعادة تحميل المكون عند تغيير الرابط
+          src={imageUrl}
+          alt={`صفحة رقم ${currentPage}`}
+          className="mushaf-page-image"
+          onLoad={handleImageLoad} // استدعاء الدالة عند نجاح التحميل
+          onError={handleImageError} // استدعاء الدالة عند فشل التحميل
+          style={{ visibility: isImageLoading ? 'hidden' : 'visible' }} // إخفاء الصورة حتى تكتمل
+        />
+        
         <button className="nav-button prev-page" onClick={goToPreviousPage}>&#9664;</button>
         <button className="nav-button next-page" onClick={goToNextPage}>&#9654;</button>
       </div>
