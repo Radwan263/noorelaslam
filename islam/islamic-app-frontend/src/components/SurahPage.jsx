@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import './SurahPage.css';
+import styles from './SurahPage.module.css'; // 👈 تغيير هنا
 import surahStarts from '../data/surah-page-starts.json';
 
 const SurahPage = () => {
@@ -8,8 +8,8 @@ const SurahPage = () => {
   const navigate = useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [isComponentLoading, setIsComponentLoading] = useState(true); // تحميل المكون الأولي
-  const [isImageLoading, setIsImageLoading] = useState(true); // 👇 حالة جديدة لتحميل الصورة 👇
+  const [isComponentLoading, setIsComponentLoading] = useState(true);
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
   useEffect(() => {
     const startingPage = surahStarts[surahNumber];
@@ -19,66 +19,49 @@ const SurahPage = () => {
     setIsComponentLoading(false);
   }, [surahNumber]);
 
-  // 👇 دالة جديدة يتم استدعاؤها عند اكتمال تحميل الصورة 👇
-  const handleImageLoad = () => {
-    setIsImageLoading(false);
-  };
+  const handleImageLoad = () => setIsImageLoading(false);
+  const handleImageError = () => setIsImageLoading(false);
 
-  // 👇 دالة جديدة يتم استدعاؤها عند حدوث خطأ في تحميل الصورة 👇
-  const handleImageError = () => {
-    console.error("خطأ في تحميل صورة الصفحة.");
-    setIsImageLoading(false); // إيقاف التحميل حتى لو حدث خطأ لعرض رسالة بديلة
-  };
-
-  // عند تغيير الصفحة، أعد ضبط حالة تحميل الصورة
   useEffect(() => {
     setIsImageLoading(true);
   }, [currentPage]);
 
   const goToNextPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(prev => prev - 1);
-    }
+    if (currentPage < 604) setCurrentPage(prev => prev + 1);
   };
 
   const goToPreviousPage = () => {
-    if (currentPage < 604) {
-      setCurrentPage(prev => prev + 1);
-    }
+    if (currentPage > 1) setCurrentPage(prev => prev - 1);
   };
 
-  // 👇 استخدام مصدر الصور الجديد والموثوق من quran.com 👇
   const imageUrl = `https://images.quran.com/images/p${currentPage}.png`;
 
   if (isComponentLoading) {
-    return <div className="loading-message">جاري تهيئة المصحف...</div>;
+    return <div className={styles['loading-message']}>جاري تهيئة المصحف...</div>;
   }
 
   return (
-    <div className="mushaf-container">
-      <div className="mushaf-page-wrapper">
-        {/* 👇 إظهار مؤشر التحميل أثناء تحميل الصورة 👇 */}
-        {isImageLoading && <div className="image-loading-spinner"></div>}
-        
+    <div className={styles['mushaf-container']}>
+      <div className={styles['mushaf-page-wrapper']}>
+        {isImageLoading && <div className={styles['image-loading-spinner']}></div>}
         <img
-          key={imageUrl} // استخدام key لإجبار React على إعادة تحميل المكون عند تغيير الرابط
+          key={imageUrl}
           src={imageUrl}
           alt={`صفحة رقم ${currentPage}`}
-          className="mushaf-page-image"
-          onLoad={handleImageLoad} // استدعاء الدالة عند نجاح التحميل
-          onError={handleImageError} // استدعاء الدالة عند فشل التحميل
-          style={{ visibility: isImageLoading ? 'hidden' : 'visible' }} // إخفاء الصورة حتى تكتمل
+          className={styles['mushaf-page-image']}
+          onLoad={handleImageLoad}
+          onError={handleImageError}
+          style={{ visibility: isImageLoading ? 'hidden' : 'visible' }}
         />
-        
-        <button className="nav-button prev-page" onClick={goToPreviousPage}>&#9664;</button>
-        <button className="nav-button next-page" onClick={goToNextPage}>&#9654;</button>
+        <button className={`${styles['nav-button']} ${styles['prev-page']}`} onClick={goToPreviousPage}>&#9664;</button>
+        <button className={`${styles['nav-button']} ${styles['next-page']}`} onClick={goToNextPage}>&#9654;</button>
       </div>
 
-      <div className="mushaf-toolbar">
-        <button onClick={() => navigate('/quran')} className="back-to-index-btn">
+      <div className={styles['mushaf-toolbar']}>
+        <button onClick={() => navigate('/quran')} className={styles['back-to-index-btn']}>
           العودة للفهرس
         </button>
-        <span className="page-number-display">صفحة {currentPage}</span>
+        <span className={styles['page-number-display']}>صفحة {currentPage}</span>
       </div>
     </div>
   );
