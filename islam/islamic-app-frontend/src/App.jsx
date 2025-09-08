@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage.jsx';
 import QuranSection from './components/QuranSection.jsx';
 import SurahPage from './components/SurahPage.jsx';
-// 👇 تم تغيير اسم المكون هنا إلى الاسم الصحيح 👇
-import HadithCollectionsPage from './components/HadithCollectionsPage.jsx'; 
+import HadithCollectionsPage from './components/HadithCollectionsPage.jsx';
+import HadithListPage from './components/HadithListPage.jsx'; // <-- إضافة جديدة
 
 import './App.css';
 
@@ -17,8 +17,11 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/quran" element={<QuranSection />} />
           <Route path="/surah/:surahNumber" element={<SurahPage />} />
-          {/* 👇 تم تحديث المسار ليعرض المكون الصحيح 👇 */}
+          
+          {/* مسارات قسم الحديث */}
           <Route path="/hadith" element={<HadithCollectionsPage />} />
+          {/* 👇 المسار الجديد لعرض أحاديث كتاب معين 👇 */}
+          <Route path="/hadith/:collectionName" element={<HadithListPage />} />
         </Routes>
       </div>
     </Router>
