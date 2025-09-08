@@ -1,85 +1,207 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import './HomePage.css';
+/* src/pages/HomePage.css - إعادة بناء كاملة */
 
-// --- المكون الرئيسي للصفحة ---
+.home-page {
+  color: white;
+  padding: 1rem;
+  padding-top: 80px; /* مساحة للشريط العلوي */
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-const HomePage = () => {
-  const navigate = useNavigate();
-  
-  // سنقوم بتعطيل النوافذ المنبثقة مؤقتًا
-  // const [isMenuOpen, setMenuOpen] = useState(false);
-  // const [isSearchOpen, setSearchOpen] = useState(false);
+/* --- الشريط العلوي --- */
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background: rgba(10, 25, 35, 0.8);
+  backdrop-filter: blur(5px);
+  z-index: 999;
+  border-bottom: 1px solid #004d40;
+}
 
-  const handleMenuClick = () => {
-    // سننتقل مباشرة إلى صفحة تسجيل الدخول عند الضغط على القائمة مؤقتًا
-    navigate('/login'); 
-  };
+.top-bar-btn {
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  border: 1px solid #00796b;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  const handleSearchClick = () => {
-    alert('زر البحث يعمل!'); // سنعرض رسالة بسيطة للتأكد من أن الزر يعمل
-  };
+/* --- الهيدر --- */
+.home-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
 
-  return (
-    <div className="home-container">
-      <div className="top-nav-bar">
-        {/* 👇 عند النقر، سنقوم بتنفيذ الدوال مباشرة 👇 */}
-        <button className="top-nav-btn" onClick={handleMenuClick}>☰</button>
-        <button className="top-nav-btn" onClick={handleSearchClick}>🔍</button>
-      </div>
+.home-header h1 {
+  font-family: 'Amiri', serif;
+  font-size: 3.5rem;
+  font-weight: bold;
+}
 
-      {/* تم تعطيل النوافذ المنبثقة مؤقتًا
-      <SideMenu isOpen={isMenuOpen} onClose={() => setMenuOpen(false)} />
-      <SearchModal isOpen={isSearchOpen} onClose={() => setSearchOpen(false)} /> 
-      */}
+.home-header p {
+  font-size: 1.2rem;
+  color: #ccc;
+}
 
-      <header className="home-header">
-        <h1 className="home-title">تطبيق إسلامي</h1>
-        <p className="home-subtitle">وجهتك الإيمانية المتكاملة</p>
-      </header>
-      
-      <main className="menu-container">
-        {/* ... (باقي البطاقات تبقى كما هي بدون تغيير) ... */}
-        <div className="menu-item" onClick={() => navigate('/quran')}>
-          <div className="menu-item-icon">📖</div>
-          <h2 className="menu-item-title">القرآن الكريم</h2>
-          <p className="menu-item-description">تصفح وقراءة السور القرآنية</p>
-        </div>
-        <div className="menu-item" onClick={() => navigate('/hadith')}>
-          <div className="menu-item-icon">📜</div>
-          <h2 className="menu-item-title">الأحاديث النبوية</h2>
-          <p className="menu-item-description">تصفح كتب الحديث الشريف</p>
-        </div>
-        <div className="menu-item" onClick={() => navigate('/azkar')}>
-          <div className="menu-item-icon">🤲</div>
-          <h2 className="menu-item-title">الأذكار</h2>
-          <p className="menu-item-description">حصن المسلم اليومي</p>
-        </div>
-        <div className="menu-item" onClick={() => navigate('/duas')}>
-          <div className="menu-item-icon">🙌</div>
-          <h2 className="menu-item-title">أدعية وفضلها</h2>
-          <p className="menu-item-description">أدعية من القرآن والسنة</p>
-        </div>
-        <div className="menu-item" onClick={() => navigate('/asma-ul-husna')}>
-          <div className="menu-item-icon">✨</div>
-          <h2 className="menu-item-title">أسماء الله الحسنى</h2>
-          <p className="menu-item-description">تعرف على أسماء الله وصفاته</p>
-        </div>
-        <div className="menu-item" onClick={() => navigate('/sadaqa-jariya')}>
-          <div className="menu-item-icon">❤️</div>
-          <h2 className="menu-item-title">صدقة جارية</h2>
-          <p className="menu-item-description">ادعُ لمن تحب وتصدق بالدعاء</p>
-        </div>
-      </main>
+/* --- شبكة البطاقات --- */
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
 
-      <div className="prayer-times-section">
-        <div className="prayer-times-widget">
-          <p>سيتم عرض مواقيت الصلاة هنا قريبًا...</p>
-          <button className="location-button">تحديد الموقع</button>
-        </div>
-      </div>
-    </div>
-  );
-};
+.home-card {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid #004d40;
+  border-radius: 15px;
+  padding: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
-export default HomePage;
+.home-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 25px rgba(0, 77, 64, 0.6);
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.home-card h2 {
+  font-family: 'Amiri', serif;
+  font-size: 1.8rem;
+  color: #f5f5f5;
+  margin: 0 0 0.5rem 0;
+}
+
+.home-card p {
+  font-size: 1rem;
+  color: #b0bec5;
+}
+
+/* --- الفوتر ومواقيت الصلاة --- */
+.home-footer {
+  padding: 3rem 1rem 1rem 1rem;
+}
+
+.prayer-widget {
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid #004d40;
+  border-radius: 15px;
+  padding: 1.5rem;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.prayer-widget p {
+  margin: 0 0 1rem 0;
+  font-size: 1.1rem;
+}
+
+.prayer-widget button {
+  background-color: #00796b;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Amiri', serif;
+}
+
+/* --- النوافذ المنبثقة --- */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+}
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  right: -300px; /* مخفية */
+  width: 280px;
+  height: 100%;
+  background: #1a2a33;
+  border-left: 2px solid #00bfa5;
+  padding: 2rem;
+  z-index: 1001;
+  transition: right 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.side-menu.open {
+  right: 0; /* تظهر */
+}
+
+.side-menu h3 {
+  color: #00bfa5;
+  font-size: 2rem;
+}
+
+.side-menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+}
+
+.side-menu a:hover {
+  background-color: rgba(0, 191, 165, 0.2);
+}
+
+.search-modal {
+  position: fixed;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a2a33;
+  padding: 2rem;
+  border-radius: 15px;
+  border: 1px solid #00bfa5;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+  z-index: 1001;
+}
+
+.search-modal input {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #00796b;
+  background: #333;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.search-modal button {
+  background-color: #00796b;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+}
