@@ -59,7 +59,6 @@
   transition: background-color 0.4s ease, border-color 0.4s ease;
 }
 
-/* تصميم البطاقة عند اكتمال العد */
 .zikr-card.completed {
   background-color: rgba(0, 150, 136, 0.2);
   border-color: #00bfa5;
@@ -75,6 +74,7 @@
   font-size: 1.6rem;
   line-height: 2;
   margin: 0;
+  white-space: pre-wrap; /* للحفاظ على فواصل الأسطر في سورة الإخلاص والمعوذتين */
 }
 
 .zikr-description {
@@ -118,6 +118,7 @@
 }
 
 .counter-label {
-  font-size: 0.8rem;
-  color: #ccc;
+  font-size: 0.9rem; /* تم تكبير الخط قليلاً */
+  color: #e0e0e0; /* تم تفتيح اللون قليلاً */
+  font-weight: bold;
 }
