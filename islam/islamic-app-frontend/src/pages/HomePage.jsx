@@ -1,40 +1,42 @@
+// src/pages/HomePage.jsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './HomePage.css'; // سنقوم بتحديث هذا الملف بشكل كبير
-import { FaQuran, FaBook, FaPrayingHands, FaHandHoldingHeart, FaDotCircle, FaMosque } from 'react-icons/fa';
+import { FaQuran, FaBookOpen, FaPrayingHands, FaHandHoldingHeart, FaUser, FaCommentDots, FaMoon } from 'react-icons/fa';
+import './HomePage.css';
+
+const menuItems = [
+  { to: "/quran", icon: <FaQuran />, text: "القرآن الكريم" },
+  { to: "/tafsir", icon: <FaBookOpen />, text: "تفسير القرآن" },
+  { to: "/hadith", icon: <FaCommentDots />, text: "الأحاديث" },
+  { to: "/azkar", icon: <FaMoon />, text: "الأذكار" },
+  { to: "/dua", icon: <FaPrayingHands />, text: "الأدعية" },
+  { to: "/charity", icon: <FaHandHoldingHeart />, text: "صدقة جارية" },
+  { to: "/developer", icon: <FaUser />, text: "عن المطور" },
+];
 
 const HomePage = () => {
   return (
-    <div className="islamic-theme-container">
-      {/* هذا الجزء سيكون داخل القوس الأبيض في الخلفية */}
-      <div className="content-area">
-        <img src="/logo.png" alt="شعار نور الإسلام" className="home-logo" />
-        <h1 className="main-title">نور الإسلام</h1>
+    <div className="homepage-container">
+      <div className="title-section">
+        
+        {/* === بداية التعديل الجديد === */}
+        <div className="welcome-message">
+          <p>مرحبا بك في</p>
+          <h1 className="main-title">نور الإسلام</h1>
+          <p className="project-name">noorelaslam</p>
+        </div>
+        {/* === نهاية التعديل الجديد === */}
 
-        <nav className="buttons-grid">
-          <Link to="/quran" className="frame-button">
-            <span className="button-text">القرآن الكريم</span>
-          </Link>
-          <Link to="/hadith" className="frame-button">
-            <span className="button-text">الأحاديث</span>
-          </Link>
-          <Link to="/azkar" className="frame-button">
-            <span className="button-text">الأذكار</span>
-          </Link>
-          <Link to="/duas" className="frame-button">
-            <span className="button-text">الأدعية</span>
-          </Link>
-          <Link to="/sadaqa" className="frame-button">
-            <span className="button-text">صدقة جارية</span>
-          </Link>
-          <Link to="/tasbih" className="frame-button">
-            <span className="button-text">السبحة</span>
-          </Link>
-          <Link to="/prayer-times" className="frame-button">
-            <span className="button-text">أوقات الصلاة</span>
-          </Link>
-        </nav>
       </div>
+
+      <nav className="buttons-grid">
+        {menuItems.map((item) => (
+          <Link key={item.to} to={item.to} className="icon-button">
+            <div className="button-icon">{item.icon}</div>
+            <span className="button-text">{item.text}</span>
+          </Link>
+        ))}
+      </nav>
     </div>
   );
 };
