@@ -1,79 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './SurahPage.css';
+import './SurahPage.css'; // سنقوم بتحديث هذا الملف أيضًا
+
+// هذا الملف يحتوي على رقم الصفحة التي تبدأ فيها كل سورة
+import surahStarts from '../data/surah-page-starts.json';
 
 const SurahPage = () => {
   const { surahNumber } = useParams();
   const navigate = useNavigate();
-  const [surah, setSurah] = useState(null);
+
+  // الحالة لتتبع رقم الصفحة الحالية
+  const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchSurah = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get(`https://api.alquran.cloud/v1/surah/${surahNumber}`);
-        setSurah(response.data.data);
-        setError(null);
-      } catch (err) {
-        setError('حدث خطأ أثناء تحميل بيانات السورة. يرجى المحاولة مرة أخرى.');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSurah();
+    // عند تحميل المكون، ابحث عن الصفحة التي تبدأ بها السورة
+    const startingPage = surahStarts[surahNumber];
+    if (startingPage) {
+      setCurrentPage(startingPage);
+    }
+    setLoading(false);
   }, [surahNumber]);
 
+  // دالة لتقليب الصفحات
+  const goToNextPage = () => {
+    if (currentPage > 1) { // صفحات المصحف معكوسة، فالصفحة التالية رقمها أقل
+      setCurrentPage(prev => prev - 1);
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage < 604) { // 604 هو عدد صفحات مصحف المدينة
+      setCurrentPage(prev => prev + 1);
+    }
+  };
+
+  // دالة لتنسيق رقم الصفحة (e.g., 1 -> 001, 12 -> 012, 123 -> 123)
+  const formatPageNumber = (num) => {
+    return num.toString().padStart(3, '0');
+  };
+
+  // رابط صورة الصفحة الحالية
+  const imageUrl = `https://everyayah.com/data/images_png/1/${formatPageNumber(currentPage)}.png`;
+
   if (loading) {
-    return <div className="loading-message">جاري تحميل السورة...</div>;
+    return <div className="loading-message">جاري تحميل المصحف...</div>;
   }
-
-  if (error) {
-    return <div className="error-message">{error}</div>;
-  }
-
-  // تحويل رقم السورة إلى عدد صحيح للمقارنة
-  const surahNum = parseInt(surahNumber, 10);
 
   return (
-    <div className="surah-page-container">
-      <div className="mushaf-page">
-        <div className="page-header">
-          <h1>{surah.name}</h1>
-        </div>
-        <div className="page-content">
-          {/* إضافة البسملة (مع شرط عدم عرضها في سورة التوبة "9" أو الفاتحة "1" لأنها جزء منها) */}
-          {surahNum !== 1 && surahNum !== 9 && (
-            <h2 className="basmala">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</h2>
-          )}
-
-          {surah.ayahs.map((ayah) => (
-            <span key={ayah.number} className="ayah-text">
-              {/* إزالة البسملة من الآية الأولى إذا كانت السورة ليست الفاتحة */}
-              {ayah.numberInSurah === 1 && surahNum !== 1
-                ? ayah.text.replace(/^بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ\s*/, '')
-                : ayah.text}
-              <span className="ayah-number">({ayah.numberInSurah})</span>
-            </span>
-          ))}
-        </div>
-        <div className="page-footer">
-          <p>الجزء: {surah.ayahs[0].juz} - الحزب: {surah.ayahs[0].hizbQuarter}</p>
-        </div>
+    <div className="mushaf-container">
+      <div className="mushaf-page-wrapper">
+        <img src={imageUrl} alt={`صفحة رقم ${currentPage}`} className="mushaf-page-image" />
+        
+        {/* أزرار التقليب */}
+        <button className="nav-button prev-page" onClick={goToPreviousPage}>&#9664;</button>
+        <button className="nav-button next-page" onClick={goToNextPage}>&#9654;</button>
       </div>
 
-      {/* حاوية جديدة للأزرار */}
-      <div className="navigation-buttons">
-        <button onClick={() => navigate('/quran')} className="back-button">
-          العودة إلى السور
+      <div className="mushaf-toolbar">
+        <button onClick={() => navigate('/quran')} className="back-to-index-btn">
+          العودة للفهرس
         </button>
-        <button onClick={() => navigate('/')} className="back-button">
-          العودة إلى الرئيسية
-        </button>
+        <span className="page-number-display">صفحة {currentPage}</span>
       </div>
     </div>
   );
