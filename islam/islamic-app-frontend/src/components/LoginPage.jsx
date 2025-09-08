@@ -1,5 +1,5 @@
 import React from 'react';
-import './AuthPage.css'; // سننشئ هذا الملف للتنسيقات المشتركة
+import './AuthPage.css';
 
 const LoginPage = () => {
   return (
@@ -18,4 +18,5 @@ const LoginPage = () => {
     </div>
   );
 };
+
 export default LoginPage;
