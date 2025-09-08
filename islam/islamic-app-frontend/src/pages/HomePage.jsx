@@ -20,9 +20,6 @@ const HomePage = () => {
       <header className="home-header">
         <h1 className="home-title">تطبيق إسلامي</h1>
         <p className="home-subtitle">وجهتك الإيمانية المتكاملة</p>
-        
-        {/* 👇 إضافة ويدجت مواقيت الصلاة 👇 */}
-        <PrayerTimesWidget />
       </header>
       
       <main className="menu-container">
@@ -47,27 +44,32 @@ const HomePage = () => {
           <p className="menu-item-description">حصن المسلم اليومي</p>
         </div>
 
-        {/* 👇 بطاقة الأدعية الجديدة 👇 */}
+        {/* بطاقة الأدعية */}
         <div className="menu-item" onClick={() => navigate('/duas')}>
           <div className="menu-item-icon">🙌</div>
           <h2 className="menu-item-title">أدعية وفضلها</h2>
           <p className="menu-item-description">أدعية من القرآن والسنة</p>
         </div>
 
-        {/* 👇 بطاقة أسماء الله الحسنى الجديدة 👇 */}
+        {/* بطاقة أسماء الله الحسنى */}
         <div className="menu-item" onClick={() => navigate('/asma-ul-husna')}>
           <div className="menu-item-icon">✨</div>
           <h2 className="menu-item-title">أسماء الله الحسنى</h2>
           <p className="menu-item-description">تعرف على أسماء الله وصفاته</p>
         </div>
 
-        {/* 👇 بطاقة صدقة جارية الجديدة 👇 */}
+        {/* بطاقة صدقة جارية */}
         <div className="menu-item" onClick={() => navigate('/sadaqa-jariya')}>
           <div className="menu-item-icon">❤️</div>
           <h2 className="menu-item-title">صدقة جارية</h2>
           <p className="menu-item-description">ادعُ لمن تحب وتصدق بالدعاء</p>
         </div>
       </main>
+
+      {/* 👇 تم نقل مواقيت الصلاة إلى هنا، أسفل كل الأقسام 👇 */}
+      <div className="prayer-times-section">
+        <PrayerTimesWidget />
+      </div>
     </div>
   );
 };
