@@ -4,6 +4,10 @@ import axios from 'axios';
 import './HadithListPage.css';
 import hadithFrame from '../assets/hadith-frame.png';
 
+// 👇 إضافة الخادم الوسيط لحل مشكلة CORS 👇
+const proxy = 'https://cors-anywhere.herokuapp.com/';
+const sunnahApiBase = 'https://api.sunnah.com/v1/';
+
 const HadithListPage = () => {
   const { collectionName } = useParams();
   const navigate = useNavigate();
@@ -18,7 +22,8 @@ const HadithListPage = () => {
         setLoading(true);
         setError(null);
         
-        const response = await axios.get(`https://api.sunnah.com/v1/collections/${collectionName}/hadiths?limit=25&page=1`);
+        // 👇 استخدام الخادم الوسيط في الرابط 👇
+        const response = await axios.get(`${proxy}${sunnahApiBase}collections/${collectionName}/hadiths?limit=25&page=1`);
         
         if (response.data && response.data.data.length > 0) {
           setHadiths(response.data.data);
@@ -26,7 +31,8 @@ const HadithListPage = () => {
           throw new Error('لم يتم العثور على أحاديث لهذا الكتاب.');
         }
 
-        const collectionInfo = await axios.get(`https://api.sunnah.com/v1/collections/${collectionName}`);
+        // 👇 استخدام الخادم الوسيط في الرابط الثاني أيضًا 👇
+        const collectionInfo = await axios.get(`${proxy}${sunnahApiBase}collections/${collectionName}`);
         setCollectionTitle(collectionInfo.data.data.title);
 
       } catch (err) {
@@ -53,12 +59,10 @@ const HadithListPage = () => {
     }
   };
 
-  // عرض رسالة التحميل
   if (loading) {
     return <div className="loading-message">جاري تحميل الأحاديث...</div>;
   }
 
-  // 👇 عرض رسالة الخطأ بشكل محسن 👇
   if (error) {
     return (
       <div className="hadith-list-container error-container">
@@ -71,7 +75,6 @@ const HadithListPage = () => {
     );
   }
 
-  // عرض الأحاديث عند النجاح
   return (
     <div className="hadith-list-container">
       <header className="hadith-list-header">
