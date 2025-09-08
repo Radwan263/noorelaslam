@@ -18,8 +18,8 @@ const SurahPage = () => {
   useEffect(() => {
     const fetchMushafs = async () => {
       try {
-        // 👇 --- التعديل الأول: استخدام الرابط المحلي --- 👇
-        const response = await axios.get('/api/mushafs'); 
+        // 👇 --- التعديل الأول: استخدام المسار الجديد المخصص للقرآن --- 👇
+        const response = await axios.get('/quran-api/mushafs'); 
         const availableMushafs = response.data.data;
         setMushafs(availableMushafs);
         const defaultMushaf = availableMushafs.find(m => m.name.includes('حفص'));
@@ -38,8 +38,8 @@ const SurahPage = () => {
     const fetchSurahData = async () => {
       setLoading(true);
       try {
-        // 👇 --- التعديل الثاني: استخدام الرابط المحلي --- 👇
-        const url = `/api/surahs/${surahNumber}?mushaf=${selectedMushaf.id}`;
+        // 👇 --- التعديل الثاني: استخدام المسار الجديد المخصص للقرآن --- 👇
+        const url = `/quran-api/surahs/${surahNumber}?mushaf=${selectedMushaf.id}`;
         const response = await axios.get(url);
         setSurahData(response.data.data);
         setError(null);
