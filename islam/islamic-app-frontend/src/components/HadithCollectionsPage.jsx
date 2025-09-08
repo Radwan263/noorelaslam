@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-// import axios from 'axios'; // <-- تم تعطيل axios مؤقتًا
 import { useNavigate } from 'react-router-dom';
 import './HadithCollectionsPage.css';
 
-// 👇 بيانات وهمية (مؤقتة) لقائمة كتب الحديث 👇
+// بيانات وهمية لتجنب مشاكل الشبكة مؤقتًا
 const mockCollections = [
   { name: 'bukhari', title: 'صحيح البخاري', totalHadiths: 7563, hasBooks: true },
   { name: 'muslim', title: 'صحيح مسلم', totalHadiths: 7453, hasBooks: true },
@@ -17,28 +16,20 @@ const mockCollections = [
 
 const HadithCollectionsPage = () => {
   const [collections, setCollections] = useState([]);
-  const [loading, setLoading] = useState(true); // سيبقى true لثانية واحدة لمحاكاة التحميل
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // تم استبدال طلب الشبكة بالبيانات الوهمية
     setCollections(mockCollections);
-    
-    // محاكاة وقت التحميل
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 500); // نصف ثانية
-
-    // تنظيف المؤقت
+    const timer = setTimeout(() => setLoading(false), 500);
     return () => clearTimeout(timer);
   }, []);
 
-  // استبدل الدالة القديمة بهذه
-const handleCollectionClick = (collectionName) => {
-  // الاسم الذي نرسله في الرابط يجب أن يكون بالإنجليزية (مثل 'bukhari')
-  navigate(`/hadith/${collectionName}`);
-};
-
+  // الدالة التي تنقلنا لصفحة الأحاديث
+  const handleCollectionClick = (collectionName) => {
+    // collectionName هنا هو الاسم الإنجليزي (e.g., 'bukhari')
+    navigate(`/hadith/${collectionName}`);
+  };
 
   return (
     <div className="hadith-page-container">
@@ -55,7 +46,8 @@ const handleCollectionClick = (collectionName) => {
             <div 
               key={collection.name} 
               className="hadith-collection-card"
-              onClick={() => handleCollectionClick(collection.title)}
+              // 👇 التصحيح الجذري هنا: نمرر الاسم الإنجليزي 'collection.name' 👇
+              onClick={() => handleCollectionClick(collection.name)}
             >
               <h2 className="collection-title-arabic">{collection.title}</h2>
               <p className="collection-total-hadiths">
