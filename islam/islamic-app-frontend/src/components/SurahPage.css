@@ -1,0 +1,81 @@
+here/* src/components/SurahPage.css */
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+
+.surah-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  background-color: #1a1a1a; /* خلفية داكنة لتبرز الصفحة */
+}
+
+.mushaf-page {
+  width: 100%;
+  max-width: 800px; /* يمكنك تعديل العرض حسب الحاجة */
+  aspect-ratio: 3 / 4; /* للحفاظ على نسبة أبعاد الصفحة */
+  background-image: url('../assets/mushaf-frame.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  padding: 10%; /* هام: اترك مساحة داخلية للإطار */
+  display: flex;
+  flex-direction: column;
+  color: black;
+  font-family: 'Amiri', serif;
+}
+
+.page-header {
+  text-align: center;
+  border-bottom: 2px solid #8B4513; /* خط فاصل بلون بني */
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.page-header h1 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.page-content {
+  flex-grow: 1;
+  overflow-y: auto; /* حاليًا يسمح بالتمرير، سنغير هذا لاحقًا */
+  text-align: right;
+  direction: rtl;
+  font-size: 1.6rem; /* حجم خط مناسب للقراءة */
+  line-height: 2.5; /* تباعد أسطر مريح */
+}
+
+.ayah-text {
+  margin: 0 5px;
+}
+
+.ayah-number {
+  font-size: 1rem;
+  color: #8B4513; /* لون رقم الآية */
+}
+
+.page-footer {
+  text-align: center;
+  border-top: 2px solid #8B4513;
+  padding-top: 10px;
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.back-button {
+  margin-top: 2rem;
+  padding: 0.8rem 1.5rem;
+  background-color: #004d40;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #00796b;
+}
