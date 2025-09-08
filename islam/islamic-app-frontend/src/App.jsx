@@ -6,9 +6,13 @@ import QuranSection from './components/QuranSection.jsx';
 import SurahPage from './components/SurahPage.jsx';
 import HadithCollectionsPage from './components/HadithCollectionsPage.jsx';
 import HadithListPage from './components/HadithListPage.jsx';
-// 👇 إضافة جديدة لمكونات الأذكار 👇
 import AzkarCategoriesPage from './components/AzkarCategoriesPage.jsx';
 import AzkarDisplayPage from './components/AzkarDisplayPage.jsx';
+
+// 👇 استيراد المكونات الهيكلية الجديدة 👇
+import DuasPage from './components/DuasPage.jsx';
+import AsmaulHusnaPage from './components/AsmaulHusnaPage.jsx';
+import SadaqaJariyaPage from './components/SadaqaJariyaPage.jsx';
 
 import './App.css';
 
@@ -23,10 +27,13 @@ function App() {
           <Route path="/surah/:surahNumber" element={<SurahPage />} />
           <Route path="/hadith" element={<HadithCollectionsPage />} />
           <Route path="/hadith/:collectionName" element={<HadithListPage />} />
-
-          {/* 👇 المسارات الجديدة لقسم الأذكار 👇 */}
           <Route path="/azkar" element={<AzkarCategoriesPage />} />
           <Route path="/azkar/:categoryId" element={<AzkarDisplayPage />} />
+
+          {/* 👇 المسارات الجديدة التي أضفناها 👇 */}
+          <Route path="/duas" element={<DuasPage />} />
+          <Route path="/asma-ul-husna" element={<AsmaulHusnaPage />} />
+          <Route path="/sadaqa-jariya" element={<SadaqaJariyaPage />} />
         </Routes>
       </div>
     </Router>
