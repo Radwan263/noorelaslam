@@ -1,40 +1,20 @@
-import React from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-
-// استيراد المكونات الموجودة فقط
-import Navbar from './components/Navbar';
-import QuranSection from './components/QuranSection';
+// src/App.jsx
+import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-
-// تعليق استيراد المكونات غير الموجودة حاليًا
-// import HadithSection from './components/HadithSection';
-// import AzkarSection from './components/AzkarSection';
-// import DuasSection from './components/DuasSection';
-// import SadaqaSection from './components/SadaqaSection';
-// import TasbihSection from './components/TasbihSection';
-// import PrayerTimesSection from './components/PrayerTimesSection';
+// لاحقًا سنضيف الصفحات الأخرى هنا
+// import QuranPage from './pages/QuranPage'; 
 
 function App() {
   return (
-    <Router>
+    <div className="min-h-screen bg-gray-50">
       <Routes>
-        {/* 1. الصفحة الرئيسية (موجودة وتعمل) */}
+        {/* المسار الرئيسي "/" سيعرض الصفحة الرئيسية */}
         <Route path="/" element={<HomePage />} />
-
-        {/* 2. صفحة القرآن (موجودة وتعمل) */}
-        <Route path="/quran" element={<><Navbar /><QuranSection /></>} />
-
-        {/* تعليق المسارات للمكونات غير الموجودة */}
-        {/* 
-        <Route path="/hadith" element={<><Navbar /><HadithSection /></>} />
-        <Route path="/azkar" element={<><Navbar /><AzkarSection /></>} />
-        <Route path="/duas" element={<><Navbar /><DuasSection /></>} />
-        <Route path="/sadaqa" element={<><Navbar /><SadaqaSection /></>} />
-        <Route path="/tasbih" element={<><Navbar /><TasbihSection /></>} />
-        <Route path="/prayer-times" element={<><Navbar /><PrayerTimesSection /></>} />
-        */}
+        
+        {/* لاحقًا سنضيف مسارات الصفحات الأخرى */}
+        {/* <Route path="/quran" element={<QuranPage />} /> */}
       </Routes>
-    </Router>
+    </div>
   );
 }
 
