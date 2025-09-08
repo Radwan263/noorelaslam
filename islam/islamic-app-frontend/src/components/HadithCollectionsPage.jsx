@@ -1,32 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios'; // <-- تم تعطيل axios مؤقتًا
 import { useNavigate } from 'react-router-dom';
-import './HadithCollectionsPage.css'; // سننشئ هذا الملف أيضًا
+import './HadithCollectionsPage.css';
+
+// 👇 بيانات وهمية (مؤقتة) لقائمة كتب الحديث 👇
+const mockCollections = [
+  { name: 'bukhari', title: 'صحيح البخاري', totalHadiths: 7563, hasBooks: true },
+  { name: 'muslim', title: 'صحيح مسلم', totalHadiths: 7453, hasBooks: true },
+  { name: 'nasai', title: 'سنن النسائي', totalHadiths: 5760, hasBooks: true },
+  { name: 'abudawud', title: 'سنن أبي داود', totalHadiths: 5274, hasBooks: true },
+  { name: 'tirmidhi', title: 'جامع الترمذي', totalHadiths: 3956, hasBooks: true },
+  { name: 'ibnmajah', title: 'سنن ابن ماجه', totalHadiths: 4341, hasBooks: true },
+  { name: 'malik', title: 'موطأ مالك', totalHadiths: 1861, hasBooks: true },
+  { name: 'riyadussalihin', title: 'رياض الصالحين', totalHadiths: 1905, hasBooks: true },
+];
 
 const HadithCollectionsPage = () => {
   const [collections, setCollections] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // سيبقى true لثانية واحدة لمحاكاة التحميل
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchCollections = async () => {
-      try {
-        // جلب قائمة كتب الحديث من API
-        const response = await axios.get('https://api.sunnah.com/v1/collections');
-        const filteredData = response.data.data.filter(col => col.hasBooks);
-        setCollections(filteredData);
-      } catch (error) {
-        console.error("Error fetching Hadith collections:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCollections();
+    // تم استبدال طلب الشبكة بالبيانات الوهمية
+    setCollections(mockCollections);
+    
+    // محاكاة وقت التحميل
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500); // نصف ثانية
+
+    // تنظيف المؤقت
+    return () => clearTimeout(timer);
   }, []);
 
   const handleCollectionClick = (collectionName) => {
-    // سيتم تفعيل هذا لاحقًا للانتقال لصفحة الأحاديث
-    // navigate(`/hadith/${collectionName}`);
     alert(`تم اختيار كتاب: ${collectionName}`);
   };
 
