@@ -1,18 +1,18 @@
 // src/App.jsx
 import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
-import QuranSection from './components/QuranSection'; // اسم المكون الخاص بك
+import QuranSection from './components/QuranSection';
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Routes>
-        {/* عندما يكون الرابط هو الصفحة الرئيسية، اعرض HomePage */}
-        <Route path="/" element={<HomePage />} />
-            
-        {/* عندما يكون الرابط هو /quran، اعرض QuranSection */}
-        <Route path="/quran" element={<QuranSection />} />
-      </Routes>
+    // السطر الذي سنقوم بتعديله
+    <div className="min-h-screen bg-black bg-opacity-25">
+      <main>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/quran" element={<QuranSection />} />
+        </Routes>
+      </main>
     </div>
   );
 }
