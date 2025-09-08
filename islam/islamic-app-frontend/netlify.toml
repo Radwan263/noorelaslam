@@ -5,11 +5,8 @@
   command = "pnpm run build"
   publish = "dist"
 
-# --- قواعد إعادة التوجيه (البروكسي) ---
-
-# القاعدة الوحيدة التي نحتاجها هي للقرآن والقرآءات
+# القاعدة الوحيدة التي نحتاجها هي للباك إند الخاص بالأحاديث
 [[redirects]]
-  from = "/quran-api/*"
-  to = "https://api.quranpedia.net/v1/:splat"
+  from = "/api/*"
+  to = "https://radwan2633.pythonanywhere.com/:splat"
   status = 200
-  force = true
