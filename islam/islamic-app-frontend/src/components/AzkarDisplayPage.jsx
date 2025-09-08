@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import azkarData from '../data/azkar.json';
-import './AzkarDisplayPage.css'; // سننشئ هذا الملف الآن
+import './AzkarDisplayPage.css';
 
 const AzkarDisplayPage = () => {
   const { categoryId } = useParams();
@@ -9,7 +9,8 @@ const AzkarDisplayPage = () => {
   
   const [category, setCategory] = useState(null);
   const [azkarList, setAzkarList] = useState([]);
-  const [counts, setCounts] = useState({});
+  // 👇 الحالة الجديدة لتتبع العد الحالي (يبدأ من صفر) 👇
+  const [currentCounts, setCurrentCounts] = useState({});
 
   useEffect(() => {
     const currentCategory = azkarData.categories.find(c => c.id === categoryId);
@@ -18,20 +19,25 @@ const AzkarDisplayPage = () => {
     setCategory(currentCategory);
     setAzkarList(currentAzkar);
 
-    // إعداد الحالة الأولية للعدادات
+    // إعداد الحالة الأولية للعدادات (كلها تبدأ من صفر)
     const initialCounts = {};
     currentAzkar.forEach(zikr => {
-      initialCounts[zikr.id] = zikr.count;
+      initialCounts[zikr.id] = 0;
     });
-    setCounts(initialCounts);
+    setCurrentCounts(initialCounts);
   }, [categoryId]);
 
+  // 👇 تحديث منطق الضغط على العداد 👇
   const handleCounterClick = (zikrId) => {
-    setCounts(prevCounts => {
-      const newCount = prevCounts[zikrId] > 0 ? prevCounts[zikrId] - 1 : 0;
-      // يمكنك إضافة اهتزاز هنا إذا أردت
-      if (newCount === 0) {
-        // navigator.vibrate(100); // اهتزاز خفيف عند الانتهاء
+    setCurrentCounts(prevCounts => {
+      const newCount = prevCounts[zikrId] + 1;
+      const requiredCount = azkarList.find(z => z.id === zikrId).count;
+
+      // اهتزاز خفيف عند الوصول للعدد المطلوب
+      if (newCount === requiredCount) {
+        if (navigator.vibrate) {
+          navigator.vibrate(100);
+        }
       }
       return { ...prevCounts, [zikrId]: newCount };
     });
@@ -52,23 +58,29 @@ const AzkarDisplayPage = () => {
       </header>
 
       <div className="azkar-list">
-        {azkarList.map((zikr) => (
-          <div key={zikr.id} className={`zikr-card ${counts[zikr.id] === 0 ? 'completed' : ''}`}>
-            <div className="zikr-content">
-              <p className="zikr-text">{zikr.content}</p>
-              {zikr.description && <p className="zikr-description">{zikr.description}</p>}
+        {azkarList.map((zikr) => {
+          const currentCount = currentCounts[zikr.id] || 0;
+          const isCompleted = currentCount >= zikr.count;
+
+          return (
+            <div key={zikr.id} className={`zikr-card ${isCompleted ? 'completed' : ''}`}>
+              <div className="zikr-content">
+                <p className="zikr-text">{zikr.content}</p>
+                {zikr.description && <p className="zikr-description">{zikr.description}</p>}
+              </div>
+              <div className="zikr-counter-section">
+                <button 
+                  className="counter-button"
+                  onClick={() => handleCounterClick(zikr.id)}
+                >
+                  <span className="counter-number">{currentCount}</span>
+                </button>
+                {/* 👇 عرض العدد المطلوب كمرجع 👇 */}
+                <div className="counter-label">المطلوب: {zikr.count}</div>
+              </div>
             </div>
-            <div className="zikr-counter-section">
-              <button 
-                className="counter-button"
-                onClick={() => handleCounterClick(zikr.id)}
-              >
-                <span className="counter-number">{counts[zikr.id]}</span>
-              </button>
-              <div className="counter-label">مرات التكرار</div>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
