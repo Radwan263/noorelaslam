@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // <-- أعدنا تفعيل axios
+import axios from 'axios';
 import './HadithListPage.css';
 import hadithFrame from '../assets/hadith-frame.png';
-
-// المفتاح التجريبي العام (لحل مشكلة الحظر)
-const API_KEY = "key=YOUR_API_KEY_HERE"; // هذا مثال، الـ API حاليًا لا يتطلب مفتاحًا إلزاميًا للطلبات الأساسية، لكن من الجيد إبقاؤه للمستقبل.
 
 const HadithListPage = () => {
   const { collectionName } = useParams();
@@ -21,22 +18,20 @@ const HadithListPage = () => {
         setLoading(true);
         setError(null);
         
-        // جلب الأحاديث الحقيقية من الكتاب المحدد (أول 25 حديثًا)
         const response = await axios.get(`https://api.sunnah.com/v1/collections/${collectionName}/hadiths?limit=25&page=1`);
         
-        if (response.data && response.data.data) {
+        if (response.data && response.data.data.length > 0) {
           setHadiths(response.data.data);
         } else {
           throw new Error('لم يتم العثور على أحاديث لهذا الكتاب.');
         }
 
-        // جلب معلومات الكتاب (مثل العنوان العربي)
         const collectionInfo = await axios.get(`https://api.sunnah.com/v1/collections/${collectionName}`);
         setCollectionTitle(collectionInfo.data.data.title);
 
       } catch (err) {
         console.error("Error fetching hadiths:", err);
-        setError('حدث خطأ أثناء تحميل الأحاديث. قد يكون الكتاب غير متوفر أو هناك مشكلة في الشبكة.');
+        setError('حدث خطأ أثناء تحميل الأحاديث. قد يكون الكتاب غير متوفر أو هناك مشكلة في الشبكة. يرجى المحاولة مرة أخرى.');
       } finally {
         setLoading(false);
       }
@@ -58,14 +53,25 @@ const HadithListPage = () => {
     }
   };
 
+  // عرض رسالة التحميل
   if (loading) {
     return <div className="loading-message">جاري تحميل الأحاديث...</div>;
   }
 
+  // 👇 عرض رسالة الخطأ بشكل محسن 👇
   if (error) {
-    return <div className="error-message">{error}</div>;
+    return (
+      <div className="hadith-list-container error-container">
+        <h2 className="error-title">حدث خطأ</h2>
+        <p className="error-text">{error}</p>
+        <button onClick={() => navigate('/hadith')} className="back-to-collections-btn">
+          العودة إلى قائمة الكتب
+        </button>
+      </div>
+    );
   }
 
+  // عرض الأحاديث عند النجاح
   return (
     <div className="hadith-list-container">
       <header className="hadith-list-header">
