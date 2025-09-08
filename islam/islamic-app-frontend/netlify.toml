@@ -5,8 +5,16 @@
   command = "pnpm run build"
   publish = "dist"
 
-# قواعد إعادة التوجيه (البروكسي)
+# --- قواعد إعادة التوجيه (البروكسي) ---
+
+# القاعدة الأولى: خاصة بالقرآن والقرآءات
 [[redirects]]
-  from = "/api/*"  # أي طلب يستقبله الموقع ويبدأ بـ /api...
-  to = "https://radwan2633.pythonanywhere.com/:splat" # ...حوله إلى نفس المسار على الباك إند
-  status = 200 # يعني "نجح"، هذا يحوله إلى بروكسي بدلاً من إعادة توجيه عادية
+  from = "/quran-api/*"  # أي طلب يبدأ بـ /quran-api/...
+  to = "https://api.quranpedia.net/v1/:splat" # ...حوله إلى API القرآءات
+  status = 200
+
+# القاعدة الثانية: خاصة بالباك إند القديم (للأحاديث)
+[[redirects]]
+  from = "/api/*"
+  to = "https://radwan2633.pythonanywhere.com/:splat"
+  status = 200
