@@ -16,11 +16,29 @@
 
 .azkar-display-header h1 {
   font-size: 3rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem; /* زيادة المسافة */
 }
 
-.azkar-display-header p {
-  font-size: 1.2rem;
+/* 👇 تنسيقات شريط التقدم 👇 */
+.progress-bar-container {
+  width: 80%;
+  max-width: 400px;
+  height: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  margin: 0 auto 0.5rem auto;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #00bfa5;
+  border-radius: 5px;
+  transition: width 0.5s ease-in-out;
+}
+
+.progress-text {
+  font-size: 1rem;
   color: #ccc;
   margin-bottom: 1.5rem;
 }
@@ -74,7 +92,7 @@
   font-size: 1.6rem;
   line-height: 2;
   margin: 0;
-  white-space: pre-wrap; /* للحفاظ على فواصل الأسطر في سورة الإخلاص والمعوذتين */
+  white-space: pre-wrap;
 }
 
 .zikr-description {
@@ -90,6 +108,32 @@
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
+  position: relative; /* مهم لوضع زر إعادة الضبط */
+}
+
+/* 👇 تنسيقات زر إعادة الضبط 👇 */
+.reset-button {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #c62828; /* لون أحمر */
+  color: white;
+  border: 2px solid #ef9a9a;
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+  z-index: 10;
+}
+
+.reset-button:hover {
+  transform: scale(1.1) rotate(360deg);
 }
 
 .counter-button {
@@ -118,7 +162,7 @@
 }
 
 .counter-label {
-  font-size: 0.9rem; /* تم تكبير الخط قليلاً */
-  color: #e0e0e0; /* تم تفتيح اللون قليلاً */
+  font-size: 0.9rem;
+  color: #e0e0e0;
   font-weight: bold;
 }
