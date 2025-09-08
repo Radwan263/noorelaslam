@@ -91,3 +91,21 @@
   font-size: 1.1rem;
   font-family: 'Amiri', serif;
 }
+
+/* 👇 الجزء المضاف لتنسيق مؤشر التحميل 👇 */
+.image-loading-spinner {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #00bfa5;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 5;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
