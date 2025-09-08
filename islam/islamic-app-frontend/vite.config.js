@@ -1,14 +1,17 @@
+// vite.config.js
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import path from 'path'
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(),tailwindcss()],
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
+  plugins: [react()],
+  server: {
+    proxy: {
+      // أي طلب يبدأ بـ /api سيتم تحويله إلى الباك إند
+      '/api': {
+        target: 'https://radwan2633.pythonanywhere.com', // رابط الباك إند الخاص بك
+        changeOrigin: true, // ضروري للتحويل الصحيح
+        rewrite: (path) => path.replace(/^\/api/, ''), // إزالة /api من بداية الطلب قبل إرساله
+      },
     },
   },
 })
