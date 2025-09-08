@@ -1,68 +1,66 @@
-/* src/components/SurahPage.css - بناء جديد وبسيط */
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import './SurahPage.css'; // استيراد ملف CSS العادي
 
-.surah-display-container {
-  color: white;
-  padding: 2rem 1rem;
-  max-width: 800px;
-  margin: 0 auto;
-  font-family: 'Amiri', serif;
-}
+const SurahPage = () => {
+  const { surahNumber } = useParams();
+  const navigate = useNavigate();
+  const [surah, setSurah] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-.surah-header {
-  text-align: center;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid #00796b;
-  padding-bottom: 1rem;
-}
+  useEffect(() => {
+    const fetchSurah = async () => {
+      try {
+        setLoading(true);
+        // استخدام الرابط الموثوق لجلب السورة
+        const response = await axios.get(`https://api.alquran.cloud/v1/surah/${surahNumber}`);
+        setSurah(response.data.data);
+        setError(null);
+      } catch (err) {
+        setError('حدث خطأ أثناء تحميل بيانات السورة. يرجى المحاولة مرة أخرى.');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-.surah-header h1 {
-  font-size: 3rem;
-  margin: 0;
-}
+    fetchSurah();
+  }, [surahNumber]);
 
-.surah-header p {
-  font-size: 1.2rem;
-  color: #ccc;
-  margin: 0.5rem 0 0 0;
-}
+  if (loading) {
+    return <div className="loading-message">جاري تحميل السورة...</div>;
+  }
 
-.ayah-container {
-  background-color: rgba(0, 0, 0, 0.2);
-  border: 1px solid #004d40;
-  border-radius: 10px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem; /* 👇 هذا هو الفاصل بين الآيات 👇 */
-}
+  if (error) {
+    return <div className="error-message">{error}</div>;
+  }
 
-.ayah-text {
-  font-size: 1.8rem;
-  line-height: 2.5; /* زيادة المسافة بين السطور لتسهيل القراءة */
-  text-align: right;
-}
+  return (
+    <div className="surah-display-container">
+      <header className="surah-header">
+        <h1>{surah.name}</h1>
+        <p>
+          {surah.revelationType === 'Meccan' ? 'مكية' : 'مدنية'} - {surah.numberOfAyahs} آية
+        </p>
+      </header>
 
-.ayah-number {
-  color: #00bfa5;
-  font-size: 1.2rem;
-  margin-left: 0.5rem;
-}
+      {/* عرض كل آية في حاوية منفصلة */}
+      {surah.ayahs.map((ayah) => (
+        <div key={ayah.number} className="ayah-container">
+          <p className="ayah-text">
+            {ayah.text}
+            <span className="ayah-number">({ayah.numberInSurah})</span>
+          </p>
+        </div>
+      ))}
 
-.loading-message, .error-message {
-  color: white;
-  text-align: center;
-  font-size: 1.5rem;
-  padding: 5rem 0;
-}
+      <button onClick={() => navigate('/quran')} className="back-button-surah">
+        العودة إلى الفهرس
+      </button>
+    </div>
+  );
+};
 
-.back-button-surah {
-  display: block;
-  width: fit-content;
-  margin: 2rem auto 0 auto;
-  background-color: #00796b;
-  color: white;
-  border: none;
-  padding: 0.7rem 2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  font-family: 'Amiri', serif;
-}
+export default SurahPage;
