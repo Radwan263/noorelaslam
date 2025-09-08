@@ -11,19 +11,17 @@ const SurahPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // --- حالات جديدة لإدارة القرآءات ---
-  const [mushafs, setMushafs] = useState([]); // قائمة المصاحف (القرآءات)
-  const [selectedMushaf, setSelectedMushaf] = useState(null); // المصحف المختار
+  const [mushafs, setMushafs] = useState([]);
+  const [selectedMushaf, setSelectedMushaf] = useState(null);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-  // 1. جلب قائمة المصاحف (القرآءات) عند تحميل المكون لأول مرة
   useEffect(() => {
     const fetchMushafs = async () => {
       try {
-        const response = await axios.get('https://api.quranpedia.net/v1/mushafs');
+        // 👇 --- التعديل الأول: استخدام الرابط المحلي --- 👇
+        const response = await axios.get('/api/mushafs'); 
         const availableMushafs = response.data.data;
         setMushafs(availableMushafs);
-        // تعيين القراءة الافتراضية (حفص عن عاصم)
         const defaultMushaf = availableMushafs.find(m => m.name.includes('حفص'));
         setSelectedMushaf(defaultMushaf || availableMushafs[0]);
       } catch (err) {
@@ -34,21 +32,21 @@ const SurahPage = () => {
     fetchMushafs();
   }, []);
 
-  // 2. جلب بيانات السورة كلما تغير رقم السورة أو المصحف المختار
   useEffect(() => {
-    if (!selectedMushaf) return; // لا تفعل شيئًا إذا لم يتم اختيار مصحف بعد
+    if (!selectedMushaf) return;
 
     const fetchSurahData = async () => {
       setLoading(true);
       try {
-        const url = `https://api.quranpedia.net/v1/surahs/${surahNumber}?mushaf=${selectedMushaf.id}`;
+        // 👇 --- التعديل الثاني: استخدام الرابط المحلي --- 👇
+        const url = `/api/surahs/${surahNumber}?mushaf=${selectedMushaf.id}`;
         const response = await axios.get(url);
         setSurahData(response.data.data);
         setError(null);
       } catch (err) {
         console.error("Failed to fetch surah data", err);
         setError('حدث خطأ أثناء تحميل بيانات السورة. قد تكون هذه السورة غير متوفرة في هذه القراءة.');
-        setSurahData(null); // مسح البيانات القديمة عند حدوث خطأ
+        setSurahData(null);
       } finally {
         setLoading(false);
       }
@@ -69,7 +67,6 @@ const SurahPage = () => {
   return (
     <div className="surah-display-container">
       <header className="surah-header">
-        {/* سيتم عرض اسم السورة من البيانات التي تم جلبها */}
         <h1>{surahData ? surahData.name : 'جاري التحميل...'}</h1>
         
         <div className="qiraah-selector">
