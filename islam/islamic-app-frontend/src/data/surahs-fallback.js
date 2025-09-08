@@ -1,3 +1,4 @@
+export const fallbackSurahs =
 [
   {
     "number": 1,
