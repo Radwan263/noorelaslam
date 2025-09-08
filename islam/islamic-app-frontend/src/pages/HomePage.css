@@ -1,76 +1,98 @@
 /* src/pages/HomePage.css */
+
 .homepage-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  min-height: 100vh;
   padding: 2rem;
-  text-align: center;
-  color: #333;
+  box-sizing: border-box;
 }
 
+/* === قسم العنوان والشعار === */
 .title-section {
-  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2.5rem;
+  text-align: center;
 }
 
-/* === بداية التعديل الجديد === */
-.welcome-message {
+.logo-image {
+  width: 130px;
+  height: 130px;
   margin-bottom: 1rem;
+  object-fit: contain; /* للحفاظ على أبعاد الشعار */
 }
 
 .welcome-message p {
-  font-size: 1.5rem;
-  color: #555;
+  color: #d1d5db; /* gray-300 */
+  font-size: 1.25rem; /* text-xl */
 }
 
 .main-title {
-  font-size: 3.5rem; /* تم تكبير الخط قليلاً */
+  color: white;
+  font-size: 3.75rem; /* text-6xl */
   font-weight: bold;
-  color: #0d7377;
+  font-family: 'Amiri', serif;
   margin: 0.5rem 0;
 }
 
 .project-name {
-  font-family: monospace;
-  font-size: 1.2rem;
-  color: #aaa;
-  letter-spacing: 2px;
+  color: #9ca3af; /* gray-400 */
+  font-size: 1.125rem; /* text-lg */
+  letter-spacing: 3px;
+  text-transform: uppercase;
 }
-/* === نهاية التعديل الجديد === */
 
+
+/* === شبكة الأزرار === */
 .buttons-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(2, 1fr); /* عمودان على الشاشات الصغيرة */
   gap: 1.5rem;
   width: 100%;
-  max-width: 800px;
+  max-width: 600px;
+}
+
+/* تعديل ليصبح 3 أعمدة على الشاشات الأكبر */
+@media (min-width: 640px) {
+  .buttons-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .icon-button {
-  background-color: #ffffff;
-  border-radius: 1rem;
-  padding: 1.5rem;
-  text-decoration: none;
-  color: #333;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 1.5rem 1rem;
+  border-radius: 0.75rem; /* زوايا دائرية */
+  text-decoration: none;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1); /* خلفية شبه شفافة */
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px); /* تأثير زجاجي */
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .icon-button:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-  color: #14a098;
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-5px); /* تأثير الرفع عند المرور */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .button-icon {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+  font-size: 2.5rem; /* حجم الأيقونة */
+  margin-bottom: 0.75rem;
+  color: #5eead4; /* لون تركواز فاتح للأيقونات */
 }
 
 .button-text {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
+  text-align: center;
 }
