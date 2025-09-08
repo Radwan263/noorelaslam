@@ -1,29 +1,24 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // 👇 استيراد Link
 import './HomePage.css';
 
 // --- المكونات المنبثقة (Pop-ups) ---
 
 const SideMenu = ({ isOpen, onClose }) => {
-  const navigate = useNavigate(); // استدعاء useNavigate هنا
+  // لا حاجة لـ useNavigate هنا بعد الآن
   if (!isOpen) return null;
 
-  // 👇 دالة جديدة للتعامل مع التنقل وإغلاق القائمة 👇
-  const handleNavigate = (path) => {
-    navigate(path); // أولاً، انتقل إلى الصفحة المطلوبة
-    onClose();      // ثانيًا، أغلق القائمة الجانبية
-  };
-
   return (
-    <div className="side-menu-overlay" onClick={onClose}>
-      <div className="side-menu" onClick={(e) => e.stopPropagation()}>
+    // 👇 الهيكل الجديد: طبقة شفافة منفصلة عن القائمة الفعلية 👇
+    <>
+      <div className="side-menu-overlay" onClick={onClose}></div>
+      <div className={`side-menu ${isOpen ? 'open' : ''}`}>
         <h3>القائمة الرئيسية</h3>
-        {/* 👇 استخدام الدالة الجديدة عند النقر 👇 */}
-        <a onClick={() => handleNavigate('/login')}>تسجيل الدخول</a>
-        <a onClick={() => handleNavigate('/register')}>إنشاء حساب</a>
-        {/* يمكن إضافة روابط أخرى هنا مستقبلاً */}
+        {/* 👇 استخدام مكون Link للتنقل الصحيح في React Router 👇 */}
+        <Link to="/login" onClick={onClose}>تسجيل الدخول</Link>
+        <Link to="/register" onClick={onClose}>إنشاء حساب</Link>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -40,7 +35,7 @@ const SearchModal = ({ isOpen, onClose }) => {
   );
 };
 
-// --- مكون مواقيت الصلاة ---
+// --- باقي المكونات تبقى كما هي ---
 
 const PrayerTimesWidget = () => {
   return (
@@ -50,9 +45,6 @@ const PrayerTimesWidget = () => {
     </div>
   );
 };
-
-
-// --- المكون الرئيسي للصفحة (لا تغيير هنا) ---
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -80,31 +72,26 @@ const HomePage = () => {
           <h2 className="menu-item-title">القرآن الكريم</h2>
           <p className="menu-item-description">تصفح وقراءة السور القرآنية</p>
         </div>
-
         <div className="menu-item" onClick={() => navigate('/hadith')}>
           <div className="menu-item-icon">📜</div>
           <h2 className="menu-item-title">الأحاديث النبوية</h2>
           <p className="menu-item-description">تصفح كتب الحديث الشريف</p>
         </div>
-
         <div className="menu-item" onClick={() => navigate('/azkar')}>
           <div className="menu-item-icon">🤲</div>
           <h2 className="menu-item-title">الأذكار</h2>
           <p className="menu-item-description">حصن المسلم اليومي</p>
         </div>
-
         <div className="menu-item" onClick={() => navigate('/duas')}>
           <div className="menu-item-icon">🙌</div>
           <h2 className="menu-item-title">أدعية وفضلها</h2>
           <p className="menu-item-description">أدعية من القرآن والسنة</p>
         </div>
-
         <div className="menu-item" onClick={() => navigate('/asma-ul-husna')}>
           <div className="menu-item-icon">✨</div>
           <h2 className="menu-item-title">أسماء الله الحسنى</h2>
           <p className="menu-item-description">تعرف على أسماء الله وصفاته</p>
         </div>
-
         <div className="menu-item" onClick={() => navigate('/sadaqa-jariya')}>
           <div className="menu-item-icon">❤️</div>
           <h2 className="menu-item-title">صدقة جارية</h2>
