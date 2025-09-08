@@ -1,0 +1,18 @@
+/* src/index.css */
+
+body {
+  /* 1. تحديد صورة الخلفية */
+  background-image: url('./assets/islamic-bg.jpg');
+
+  /* 2. جعل الخلفية تغطي الشاشة بالكامل */
+  background-size: cover;
+
+  /* 3. تثبيت الخلفية في مكانها عند التمرير (스크롤) */
+  background-attachment: fixed;
+
+  /* 4. توسيط الخلفية */
+  background-position: center;
+
+  /* 5. منع تكرار الخلفية إذا كانت أصغر من الشاشة */
+  background-repeat: no-repeat;
+}
