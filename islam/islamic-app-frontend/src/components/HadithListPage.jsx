@@ -4,9 +4,8 @@ import axios from 'axios';
 import './HadithListPage.css';
 import hadithFrame from '../assets/hadith-frame.png';
 
-// 👇 إضافة الخادم الوسيط لحل مشكلة CORS 👇
-const proxy = 'https://cors-anywhere.herokuapp.com/';
-const sunnahApiBase = 'https://api.sunnah.com/v1/';
+// 👇 استخدام المفتاح الجديد الذي أرسلته 👇
+const API_KEY = '$2y$10$j9TF4fe9MlxPEjALlbdAejnbeglMcqfVvFIMjvjT0wY5yppisvJq';
 
 const HadithListPage = () => {
   const { collectionName } = useParams();
@@ -22,8 +21,15 @@ const HadithListPage = () => {
         setLoading(true);
         setError(null);
         
-        // 👇 استخدام الخادم الوسيط في الرابط 👇
-        const response = await axios.get(`${proxy}${sunnahApiBase}collections/${collectionName}/hadiths?limit=25&page=1`);
+        // 👇 إضافة المفتاح إلى رأس الطلب (Header) كما تتطلب معظم الـ APIs 👇
+        const config = {
+          headers: {
+            'X-API-Key': API_KEY 
+          }
+        };
+
+        // جلب الأحاديث
+        const response = await axios.get(`https://api.sunnah.com/v1/collections/${collectionName}/hadiths?limit=25&page=1`, config);
         
         if (response.data && response.data.data.length > 0) {
           setHadiths(response.data.data);
@@ -31,13 +37,18 @@ const HadithListPage = () => {
           throw new Error('لم يتم العثور على أحاديث لهذا الكتاب.');
         }
 
-        // 👇 استخدام الخادم الوسيط في الرابط الثاني أيضًا 👇
-        const collectionInfo = await axios.get(`${proxy}${sunnahApiBase}collections/${collectionName}`);
+        // جلب معلومات الكتاب
+        const collectionInfo = await axios.get(`https://api.sunnah.com/v1/collections/${collectionName}`, config);
         setCollectionTitle(collectionInfo.data.data.title);
 
       } catch (err) {
         console.error("Error fetching hadiths:", err);
-        setError('حدث خطأ أثناء تحميل الأحاديث. قد يكون الكتاب غير متوفر أو هناك مشكلة في الشبكة. يرجى المحاولة مرة أخرى.');
+        // التحقق من نوع الخطأ
+        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+          setError('حدث خطأ في المصادقة. مفتاح الـ API قد يكون غير صحيح أو منتهي الصلاحية.');
+        } else {
+          setError('حدث خطأ أثناء تحميل الأحاديث. قد يكون الكتاب غير متوفر أو هناك مشكلة في الشبكة.');
+        }
       } finally {
         setLoading(false);
       }
@@ -46,6 +57,7 @@ const HadithListPage = () => {
     fetchHadiths();
   }, [collectionName]);
 
+  // ... باقي الكود يبقى كما هو ...
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     alert('تم نسخ الحديث!');
