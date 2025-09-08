@@ -1,42 +1,39 @@
-// src/pages/HomePage.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaQuran, FaBookOpen, FaPrayingHands, FaHandHoldingHeart, FaUser, FaCommentDots, FaMoon } from 'react-icons/fa';
-import './HomePage.css';
-import logo from '../assets/logo.png'; // استيراد الشعار
-
-const menuItems = [
-  { to: "/quran", icon: <FaQuran />, text: "القرآن الكريم" },
-  { to: "/tafsir", icon: <FaBookOpen />, text: "تفسير القرآن" },
-  { to: "/hadith", icon: <FaCommentDots />, text: "الأحاديث" },
-  { to: "/azkar", icon: <FaMoon />, text: "الأذكار" },
-  { to: "/dua", icon: <FaPrayingHands />, text: "الأدعية" },
-  { to: "/charity", icon: <FaHandHoldingHeart />, text: "صدقة جارية" },
-  { to: "/developer", icon: <FaUser />, text: "عن المطور" },
-];
+import { useNavigate } from 'react-router-dom';
+import './HomePage.css'; // سنقوم بإنشاء هذا الملف إذا لم يكن موجودًا
 
 const HomePage = () => {
+  const navigate = useNavigate();
+
   return (
-    <div className="homepage-container">
-      <div className="title-section">
-        {/* إضافة الشعار هنا */}
-        <img src={logo} alt="شعار نور الإسلام" className="logo-image" />
-
-        <div className="welcome-message">
-          <p>مرحبا بك في</p>
-          <h1 className="main-title">نور الإسلام</h1>
-          <p className="project-name">noorelaslam</p>
+    <div className="home-container">
+      <header className="home-header">
+        <h1 className="home-title">تطبيق إسلامي</h1>
+        <p className="home-subtitle">وجهتك الإيمانية المتكاملة</p>
+      </header>
+      <main className="menu-container">
+        <div className="menu-item" onClick={() => navigate('/quran')}>
+          <div className="menu-item-icon">📖</div>
+          <h2 className="menu-item-title">القرآن الكريم</h2>
+          <p className="menu-item-description">تصفح وقراءة السور القرآنية</p>
         </div>
-      </div>
 
-      <nav className="buttons-grid">
-        {menuItems.map((item) => (
-          <Link key={item.to} to={item.to} className="icon-button">
-            <div className="button-icon">{item.icon}</div>
-            <span className="button-text">{item.text}</span>
-          </Link>
-        ))}
-      </nav>
+        {/* 👇 البطاقة الجديدة التي تمت إضافتها 👇 */}
+        <div className="menu-item" onClick={() => navigate('/hadith')}>
+          <div className="menu-item-icon">📜</div>
+          <h2 className="menu-item-title">الأحاديث النبوية</h2>
+          <p className="menu-item-description">تصفح كتب الحديث الشريف</p>
+        </div>
+
+        {/* يمكنك إضافة المزيد من البطاقات هنا مستقبلاً */}
+        {/*
+        <div className="menu-item" onClick={() => navigate('/prayer-times')}>
+          <div className="menu-item-icon">🕌</div>
+          <h2 className="menu-item-title">مواقيت الصلاة</h2>
+          <p className="menu-item-description">اعرف أوقات الصلاة لمدينتك</p>
+        </div>
+        */}
+      </main>
     </div>
   );
 };
