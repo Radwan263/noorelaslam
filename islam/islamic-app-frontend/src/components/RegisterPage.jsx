@@ -1,4 +1,4 @@
-hereimport React from 'react';
+import React from 'react';
 import './AuthPage.css';
 
 const RegisterPage = () => {
@@ -15,4 +15,5 @@ const RegisterPage = () => {
     </div>
   );
 };
+
 export default RegisterPage;
