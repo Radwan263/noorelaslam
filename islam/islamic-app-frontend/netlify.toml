@@ -1,0 +1,12 @@
+# netlify.toml
+
+# إعدادات البناء الأساسية
+[build]
+  command = "pnpm run build"
+  publish = "dist"
+
+# قواعد إعادة التوجيه (البروكسي)
+[[redirects]]
+  from = "/api/*"  # أي طلب يستقبله الموقع ويبدأ بـ /api...
+  to = "https://radwan2633.pythonanywhere.com/:splat" # ...حوله إلى نفس المسار على الباك إند
+  status = 200 # يعني "نجح"، هذا يحوله إلى بروكسي بدلاً من إعادة توجيه عادية
