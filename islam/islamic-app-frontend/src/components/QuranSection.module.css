@@ -1,39 +1,87 @@
-/* src/components/QuranSection.module.css */
-.quranSectionContainer {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  color: white;
+/* QuranSection.module.css */
+
+.quranContainer {
+  padding: 20px;
+  background-color: #f4f7f9;
+  min-height: 100vh;
+  font-family: 'Cairo', sans-serif;
 }
-.quranTitleHeader { text-align: center; margin-bottom: 2.5rem; }
-.quranMainTitle { font-family: 'Amiri', serif; font-size: 3.5rem; font-weight: bold; }
-.quranSubtitle { font-size: 1.2rem; color: #ccc; }
-.loadingMessage { text-align: center; font-size: 1.5rem; padding: 4rem 0; color: white; }
-.surahList { display: flex; flex-direction: column; gap: 1rem; }
+
+.title {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
+}
+
+.surahGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
 .surahCard {
-  background-color: rgba(0, 121, 107, 0.3);
-  border: 1px solid #00796B;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out, background-color 0.2s;
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 15px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-right: 5px solid #28a745; /* شريط أخضر جميل على اليمين */
 }
-.surahCard:hover { transform: scale(1.03); background-color: rgba(0, 121, 107, 0.5); }
-.surahInfo { display: flex; align-items: center; gap: 1.5rem; }
+
+.surahCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.15);
+}
+
 .surahNumber {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+  font-weight: bold;
+  font-size: 1.2rem;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
-  font-weight: bold;
+  margin-left: 15px; /* مسافة لليسار */
 }
-.surahName { font-size: 1.8rem; font-weight: 600; font-family: 'Amiri', serif; }
-.surahDetails { font-size: 1rem; color: #ddd; }
+
+.surahInfo {
+  flex-grow: 1;
+  text-align: right;
+}
+
+.surahNameArabic {
+  font-family: 'Amiri', serif;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #34495e;
+  margin: 0;
+}
+
+.surahNameEnglish {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin: 5px 0 0;
+}
+    
+.revelationType {
+  background-color: #ecf0f1;
+  color: #7f8c8d;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+}
+
+.statusMessage {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+  padding: 50px;
+}
