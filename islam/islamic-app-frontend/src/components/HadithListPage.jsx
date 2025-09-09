@@ -1,9 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // سنظل نستخدمه لأنه أفضل طريقة لجلب الملفات المحلية في Vite
+// 👇 التغيير هنا: سنستورد الملفات مباشرة
+// import axios from 'axios'; // لم نعد بحاجة إليه
 import styles from './HadithListPage.module.css';
 
 const HADITHS_PER_PAGE = 20;
+
+// 👇 استيراد مباشر للملفات من مجلد src/data
+import bukhariData from '../../data/ara-bukhari.json';
+import muslimData from '../../data/ara-muslim.json';
+import nasaiData from '../../data/ara-nasai.json';
+import abudawudData from '../../data/ara-abudawud.json';
+import tirmidhiData from '../../data/ara-tirmidhi.json';
+import ibnmajahData from '../../data/ara-ibnmajah.json';
+import malikData from '../../data/ara-malik.json';
+
 
 const HadithListPage = () => {
   const { collectionName } = useParams();
@@ -17,17 +28,23 @@ const HadithListPage = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
+  // 👇 تحديث الخريطة لتستخدم البيانات المستوردة مباشرة
   const collectionMap = {
-    'bukhari': { filePath: '/data/bukhari.json', title: 'صحيح البخاري' },
-    // يمكنك إضافة باقي الكتب هنا بنفس الطريقة في المستقبل
-    // 'muslim': { filePath: '/data/muslim.json', title: 'صحيح مسلم' },
+    'bukhari': { data: bukhariData, title: 'صحيح البخاري' },
+    'muslim': { data: muslimData, title: 'صحيح مسلم' },
+    'nasai': { data: nasaiData, title: 'سنن النسائي' },
+    'abudawud': { data: abudawudData, title: 'سنن أبي داود' },
+    'tirmidhi': { data: tirmidhiData, title: 'جامع الترمذي' },
+    'ibnmajah': { data: ibnmajahData, title: 'سنن ابن ماجه' },
+    'malik': { data: malikData, title: 'موطأ مالك' },
   };
 
   useEffect(() => {
-    const fetchLocalHadiths = async () => {
+    // أصبح الكود أبسط بكثير الآن
+    const loadLocalHadiths = () => {
       const collectionInfo = collectionMap[collectionName];
-      if (!collectionInfo) {
-        setError('الكتاب المطلوب غير متوفر محليًا.');
+      if (!collectionInfo || !collectionInfo.data) {
+        setError('الكتاب المطلوب غير متوفر.');
         setLoading(false);
         return;
       }
@@ -36,29 +53,18 @@ const HadithListPage = () => {
       setLoading(true);
       setError(null);
 
-      try {
-        // 👇 التغيير الجوهري: نقرأ الآن من الملف المحلي مباشرة 👇
-        const response = await axios.get(collectionInfo.filePath);
-        
-        if (response.data && response.data.hadiths) {
-          setAllHadiths(response.data.hadiths);
-          setDisplayedHadiths(response.data.hadiths.slice(0, HADITHS_PER_PAGE));
-          setHasMore(response.data.hadiths.length > HADITHS_PER_PAGE);
-        } else {
-          throw new Error('الملف المحلي للأحاديث فارغ أو تالف.');
-        }
-      } catch (err) {
-        console.error("Error fetching local hadiths:", err);
-        setError('حدث خطأ أثناء قراءة ملف الأحاديث المحلي.');
-      } finally {
-        setLoading(false);
-      }
+      const hadiths = collectionInfo.data.hadiths;
+      setAllHadiths(hadiths);
+      setDisplayedHadiths(hadiths.slice(0, HADITHS_PER_PAGE));
+      setHasMore(hadiths.length > HADITHS_PER_PAGE);
+      
+      setLoading(false);
     };
 
-    fetchLocalHadiths();
+    loadLocalHadiths();
   }, [collectionName]);
 
-  // دالة تحميل المزيد تبقى كما هي تمامًا، لا تحتاج لأي تغيير
+  // دالة تحميل المزيد تبقى كما هي تمامًا
   const loadMoreHadiths = useCallback(() => {
     if (loading || !hasMore) return;
     const nextPage = page + 1;
