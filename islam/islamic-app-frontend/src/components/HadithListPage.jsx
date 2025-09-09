@@ -1,19 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-// 👇 التغيير هنا: سنستورد الملفات مباشرة
-// import axios from 'axios'; // لم نعد بحاجة إليه
 import styles from './HadithListPage.module.css';
 
 const HADITHS_PER_PAGE = 20;
 
-// 👇 استيراد مباشر للملفات من مجلد src/data
-import bukhariData from '../../data/ara-bukhari.json';
-import muslimData from '../../data/ara-muslim.json';
-import nasaiData from '../../data/ara-nasai.json';
-import abudawudData from '../../data/ara-abudawud.json';
-import tirmidhiData from '../../data/ara-tirmidhi.json';
-import ibnmajahData from '../../data/ara-ibnmajah.json';
-import malikData from '../../data/ara-malik.json';
+// 👇 تصحيح المسار هنا: ../ بدلاً من ../.. 👇
+import bukhariData from '../data/ara-bukhari.json';
+import muslimData from '../data/ara-muslim.json';
+import nasaiData from '../data/ara-nasai.json';
+import abudawudData from '../data/ara-abudawud.json';
+import tirmidhiData from '../data/ara-tirmidhi.json';
+import ibnmajahData from '../data/ara-ibnmajah.json';
+import malikData from '../data/ara-malik.json';
 
 
 const HadithListPage = () => {
@@ -28,7 +26,6 @@ const HadithListPage = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  // 👇 تحديث الخريطة لتستخدم البيانات المستوردة مباشرة
   const collectionMap = {
     'bukhari': { data: bukhariData, title: 'صحيح البخاري' },
     'muslim': { data: muslimData, title: 'صحيح مسلم' },
@@ -40,7 +37,6 @@ const HadithListPage = () => {
   };
 
   useEffect(() => {
-    // أصبح الكود أبسط بكثير الآن
     const loadLocalHadiths = () => {
       const collectionInfo = collectionMap[collectionName];
       if (!collectionInfo || !collectionInfo.data) {
@@ -64,7 +60,6 @@ const HadithListPage = () => {
     loadLocalHadiths();
   }, [collectionName]);
 
-  // دالة تحميل المزيد تبقى كما هي تمامًا
   const loadMoreHadiths = useCallback(() => {
     if (loading || !hasMore) return;
     const nextPage = page + 1;
@@ -79,7 +74,6 @@ const HadithListPage = () => {
     alert('تم نسخ الحديث!');
   };
 
-  // باقي الكود الخاص بالعرض (return) يبقى كما هو تمامًا
   if (loading && page === 1) {
     return <div className={styles.loadingMessage}>جاري تحميل الأحاديث...</div>;
   }
