@@ -1,32 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import styles from './HadithListPage.module.css'; // استخدام CSS Modules
+import axios from 'axios'; // سنظل نستخدمه لأنه أفضل طريقة لجلب الملفات المحلية في Vite
+import styles from './HadithListPage.module.css';
+
+const HADITHS_PER_PAGE = 20;
 
 const HadithListPage = () => {
   const { collectionName } = useParams();
   const navigate = useNavigate();
-  const [hadiths, setHadiths] = useState([]);
+  
+  const [allHadiths, setAllHadiths] = useState([]); 
+  const [displayedHadiths, setDisplayedHadiths] = useState([]);
   const [collectionTitle, setCollectionTitle] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-  // قاموس لترجمة أسماء الكتب إلى ما يفهمه الـ API الجديد
   const collectionMap = {
-    'bukhari': { apiName: 'bukhari', title: 'صحيح البخاري' },
-    'muslim': { apiName: 'muslim', title: 'صحيح مسلم' },
-    'nasai': { apiName: 'nasai', title: 'سنن النسائي' },
-    'abudawud': { apiName: 'abudawud', title: 'سنن أبي داود' },
-    'tirmidhi': { apiName: 'tirmidhi', title: 'جامع الترمذي' },
-    'ibnmajah': { apiName: 'ibnmajah', title: 'سنن ابن ماجه' },
-    'malik': { apiName: 'malik', title: 'موطأ مالك' },
+    'bukhari': { filePath: '/data/bukhari.json', title: 'صحيح البخاري' },
+    // يمكنك إضافة باقي الكتب هنا بنفس الطريقة في المستقبل
+    // 'muslim': { filePath: '/data/muslim.json', title: 'صحيح مسلم' },
   };
 
   useEffect(() => {
-    const fetchHadiths = async () => {
+    const fetchLocalHadiths = async () => {
       const collectionInfo = collectionMap[collectionName];
       if (!collectionInfo) {
-        setError('الكتاب المطلوب غير متوفر.');
+        setError('الكتاب المطلوب غير متوفر محليًا.');
         setLoading(false);
         return;
       }
@@ -36,32 +37,44 @@ const HadithListPage = () => {
       setError(null);
 
       try {
-        // استخدام الـ API الجديد، المفتوح والمجاني
-        const response = await axios.get(`https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-${collectionInfo.apiName}.json`);
+        // 👇 التغيير الجوهري: نقرأ الآن من الملف المحلي مباشرة 👇
+        const response = await axios.get(collectionInfo.filePath);
         
         if (response.data && response.data.hadiths) {
-          setHadiths(response.data.hadiths);
+          setAllHadiths(response.data.hadiths);
+          setDisplayedHadiths(response.data.hadiths.slice(0, HADITHS_PER_PAGE));
+          setHasMore(response.data.hadiths.length > HADITHS_PER_PAGE);
         } else {
-          throw new Error('لم يتم العثور على أحاديث لهذا الكتاب.');
+          throw new Error('الملف المحلي للأحاديث فارغ أو تالف.');
         }
-
       } catch (err) {
-        console.error("Error fetching hadiths:", err);
-        setError('حدث خطأ أثناء تحميل الأحاديث. يرجى المحاولة مرة أخرى.');
+        console.error("Error fetching local hadiths:", err);
+        setError('حدث خطأ أثناء قراءة ملف الأحاديث المحلي.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchHadiths();
+    fetchLocalHadiths();
   }, [collectionName]);
+
+  // دالة تحميل المزيد تبقى كما هي تمامًا، لا تحتاج لأي تغيير
+  const loadMoreHadiths = useCallback(() => {
+    if (loading || !hasMore) return;
+    const nextPage = page + 1;
+    const newHadiths = allHadiths.slice(0, nextPage * HADITHS_PER_PAGE);
+    setDisplayedHadiths(newHadiths);
+    setPage(nextPage);
+    setHasMore(newHadiths.length < allHadiths.length);
+  }, [page, loading, hasMore, allHadiths]);
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     alert('تم نسخ الحديث!');
   };
 
-  if (loading) {
+  // باقي الكود الخاص بالعرض (return) يبقى كما هو تمامًا
+  if (loading && page === 1) {
     return <div className={styles.loadingMessage}>جاري تحميل الأحاديث...</div>;
   }
 
@@ -87,7 +100,7 @@ const HadithListPage = () => {
       </header>
 
       <div className={styles.hadithsGrid}>
-        {hadiths.map(hadith => (
+        {displayedHadiths.map(hadith => (
           <div key={hadith.hadithnumber} className={styles.hadithCard}>
             <div className={styles.hadithContent}>
               <p className={styles.hadithNumber}>حديث رقم: {hadith.hadithnumber}</p>
@@ -99,6 +112,14 @@ const HadithListPage = () => {
           </div>
         ))}
       </div>
+
+      {hasMore && (
+        <div className={styles.loadMoreContainer}>
+          <button onClick={loadMoreHadiths} className={styles.loadMoreButton}>
+            تحميل المزيد من الأحاديث
+          </button>
+        </div>
+      )}
     </div>
   );
 };
