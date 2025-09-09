@@ -149,3 +149,18 @@
 .audioPlayer {
   width: 100%; /* لجعل المشغل يملأ العرض */
 }
+/* ... (الكود القديم موجود هنا) ... */
+
+/* === كود جديد لمؤشر الآية وتمييزها === */
+.currentAyahIndicator {
+  text-align: center;
+  color: #6c757d;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.ayahPlaying {
+  background-color: #d4edda; /* لون أخضر فاتح لتمييز الآية */
+  border-right: 4px solid #28a745;
+  transform: scale(1.02);
+}
