@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-// 👇 1. تغيير طريقة الاستيراد
 import styles from './SurahPage.module.css'; 
 
 const SurahPage = () => {
@@ -13,29 +12,38 @@ const SurahPage = () => {
 
   const currentSurahNum = parseInt(surahNumber, 10);
 
+  // 👇 *** هذا هو الجزء الذي سنقوم بتعديله *** 👇
   useEffect(() => {
+    // التأكد من أن رقم السورة صالح قبل أي شيء
     if (isNaN(currentSurahNum) || currentSurahNum < 1 || currentSurahNum > 114) {
       navigate('/quran'); 
       return;
     }
 
     const fetchSurah = async () => {
+      // 1. إعادة حالة التحميل إلى true في كل مرة نبدأ فيها طلبًا جديدًا
+      setLoading(true); 
+      setSurah(null); // اختياري: مسح البيانات القديمة فورًا
+      setError(null);
+
       try {
-        setLoading(true);
         const response = await axios.get(`https://api.alquran.cloud/v1/surah/${currentSurahNum}`);
         setSurah(response.data.data);
-        setError(null);
       } catch (err) {
         setError('حدث خطأ أثناء تحميل بيانات السورة. يرجى المحاولة مرة أخرى.');
         console.error(err);
       } finally {
+        // 2. إيقاف التحميل بعد انتهاء الطلب (سواء نجح أو فشل)
         setLoading(false);
       }
     };
 
     fetchSurah();
     window.scrollTo(0, 0); 
-  }, [currentSurahNum, navigate]);
+
+  // 👇 *** هذا هو التعديل الأهم *** 👇
+  // الآن useEffect سيعمل من جديد كلما تغير `currentSurahNum`
+  }, [currentSurahNum, navigate]); 
 
   const goToNextSurah = () => {
     if (currentSurahNum < 114) {
@@ -49,13 +57,17 @@ const SurahPage = () => {
     }
   };
 
-  // 👇 2. تغيير أسماء الكلاسات لتستخدم كائن styles
   if (loading) {
     return <div className={styles.loadingMessage}>جاري تحميل السورة...</div>;
   }
 
   if (error) {
     return <div className={styles.errorMessage}>{error}</div>;
+  }
+
+  // التأكد من وجود بيانات السورة قبل محاولة عرضها
+  if (!surah) {
+    return null; // أو عرض رسالة خطأ أخرى
   }
 
   return (
