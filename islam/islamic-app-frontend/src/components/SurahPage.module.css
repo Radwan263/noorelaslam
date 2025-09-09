@@ -1,59 +1,29 @@
 /* src/components/SurahPage.module.css */
-
-.surahDisplayContainer {
+.container {
   color: white;
   padding: 2rem 1rem;
   max-width: 800px;
   margin: 0 auto;
   font-family: 'Amiri', serif;
 }
-
-.surahHeader {
+.header {
   text-align: center;
   margin-bottom: 2rem;
   border-bottom: 2px solid #00796b;
   padding-bottom: 1rem;
 }
-
-.surahHeader h1 {
-  font-size: 3rem;
-  margin: 0;
-}
-
-.surahHeader p {
-  font-size: 1.2rem;
-  color: #ccc;
-  margin: 0.5rem 0 0 0;
-}
-
-.ayahContainer {
-  background-color: rgba(0, 0, 0, 0.2);
-  border: 1px solid #004d40;
-  border-radius: 10px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
+.header h1 { font-size: 3rem; margin: 0; }
+.header p { font-size: 1.2rem; color: #ccc; margin-top: 0.5rem; }
+.ayahsContainer { margin-top: 2rem; }
 .ayahText {
   font-size: 1.8rem;
   line-height: 2.5;
   text-align: right;
+  margin-bottom: 1.5rem;
 }
-
-.ayahNumber {
-  color: #00bfa5;
-  font-size: 1.2rem;
-  margin-left: 0.5rem;
-}
-
-.loadingMessage, .errorMessage {
-  color: white;
-  text-align: center;
-  font-size: 1.5rem;
-  padding: 5rem 0;
-}
-
-.surahNavigationToolbar {
+.ayahNumber { color: #00bfa5; font-size: 1.2rem; margin-left: 0.5rem; }
+.message { color: white; text-align: center; font-size: 1.5rem; padding: 5rem 0; }
+.footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -61,39 +31,19 @@
   padding: 1rem;
   background-color: rgba(0, 0, 0, 0.3);
   border-radius: 12px;
+  position: sticky;
+  bottom: 1rem;
 }
-
-.navArrowBtn {
-  background-color: transparent;
-  color: #00bfa5;
-  border: 2px solid #00796b;
+.footer button {
+  background-color: #00796b;
+  color: white;
+  border: none;
   padding: 0.7rem 1.5rem;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1.1rem;
   font-family: 'Amiri', serif;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s;
 }
-
-.navArrowBtn:hover:not(:disabled) {
-  background-color: #00796b;
-  color: white;
-}
-
-.navArrowBtn:disabled {
-  color: #555;
-  border-color: #444;
-  cursor: not-allowed;
-}
-
-.backButtonSurah {
-  margin: 0;
-  background-color: #00796b;
-  color: white;
-  border: none;
-  padding: 0.7rem 2rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1.1rem;
-  font-family: 'Amiri', serif;
-}
+.footer button:hover:not(:disabled) { background-color: #00bfa5; }
+.footer button:disabled { background-color: #444; color: #888; cursor: not-allowed; }
