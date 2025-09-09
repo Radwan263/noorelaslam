@@ -1,18 +1,38 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// استيراد مكون صفحة صدقة جارية فقط
-import SadaqaJariyaPage from './components/SadaqaJariyaPage';
+// استيراد الصفحات والمكونات
+import HomePage from './pages/HomePage';
+import QuranSection from './components/QuranSection';
+import SurahPage from './components/SurahPage';
+import HadithCollectionsPage from './components/HadithCollectionsPage';
+import HadithListPage from './components/HadithListPage';
+import AzkarCategoriesPage from './components/AzkarCategoriesPage';
+import AzkarDisplayPage from './components/AzkarDisplayPage';
+import DuasCategoriesPage from './components/DuasCategoriesPage';
+import DuasPage from './components/DuasPage';
+
+// === السطر الجديد الذي أضفناه ===
+import SadaqaJariyaPage from './components/SadaqaJariyaPage'; 
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* 
-          هذا الكود يجعل صفحة "صدقة جارية" هي الصفحة الرئيسية للتطبيق مؤقتًا.
-          عندما تفتح التطبيق، ستظهر هذه الصفحة مباشرة.
-        */}
-        <Route path="/" element={<SadaqaJariyaPage />} />
+        {/* المسارات القديمة */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/quran" element={<QuranSection />} />
+        <Route path="/surah/:surahNumber" element={<SurahPage />} />
+        <Route path="/hadith" element={<HadithCollectionsPage />} />
+        <Route path="/hadith/:collectionName" element={<HadithListPage />} />
+        <Route path="/azkar" element={<AzkarCategoriesPage />} />
+        <Route path="/azkar/:categoryId" element={<AzkarDisplayPage />} />
+        <Route path="/duas" element={<DuasCategoriesPage />} />
+        <Route path="/duas/:categoryId" element={<DuasPage />} />
+
+        {/* === المسار الجديد الذي أضفناه === */}
+        <Route path="/sadaqa-jariya" element={<SadaqaJariyaPage />} />
+
       </Routes>
     </Router>
   );
