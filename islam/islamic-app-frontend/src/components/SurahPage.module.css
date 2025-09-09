@@ -1,49 +1,73 @@
-/* src/components/SurahPage.module.css */
-.container {
-  color: white;
-  padding: 2rem 1rem;
+/* SurahPage.module.css */
+
+.surahPageContainer {
+  padding: 20px;
   max-width: 800px;
   margin: 0 auto;
-  font-family: 'Amiri', serif;
+  background-color: #fff;
+  font-family: 'Cairo', sans-serif;
 }
-.header {
+
+.surahHeader {
   text-align: center;
-  margin-bottom: 2rem;
-  border-bottom: 2px solid #00796b;
-  padding-bottom: 1rem;
+  padding: 20px;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 30px;
 }
-.header h1 { font-size: 3rem; margin: 0; }
-.header p { font-size: 1.2rem; color: #ccc; margin-top: 0.5rem; }
-.ayahsContainer { margin-top: 2rem; }
-.ayahText {
-  font-size: 1.8rem;
-  line-height: 2.5;
-  text-align: right;
-  margin-bottom: 1.5rem;
-}
-.ayahNumber { color: #00bfa5; font-size: 1.2rem; margin-left: 0.5rem; }
-.message { color: white; text-align: center; font-size: 1.5rem; padding: 5rem 0; }
-.footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 2rem;
-  padding: 1rem;
-  background-color: rgba(0, 0, 0, 0.3);
-  border-radius: 12px;
-  position: sticky;
-  bottom: 1rem;
-}
-.footer button {
-  background-color: #00796b;
-  color: white;
-  border: none;
-  padding: 0.7rem 1.5rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1.1rem;
+
+.surahHeader h1 {
   font-family: 'Amiri', serif;
+  font-size: 3rem;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.surahHeader p {
+  color: #7f8c8d;
+  margin: 5px 0;
+}
+
+.ayahContainer {
+  line-height: 2.5; /* مسافة بين السطور لتسهيل القراءة */
+}
+
+.ayah {
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #f8f9fa;
   transition: background-color 0.3s;
 }
-.footer button:hover:not(:disabled) { background-color: #00bfa5; }
-.footer button:disabled { background-color: #444; color: #888; cursor: not-allowed; }
+    
+.ayah:hover {
+  background-color: #e9ecef;
+}
+
+.ayahText {
+  font-family: 'Amiri', serif;
+  font-size: 1.8rem; /* حجم خط كبير وواضح للآيات */
+  text-align: right;
+  color: #34495e;
+  margin: 0;
+}
+
+.ayahNumber {
+  display: inline-block;
+  margin-right: 10px; /* مسافة بين نص الآية ورقمها */
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #28a745;
+  border: 2px solid rgba(40, 167, 69, 0.2);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  line-height: 36px; /* لضبط الرقم في منتصف الدائرة */
+  text-align: center;
+}
+
+.statusMessage {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+  padding: 50px;
+}
