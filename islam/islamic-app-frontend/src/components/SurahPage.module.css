@@ -103,3 +103,49 @@
 .navButton:active {
   transform: translateY(0);
 }
+/* ... (الكود القديم موجود هنا) ... */
+
+/* === كود جديد لقسم الصوت === */
+.audioSection {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
+  border: 1px solid #e9ecef;
+}
+
+.reciterSelector {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.reciterSelector label {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #495057;
+}
+
+.reciterSelector select {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  font-family: 'Cairo', sans-serif;
+  font-size: 1rem;
+  background-color: white;
+}
+
+.audioStatus {
+  text-align: center;
+  color: #6c757d;
+}
+
+.audioPlayerWrapper {
+  margin-top: 10px;
+}
+
+.audioPlayer {
+  width: 100%; /* لجعل المشغل يملأ العرض */
+}
