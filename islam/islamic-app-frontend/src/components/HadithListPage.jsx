@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './HadithListPage.css';
-import hadithFrame from '../assets/hadith-frame.png';
-
-// 👇 استخدام المفتاح الجديد الذي أرسلته 👇
-const API_KEY = '$2y$10$j9TF4fe9MlxPEjALlbdAejnbeglMcqfVvFIMjvjT0wY5yppisvJq';
+import styles from './HadithListPage.module.css'; // استخدام CSS Modules
 
 const HadithListPage = () => {
   const { collectionName } = useParams();
@@ -15,40 +11,43 @@ const HadithListPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // قاموس لترجمة أسماء الكتب إلى ما يفهمه الـ API الجديد
+  const collectionMap = {
+    'bukhari': { apiName: 'bukhari', title: 'صحيح البخاري' },
+    'muslim': { apiName: 'muslim', title: 'صحيح مسلم' },
+    'nasai': { apiName: 'nasai', title: 'سنن النسائي' },
+    'abudawud': { apiName: 'abudawud', title: 'سنن أبي داود' },
+    'tirmidhi': { apiName: 'tirmidhi', title: 'جامع الترمذي' },
+    'ibnmajah': { apiName: 'ibnmajah', title: 'سنن ابن ماجه' },
+    'malik': { apiName: 'malik', title: 'موطأ مالك' },
+  };
+
   useEffect(() => {
     const fetchHadiths = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        
-        // 👇 إضافة المفتاح إلى رأس الطلب (Header) كما تتطلب معظم الـ APIs 👇
-        const config = {
-          headers: {
-            'X-API-Key': API_KEY 
-          }
-        };
+      const collectionInfo = collectionMap[collectionName];
+      if (!collectionInfo) {
+        setError('الكتاب المطلوب غير متوفر.');
+        setLoading(false);
+        return;
+      }
 
-        // جلب الأحاديث
-        const response = await axios.get(`https://api.sunnah.com/v1/collections/${collectionName}/hadiths?limit=25&page=1`, config);
+      setCollectionTitle(collectionInfo.title);
+      setLoading(true);
+      setError(null);
+
+      try {
+        // استخدام الـ API الجديد، المفتوح والمجاني
+        const response = await axios.get(`https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-${collectionInfo.apiName}.json`);
         
-        if (response.data && response.data.data.length > 0) {
-          setHadiths(response.data.data);
+        if (response.data && response.data.hadiths) {
+          setHadiths(response.data.hadiths);
         } else {
           throw new Error('لم يتم العثور على أحاديث لهذا الكتاب.');
         }
 
-        // جلب معلومات الكتاب
-        const collectionInfo = await axios.get(`https://api.sunnah.com/v1/collections/${collectionName}`, config);
-        setCollectionTitle(collectionInfo.data.data.title);
-
       } catch (err) {
         console.error("Error fetching hadiths:", err);
-        // التحقق من نوع الخطأ
-        if (err.response && (err.response.status === 401 || err.response.status === 403)) {
-          setError('حدث خطأ في المصادقة. مفتاح الـ API قد يكون غير صحيح أو منتهي الصلاحية.');
-        } else {
-          setError('حدث خطأ أثناء تحميل الأحاديث. قد يكون الكتاب غير متوفر أو هناك مشكلة في الشبكة.');
-        }
+        setError('حدث خطأ أثناء تحميل الأحاديث. يرجى المحاولة مرة أخرى.');
       } finally {
         setLoading(false);
       }
@@ -57,30 +56,21 @@ const HadithListPage = () => {
     fetchHadiths();
   }, [collectionName]);
 
-  // ... باقي الكود يبقى كما هو ...
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
     alert('تم نسخ الحديث!');
   };
 
-  const shareHadith = (text) => {
-    if (navigator.share) {
-      navigator.share({ title: 'حديث شريف', text: text }).catch(console.error);
-    } else {
-      alert('المشاركة غير مدعومة في هذا المتصفح.');
-    }
-  };
-
   if (loading) {
-    return <div className="loading-message">جاري تحميل الأحاديث...</div>;
+    return <div className={styles.loadingMessage}>جاري تحميل الأحاديث...</div>;
   }
 
   if (error) {
     return (
-      <div className="hadith-list-container error-container">
-        <h2 className="error-title">حدث خطأ</h2>
-        <p className="error-text">{error}</p>
-        <button onClick={() => navigate('/hadith')} className="back-to-collections-btn">
+      <div className={`${styles.hadithListContainer} ${styles.errorContainer}`}>
+        <h2 className={styles.errorTitle}>حدث خطأ</h2>
+        <p className={styles.errorText}>{error}</p>
+        <button onClick={() => navigate('/hadith')} className={styles.backButton}>
           العودة إلى قائمة الكتب
         </button>
       </div>
@@ -88,26 +78,23 @@ const HadithListPage = () => {
   }
 
   return (
-    <div className="hadith-list-container">
-      <header className="hadith-list-header">
+    <div className={styles.hadithListContainer}>
+      <header className={styles.header}>
         <h1>{collectionTitle}</h1>
-        <button onClick={() => navigate('/hadith')} className="back-to-collections-btn">
-          العودة إلى قائمة الكتب
+        <button onClick={() => navigate('/hadith')} className={styles.backButton}>
+          العودة
         </button>
       </header>
 
-      <div className="hadiths-grid">
+      <div className={styles.hadithsGrid}>
         {hadiths.map(hadith => (
-          <div key={hadith.hadithNumber} className="hadith-card" style={{ backgroundImage: `url(${hadithFrame})` }}>
-            <div className="hadith-content">
-              <p className="hadith-text" dir="rtl">{hadith.hadith[0].body}</p>
-              <div className="hadith-info" dir="rtl">
-                <span className="hadith-grade">درجة الحديث: {hadith.hadith[0].grade}</span>
-              </div>
+          <div key={hadith.hadithnumber} className={styles.hadithCard}>
+            <div className={styles.hadithContent}>
+              <p className={styles.hadithNumber}>حديث رقم: {hadith.hadithnumber}</p>
+              <p className={styles.hadithText}>{hadith.text}</p>
             </div>
-            <div className="hadith-actions">
-              <button onClick={() => copyToClipboard(hadith.hadith[0].body)}>نسخ</button>
-              <button onClick={() => shareHadith(hadith.hadith[0].body)}>مشاركة</button>
+            <div className={styles.hadithActions}>
+              <button onClick={() => copyToClipboard(hadith.text)}>نسخ</button>
             </div>
           </div>
         ))}
