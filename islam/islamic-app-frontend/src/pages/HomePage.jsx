@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import styles from './HomePage.module.css';
 
 // --- استيراد المكون الجديد ---
-import PrayerTimes from '../components/PrayerTimes'; // <-- الخطوة 1: استيراد مكون مواقيت الصلاة
+import PrayerTimes from '../components/PrayerTimes';
 
 // --- المكونات المنبثقة (Pop-ups) ---
 const SideMenu = ({ isOpen, onClose }) => {
@@ -56,6 +56,7 @@ const HomePage = () => {
       </header>
 
       <main className={styles['home-grid']}>
+        {/* ... البطاقات كما هي ... */}
         <div className={styles['home-card']} onClick={() => navigate('/quran')}>
           <span className={styles['card-icon']}>📖</span>
           <h2>القرآن الكريم</h2>
@@ -90,8 +91,23 @@ const HomePage = () => {
 
       {/* --- تم تعديل هذا الجزء --- */}
       <footer className={styles['home-footer']}>
-        {/* الخطوة 2: وضع المكون هنا بدلاً من المحتوى الثابت */}
+        {/* مكون مواقيت الصلاة */}
         <PrayerTimes />
+
+        {/* === الجزء الجديد لحقوق الملكية والتواصل === */}
+        <div className={styles.copyrightSection}>
+          <p className={styles.copyrightText}>
+            جميع الحقوق محفوظة &copy; {new Date().getFullYear()} Radwan Mohamed
+          </p>
+          <div className={styles.socialLinks}>
+            <a href="https://m.facebook.com/Radwan263" target="_blank" rel="noopener noreferrer" className={styles.socialIcon}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" />
+            </a>
+            <a href="https://t.me/Radwan263" target="_blank" rel="noopener noreferrer" className={styles.socialIcon}>
+              <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram" />
+            </a>
+          </div>
+        </div>
       </footer>
     </div>
   );
