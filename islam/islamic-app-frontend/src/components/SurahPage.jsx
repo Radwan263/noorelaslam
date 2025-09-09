@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import styles from './SurahPage.module.css'; 
+import styles from './SurahPage.module.css';
 
 const SurahPage = () => {
   const { surahNumber } = useParams();
@@ -12,98 +12,62 @@ const SurahPage = () => {
 
   useEffect(() => {
     const currentSurahNum = parseInt(surahNumber, 10);
-
     if (isNaN(currentSurahNum) || currentSurahNum < 1 || currentSurahNum > 114) {
-      navigate('/quran'); 
+      navigate('/quran');
       return;
     }
 
     const fetchSurah = async () => {
       setLoading(true);
       setError(null);
-      setSurah(null); // مسح البيانات القديمة
+      setSurah(null);
 
       try {
         const response = await axios.get(`https://api.alquran.cloud/v1/surah/${currentSurahNum}`);
         setSurah(response.data.data);
       } catch (err) {
-        setError('حدث خطأ أثناء تحميل بيانات السورة. يرجى المحاولة مرة أخرى.');
-        console.error(err);
+        setError('حدث خطأ أثناء تحميل بيانات السورة.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchSurah();
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
+  }, [surahNumber, navigate]);
 
-  // 👇 *** هذا هو التعديل الوحيد والمهم *** 👇
-  // نحن نراقب `surahNumber` مباشرة من `useParams`.
-  }, [surahNumber, navigate]); 
-
-  const goToNextSurah = () => {
-    const nextSurahNum = parseInt(surahNumber, 10) + 1;
-    if (nextSurahNum <= 114) {
-      navigate(`/quran/${nextSurahNum}`);
+  const goToSurah = (num) => {
+    if (num >= 1 && num <= 114) {
+      navigate(`/quran/${num}`);
     }
   };
 
-  const goToPrevSurah = () => {
-    const prevSurahNum = parseInt(surahNumber, 10) - 1;
-    if (prevSurahNum >= 1) {
-      navigate(`/quran/${prevSurahNum}`);
-    }
-  };
+  if (loading) return <div className={styles.message}>جاري تحميل السورة...</div>;
+  if (error) return <div className={styles.message}>{error}</div>;
+  if (!surah) return <div className={styles.message}>لا توجد بيانات لعرضها.</div>;
 
-  if (loading) {
-    return <div className={styles.loadingMessage}>جاري تحميل السورة...</div>;
-  }
-
-  if (error) {
-    return <div className={styles.errorMessage}>{error}</div>;
-  }
-
-  if (!surah) {
-    return null; // لا تعرض شيئًا إذا لم تكن هناك بيانات
-  }
+  const currentNum = parseInt(surahNumber, 10);
 
   return (
-    <div className={styles.surahDisplayContainer}>
-      <header className={styles.surahHeader}>
+    <div className={styles.container}>
+      <header className={styles.header}>
         <h1>{surah.name}</h1>
-        <p>
-          {surah.revelationType === 'Meccan' ? 'مكية' : 'مدنية'} - {surah.numberOfAyahs} آية
-        </p>
+        <p>{surah.revelationType === 'Meccan' ? 'مكية' : 'مدنية'} - {surah.numberOfAyahs} آية</p>
       </header>
 
-      {surah.ayahs.map((ayah) => (
-        <div key={ayah.number} className={styles.ayahContainer}>
-          <p className={styles.ayahText}>
-            {ayah.text}
-            <span className={styles.ayahNumber}>({ayah.numberInSurah})</span>
+      <div className={styles.ayahsContainer}>
+        {surah.ayahs.map((ayah) => (
+          <p key={ayah.number} className={styles.ayahText}>
+            {ayah.text} <span className={styles.ayahNumber}>({ayah.numberInSurah})</span>
           </p>
-        </div>
-      ))}
-
-      <div className={styles.surahNavigationToolbar}>
-        <button 
-          onClick={goToPrevSurah} 
-          className={styles.navArrowBtn}
-          disabled={parseInt(surahNumber, 10) === 1}
-        >
-          السابق
-        </button>
-        <button onClick={() => navigate('/quran')} className={styles.backButtonSurah}>
-          العودة للفهرس
-        </button>
-        <button 
-          onClick={goToNextSurah} 
-          className={styles.navArrowBtn}
-          disabled={parseInt(surahNumber, 10) === 114}
-        >
-          التالي
-        </button>
+        ))}
       </div>
+
+      <footer className={styles.footer}>
+        <button onClick={() => goToSurah(currentNum - 1)} disabled={currentNum === 1}>السابق</button>
+        <button onClick={() => navigate('/quran')}>الفهرس</button>
+        <button onClick={() => goToSurah(currentNum + 1)} disabled={currentNum === 114}>التالي</button>
+      </footer>
     </div>
   );
 };
