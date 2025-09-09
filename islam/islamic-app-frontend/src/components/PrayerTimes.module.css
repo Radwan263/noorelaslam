@@ -1,0 +1,67 @@
+.prayerContainer {
+  background-color: rgba(0, 0, 0, 0.3); /* خلفية شفافة قليلاً مثل باقي البطاقات */
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 20px 0;
+  backdrop-filter: blur(5px); /* تأثير بلور للخلفية */
+  width: 100%; /* تأكد من أنه يأخذ عرض الحاوية */
+}
+
+.title {
+  font-family: 'Cairo', sans-serif;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  color: #ffffff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.prayerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* تصميم شبكي متجاوب */
+  gap: 15px;
+}
+
+.prayerCard {
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.prayerName {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #f0f0f0;
+  margin: 0 0 5px 0;
+}
+
+.prayerTime {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 0;
+  direction: ltr; /* لجعل الأرقام تظهر بشكل صحيح */
+}
+
+.error, .loadingText {
+  color: #ffc107; /* لون أصفر للتحذيرات والتحميل */
+  font-size: 1.1rem;
+}
+
+.locationButton {
+  background-color: #1abc9c; /* لون أخضر جميل */
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 15px;
+}
+
+.locationButton:hover {
+  background-color: #16a085;
+}
