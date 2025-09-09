@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import styles from './HomePage.module.css'; // 👈 تغيير هنا
+import styles from './HomePage.module.css';
+
+// --- استيراد المكون الجديد ---
+import PrayerTimes from '../components/PrayerTimes'; // <-- الخطوة 1: استيراد مكون مواقيت الصلاة
 
 // --- المكونات المنبثقة (Pop-ups) ---
 const SideMenu = ({ isOpen, onClose }) => {
@@ -58,7 +61,6 @@ const HomePage = () => {
           <h2>القرآن الكريم</h2>
           <p>تصفح وقراءة السور القرآنية</p>
         </div>
-        {/* ... كرر نفس النمط لباقي البطاقات ... */}
         <div className={styles['home-card']} onClick={() => navigate('/hadith')}>
           <span className={styles['card-icon']}>📜</span>
           <h2>الأحاديث النبوية</h2>
@@ -86,11 +88,10 @@ const HomePage = () => {
         </div>
       </main>
 
+      {/* --- تم تعديل هذا الجزء --- */}
       <footer className={styles['home-footer']}>
-        <div className={styles['prayer-widget']}>
-          <p>سيتم عرض مواقيت الصلاة هنا قريبًا...</p>
-          <button>تحديد الموقع</button>
-        </div>
+        {/* الخطوة 2: وضع المكون هنا بدلاً من المحتوى الثابت */}
+        <PrayerTimes />
       </footer>
     </div>
   );
