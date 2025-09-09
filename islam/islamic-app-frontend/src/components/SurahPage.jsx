@@ -1,25 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+// === الخطوة 1: استيراد useNavigate للتنقل ===
+import { useParams, useNavigate } from 'react-router-dom';
 import styles from './SurahPage.module.css';
 
 const SurahPage = () => {
-  const { surahNumber } = useParams(); // للحصول على رقم السورة من الرابط
+  const { surahNumber } = useParams();
+  const navigate = useNavigate(); // <-- للتحكم في التنقل
+
   const [surahData, setSurahData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // تحويل رقم السورة من نص إلى رقم صحيح
+  const currentSurahNumber = parseInt(surahNumber, 10);
+
   useEffect(() => {
-    if (!surahNumber) return;
+    if (!currentSurahNumber) return;
 
     setLoading(true);
     setError(null);
+    setSurahData(null); // <-- إعادة تعيين البيانات عند تحميل سورة جديدة
 
-    // استخدام fetch لجلب تفاصيل السورة وآياتها
-    fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}`)
+    fetch(`https://api.alquran.cloud/v1/surah/${currentSurahNumber}`)
       .then(response => {
-        if (!response.ok) {
-          throw new Error('فشل في الاتصال بالشبكة');
-        }
+        if (!response.ok) throw new Error('فشل في الاتصال بالشبكة');
         return response.json();
       })
       .then(data => {
@@ -27,11 +31,24 @@ const SurahPage = () => {
         setLoading(false);
       })
       .catch(error => {
-        console.error(`Error fetching surah ${surahNumber}:`, error);
+        console.error(`Error fetching surah ${currentSurahNumber}:`, error);
         setError('حدث خطأ أثناء تحميل بيانات السورة.');
         setLoading(false);
       });
-  }, [surahNumber]); // useEffect يعمل كلما تغير رقم السورة
+  }, [currentSurahNumber]); // <-- الاعتماد على الرقم الصحيح
+
+  // === الخطوة 2: دوال التنقل ===
+  const goToNextSurah = () => {
+    if (currentSurahNumber < 114) {
+      navigate(`/surah/${currentSurahNumber + 1}`);
+    }
+  };
+
+  const goToPreviousSurah = () => {
+    if (currentSurahNumber > 1) {
+      navigate(`/surah/${currentSurahNumber - 1}`);
+    }
+  };
 
   if (loading) {
     return <div className={styles.statusMessage}>جاري تحميل السورة...</div>;
@@ -52,6 +69,7 @@ const SurahPage = () => {
         <p>({surahData.englishName})</p>
         <p>{surahData.revelationType === 'Meccan' ? 'مكية' : 'مدنية'} - {surahData.numberOfAyahs} آية</p>
       </div>
+
       <div className={styles.ayahContainer}>
         {surahData.ayahs.map(ayah => (
           <div key={ayah.number} className={styles.ayah}>
@@ -60,6 +78,20 @@ const SurahPage = () => {
             </p>
           </div>
         ))}
+      </div>
+
+      {/* === الخطوة 3: إضافة أزرار التنقل === */}
+      <div className={styles.navigationButtons}>
+        {currentSurahNumber > 1 && (
+          <button onClick={goToPreviousSurah} className={styles.navButton}>
+            → السورة السابقة
+          </button>
+        )}
+        {currentSurahNumber < 114 && (
+          <button onClick={goToNextSurah} className={styles.navButton}>
+            السورة التالية ←
+          </button>
+        )}
       </div>
     </div>
   );
