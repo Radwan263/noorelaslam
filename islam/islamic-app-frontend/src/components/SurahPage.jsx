@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './SurahPage.css'; // 👈 *** هذا هو السطر الأهم للتأكد من وجوده وصحته ***
+// 👇 1. تغيير طريقة الاستيراد
+import styles from './SurahPage.module.css'; 
 
 const SurahPage = () => {
   const { surahNumber } = useParams();
@@ -33,7 +34,6 @@ const SurahPage = () => {
     };
 
     fetchSurah();
-    // 👇 إضافة window.scrollTo للتأكد من أن الصفحة تبدأ من الأعلى عند التنقل 👇
     window.scrollTo(0, 0); 
   }, [currentSurahNum, navigate]);
 
@@ -49,17 +49,18 @@ const SurahPage = () => {
     }
   };
 
+  // 👇 2. تغيير أسماء الكلاسات لتستخدم كائن styles
   if (loading) {
-    return <div className="loading-message">جاري تحميل السورة...</div>;
+    return <div className={styles.loadingMessage}>جاري تحميل السورة...</div>;
   }
 
   if (error) {
-    return <div className="error-message">{error}</div>;
+    return <div className={styles.errorMessage}>{error}</div>;
   }
 
   return (
-    <div className="surah-display-container">
-      <header className="surah-header">
+    <div className={styles.surahDisplayContainer}>
+      <header className={styles.surahHeader}>
         <h1>{surah.name}</h1>
         <p>
           {surah.revelationType === 'Meccan' ? 'مكية' : 'مدنية'} - {surah.numberOfAyahs} آية
@@ -67,28 +68,28 @@ const SurahPage = () => {
       </header>
 
       {surah.ayahs.map((ayah) => (
-        <div key={ayah.number} className="ayah-container">
-          <p className="ayah-text">
+        <div key={ayah.number} className={styles.ayahContainer}>
+          <p className={styles.ayahText}>
             {ayah.text}
-            <span className="ayah-number">({ayah.numberInSurah})</span>
+            <span className={styles.ayahNumber}>({ayah.numberInSurah})</span>
           </p>
         </div>
       ))}
 
-      <div className="surah-navigation-toolbar">
+      <div className={styles.surahNavigationToolbar}>
         <button 
           onClick={goToPrevSurah} 
-          className="nav-arrow-btn"
+          className={styles.navArrowBtn}
           disabled={currentSurahNum === 1}
         >
           السابق
         </button>
-        <button onClick={() => navigate('/quran')} className="back-button-surah">
+        <button onClick={() => navigate('/quran')} className={styles.backButtonSurah}>
           العودة للفهرس
         </button>
         <button 
           onClick={goToNextSurah} 
-          className="nav-arrow-btn"
+          className={styles.navArrowBtn}
           disabled={currentSurahNum === 114}
         >
           التالي
