@@ -1,31 +1,28 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import duasData from '../data/duas.json';
-import styles from './DuasCategoriesPage.module.css'; // سننشئ هذا الملف
+import styles from './DuasPage.module.css';
 
 const DuasCategoriesPage = () => {
-  const navigate = useNavigate();
+  const { categories } = duasData;
+  const colors = ['#4A90E2', '#50E3C2', '#F5A623', '#BD10E0', '#9013FE', '#D0021B'];
 
   return (
-    <div className={styles.categoriesContainer}>
-      <header className={styles.categoriesHeader}>
-        <h1>فصول الأدعية والأذكار</h1>
-        <p>من كتاب الأدعية والأذكار للشيخ عبدالله سراج الدين</p>
-      </header>
-      <div className={styles.categoriesList}>
-        {duasData.categories.map(category => (
-          <div 
+    <div className={styles.pageContainer}>
+      <h1 className={styles.pageTitle}>فئات الأدعية</h1>
+      <div className={styles.categoriesGrid}>
+        {categories.map((category, index) => (
+          <Link 
+            to={`/duas/${category.id}`} 
             key={category.id} 
             className={styles.categoryCard}
-            onClick={() => navigate(`/duas/${category.id}`)}
+            style={{ borderTop: `5px solid ${colors[index % colors.length]}` }}
           >
-            {category.title}
-          </div>
+            <h2 className={styles.categoryName}>{category.name}</h2>
+            <p className={styles.categoryDescription}>{category.description}</p>
+          </Link>
         ))}
       </div>
-      <button onClick={() => navigate('/')} className={styles.backButton}>
-        العودة للرئيسية
-      </button>
     </div>
   );
 };
