@@ -65,3 +65,35 @@
 .locationButton:hover {
   background-color: #16a085;
 }
+/* ... (الكود القديم موجود هنا) ... */
+
+/* === كود جديد لقائمة اختيار المؤذن === */
+.reciterSelector {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.reciterSelector label {
+  font-size: 1rem;
+  color: #ccc;
+}
+
+.reciterSelector select {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 1rem;
+  font-family: 'Cairo', sans-serif;
+  width: 80%;
+  text-align: center;
+}
+
+.reciterSelector select option {
+  background-color: #333;
+  color: #ffffff;
+}
