@@ -1,0 +1,115 @@
+/* src/components/HadithListPage.module.css */
+
+.hadithListContainer {
+  padding: 20px;
+  background-color: #f0f2f5;
+  min-height: 100vh;
+  font-family: 'Cairo', sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #00897b;
+}
+
+.header h1 {
+  color: #333;
+  font-family: 'Amiri', serif;
+}
+
+.backButton {
+  background-color: #00897b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.backButton:hover {
+  background-color: #00695c;
+}
+
+.hadithsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.hadithCard {
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.hadithCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.hadithNumber {
+  font-size: 14px;
+  color: #00897b;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.hadithText {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #333;
+  text-align: justify;
+  margin-bottom: 20px;
+}
+
+.hadithActions {
+  margin-top: auto;
+  align-self: flex-end;
+}
+
+.hadithActions button {
+  background-color: #e0f2f1;
+  color: #00796b;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.hadithActions button:hover {
+  background-color: #b2dfdb;
+}
+
+/* رسائل التحميل والخطأ */
+.loadingMessage, .errorContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  text-align: center;
+}
+
+.errorTitle {
+  font-size: 24px;
+  color: #c62828;
+  margin-bottom: 10px;
+}
+
+.errorText {
+  font-size: 18px;
+  color: #555;
+  margin-bottom: 20px;
+}
