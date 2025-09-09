@@ -1,48 +1,35 @@
 import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import duasData from '../data/duas.json';
-import styles from './DuasPage.module.css'; // سنستخدم نفس ملف التنسيق القديم مع تعديلات بسيطة
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-const DuasPage = () => {
-  const { categoryId } = useParams();
-  const navigate = useNavigate();
-      
-  // البحث عن الفئة المطابقة في البيانات
-  const category = duasData.categories.find(cat => cat.id === categoryId);
+// استيراد الصفحات والمكونات
+import HomePage from './pages/HomePage';
+import QuranSection from './components/QuranSection';
+import SurahPage from './components/SurahPage';
+import HadithCollectionsPage from './components/HadithCollectionsPage';
+import HadithListPage from './components/HadithListPage';
+import AzkarCategoriesPage from './components/AzkarCategoriesPage';
+import AzkarDisplayPage from './components/AzkarDisplayPage';
+import DuasCategoriesPage from './components/DuasCategoriesPage'; // هذا صحيح
+import DuasPage from './components/DuasPage'; // هذا صحيح
+// ... (باقي الصفحات مثل LoginPage, RegisterPage, etc.)
 
-  if (!category) {
-    return (
-      <div className={styles.duasContainer}>
-        <h1 className={styles.duasHeader}>الفئة غير موجودة</h1>
-        <button onClick={() => navigate('/duas')} className={styles.backButton}>
-          العودة لقائمة الفصول
-        </button>
-      </div>
-    );
-  }
-
+function App() {
   return (
-    <div className={styles.duasContainer}>
-      <header className={styles.duasHeader}>
-        <h1>{category.title}</h1>
-        <button onClick={() => navigate('/duas')} className={styles.backButton}>
-          العودة لقائمة الفصول
-        </button>
-      </header>
-
-      <div className={styles.contentArea}>
-        {category.content.map((item, index) => {
-          if (item.type === 'title') {
-            return <h2 key={index} className={styles.contentTitle}>{item.text}</h2>;
-          }
-          if (item.type === 'paragraph' || item.type === 'hadith') {
-            return <p key={index} className={styles.contentText}>{item.text}</p>;
-          }
-          return null;
-        })}
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/quran" element={<QuranSection />} />
+        <Route path="/surah/:surahNumber" element={<SurahPage />} />
+        <Route path="/hadith" element={<HadithCollectionsPage />} />
+        <Route path="/hadith/:collectionName" element={<HadithListPage />} />
+        <Route path="/azkar" element={<AzkarCategoriesPage />} />
+        <Route path="/azkar/:categoryId" element={<AzkarDisplayPage />} />
+        <Route path="/duas" element={<DuasCategoriesPage />} />
+        <Route path="/duas/:categoryId" element={<DuasPage />} />
+        {/* ... (باقي المسارات) ... */}
+      </Routes>
+    </Router>
   );
-};
+}
 
-export default DuasPage;
+export default App;
