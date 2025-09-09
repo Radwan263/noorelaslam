@@ -1,66 +1,99 @@
-/* src/components/DuasPage.module.css */
-.duasContainer {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  color: white;
-  font-family: 'Amiri', serif;
+.pageContainer {
+  padding: 20px;
+  direction: rtl;
+  font-family: 'Arial', sans-serif; /* استخدم الخط المناسب لمشروعك */
+  background-color: #f4f4f9;
+  min-height: 100vh;
 }
 
-.duasHeader {
+.pageTitle {
   text-align: center;
-  margin-bottom: 3rem;
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 2.5rem;
 }
 
-.duasHeader h1 {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #00bfa5;
+/* Styles for Categories Page */
+.categoriesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
 }
 
-.duasHeader p {
-  font-size: 1.2rem;
-  color: #ccc;
-  margin-top: 0.5rem;
-}
-
-.backButton {
-  margin-top: 1.5rem;
-  background-color: transparent;
-  color: #00bfa5;
-  border: 2px solid #00796b;
-  padding: 0.6rem 1.5rem;
+.categoryCard {
+  background-color: #ffffff;
   border-radius: 8px;
-  cursor: pointer;
+  padding: 20px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.categoryCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.categoryName {
+  font-size: 1.5rem;
+  color: #0056b3;
+  margin-top: 0;
+}
+
+.categoryDescription {
   font-size: 1rem;
-  font-family: 'Amiri', serif;
-  transition: all 0.3s ease;
+  color: #555;
 }
 
-.backButton:hover {
-  background-color: #00796b;
-  color: white;
+/* Styles for Duas Page */
+.backLink {
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 1rem;
 }
 
-/* --- هذه الأنماط خاصة بالصفحة التي تعرض المحتوى --- */
-.contentArea {
-  background-color: rgba(0, 0, 0, 0.2);
-  border: 1px solid #004d40;
-  border-radius: 12px;
-  padding: 2rem;
-  text-align: right;
+.backLink:hover {
+  text-decoration: underline;
 }
 
-.contentTitle {
-  font-size: 2rem;
-  color: #00bfa5;
-  margin-bottom: 1.5rem;
-  text-align: center;
+.duasContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.contentText {
+.duaCard {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border-right: 5px solid #4A90E2;
+}
+
+.duaTitle {
   font-size: 1.4rem;
-  line-height: 2.2;
-  margin-bottom: 1.5rem;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.duaText {
+  font-size: 1.5rem; /* حجم أكبر للنص العربي */
+  line-height: 2.5; /* تباعد أسطر أكبر */
+  color: #222;
+  margin-bottom: 15px;
+  text-align: justify;
+}
+
+.duaVirtue, .duaSource, .duaNotes {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 10px;
+}
+
+.duaVirtue strong, .duaSource strong, .duaNotes strong {
+  color: #333;
 }
