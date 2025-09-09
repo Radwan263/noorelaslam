@@ -71,3 +71,35 @@
   color: #555;
   padding: 50px;
 }
+/* ... (الكود القديم موجود هنا) ... */
+
+/* === كود جديد لأزرار التنقل === */
+.navigationButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px solid #eee;
+}
+
+.navButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.navButton:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.navButton:active {
+  transform: translateY(0);
+}
