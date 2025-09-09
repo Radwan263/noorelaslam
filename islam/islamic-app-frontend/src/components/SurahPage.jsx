@@ -10,21 +10,18 @@ const SurahPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const currentSurahNum = parseInt(surahNumber, 10);
-
-  // 👇 *** هذا هو الجزء الذي سنقوم بتعديله *** 👇
   useEffect(() => {
-    // التأكد من أن رقم السورة صالح قبل أي شيء
+    const currentSurahNum = parseInt(surahNumber, 10);
+
     if (isNaN(currentSurahNum) || currentSurahNum < 1 || currentSurahNum > 114) {
       navigate('/quran'); 
       return;
     }
 
     const fetchSurah = async () => {
-      // 1. إعادة حالة التحميل إلى true في كل مرة نبدأ فيها طلبًا جديدًا
-      setLoading(true); 
-      setSurah(null); // اختياري: مسح البيانات القديمة فورًا
+      setLoading(true);
       setError(null);
+      setSurah(null); // مسح البيانات القديمة
 
       try {
         const response = await axios.get(`https://api.alquran.cloud/v1/surah/${currentSurahNum}`);
@@ -33,7 +30,6 @@ const SurahPage = () => {
         setError('حدث خطأ أثناء تحميل بيانات السورة. يرجى المحاولة مرة أخرى.');
         console.error(err);
       } finally {
-        // 2. إيقاف التحميل بعد انتهاء الطلب (سواء نجح أو فشل)
         setLoading(false);
       }
     };
@@ -41,19 +37,21 @@ const SurahPage = () => {
     fetchSurah();
     window.scrollTo(0, 0); 
 
-  // 👇 *** هذا هو التعديل الأهم *** 👇
-  // الآن useEffect سيعمل من جديد كلما تغير `currentSurahNum`
-  }, [currentSurahNum, navigate]); 
+  // 👇 *** هذا هو التعديل الوحيد والمهم *** 👇
+  // نحن نراقب `surahNumber` مباشرة من `useParams`.
+  }, [surahNumber, navigate]); 
 
   const goToNextSurah = () => {
-    if (currentSurahNum < 114) {
-      navigate(`/quran/${currentSurahNum + 1}`);
+    const nextSurahNum = parseInt(surahNumber, 10) + 1;
+    if (nextSurahNum <= 114) {
+      navigate(`/quran/${nextSurahNum}`);
     }
   };
 
   const goToPrevSurah = () => {
-    if (currentSurahNum > 1) {
-      navigate(`/quran/${currentSurahNum - 1}`);
+    const prevSurahNum = parseInt(surahNumber, 10) - 1;
+    if (prevSurahNum >= 1) {
+      navigate(`/quran/${prevSurahNum}`);
     }
   };
 
@@ -65,9 +63,8 @@ const SurahPage = () => {
     return <div className={styles.errorMessage}>{error}</div>;
   }
 
-  // التأكد من وجود بيانات السورة قبل محاولة عرضها
   if (!surah) {
-    return null; // أو عرض رسالة خطأ أخرى
+    return null; // لا تعرض شيئًا إذا لم تكن هناك بيانات
   }
 
   return (
@@ -92,7 +89,7 @@ const SurahPage = () => {
         <button 
           onClick={goToPrevSurah} 
           className={styles.navArrowBtn}
-          disabled={currentSurahNum === 1}
+          disabled={parseInt(surahNumber, 10) === 1}
         >
           السابق
         </button>
@@ -102,7 +99,7 @@ const SurahPage = () => {
         <button 
           onClick={goToNextSurah} 
           className={styles.navArrowBtn}
-          disabled={currentSurahNum === 114}
+          disabled={parseInt(surahNumber, 10) === 114}
         >
           التالي
         </button>
