@@ -1,0 +1,106 @@
+.tasbeehContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #005f56, #00897b);
+  color: white;
+  font-family: 'Cairo', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.backButton {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  z-index: 10;
+}
+
+.totalCounter {
+  text-align: center;
+  margin-bottom: 30px;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  border-radius: 15px;
+}
+
+.totalCounter p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.totalCounter span {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.tasbeehCircle {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.1s ease, box-shadow 0.2s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.tasbeehCircle:active {
+  transform: scale(0.95);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.countDisplay {
+  font-size: 80px;
+  font-weight: bold;
+}
+
+.tapArea {
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+.controls {
+  margin-top: 40px;
+  display: flex;
+  gap: 15px;
+}
+
+.resetButton {
+  background-color: #ffc107;
+  color: #333;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.resetButton:hover {
+  background-color: #ffa000;
+}
+
+.danger {
+  background-color: #e53935;
+  color: white;
+}
+
+.danger:hover {
+  background-color: #c62828;
+}
