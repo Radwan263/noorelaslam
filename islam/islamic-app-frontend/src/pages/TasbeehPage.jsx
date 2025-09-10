@@ -2,15 +2,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ReactDOM from 'react-dom/client'; // استيراد مهم
-import FloatingTasbeeh from '../../components/FloatingTasbeeh'; // تأكد من المسار الصحيح
+import ReactDOM from 'react-dom/client';
+// --- هذا هو السطر الذي تم تصحيحه ---
+import FloatingTasbeeh from '../components/FloatingTasbeeh'; 
 import styles from './TasbeehPage.module.css';
 
 const TasbeehPage = () => {
   const navigate = useNavigate();
   const [count, setCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
-  const [pipWindow, setPipWindow] = useState(null); // حالة لتتبع النافذة العائمة
+  const [pipWindow, setPipWindow] = useState(null);
 
   useEffect(() => {
     const savedCount = localStorage.getItem('tasbeeh_current_count');
@@ -18,7 +19,6 @@ const TasbeehPage = () => {
     if (savedCount) setCount(parseInt(savedCount, 10));
     if (savedTotal) setTotalCount(parseInt(savedTotal, 10));
 
-    // الاستماع للتغييرات من النافذة العائمة
     const handleStorageChange = () => {
       const updatedCount = localStorage.getItem('tasbeeh_current_count');
       const updatedTotal = localStorage.getItem('tasbeeh_total_count');
@@ -52,7 +52,6 @@ const TasbeehPage = () => {
     }
   };
 
-  // --- دالة فتح النافذة العائمة ---
   const openFloatingTasbeeh = async () => {
     if (pipWindow) {
       pipWindow.close();
@@ -66,23 +65,19 @@ const TasbeehPage = () => {
         height: 200,
       });
 
-      // إنشاء عنصر div ليعمل كتطبيق React صغير داخل النافذة
       const container = pip.document.createElement('div');
       pip.document.body.append(container);
       
-      // إضافة الخطوط والأنماط الأساسية للنافذة الجديدة
       const fontLink = pip.document.createElement('link');
       fontLink.href = "https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap";
       fontLink.rel = "stylesheet";
       pip.document.head.appendChild(fontLink);
 
-      // عرض مكون React داخل النافذة العائمة
       const root = ReactDOM.createRoot(container);
       root.render(<FloatingTasbeeh />);
       
       setPipWindow(pip);
 
-      // عند إغلاق النافذة، قم بتحديث الحالة
       pip.addEventListener('pagehide', () => {
         setPipWindow(null);
       });
@@ -116,7 +111,6 @@ const TasbeehPage = () => {
         <button onClick={resetAll} className={`${styles.resetButton} ${styles.danger}`}>
           تصفير الإجمالي
         </button>
-        {/* --- الزر الجديد --- */}
         <button onClick={openFloatingTasbeeh} className={styles.resetButton}>
           {pipWindow ? 'إغلاق العائمة' : 'فتح التسبيح العائم'}
         </button>
