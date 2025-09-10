@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// استيراد الصفحات والمكونات
+// استيراد الصفحات والمكونات الحالية
 import HomePage from './pages/HomePage';
 import QuranSection from './components/QuranSection';
 import SurahPage from './components/SurahPage';
@@ -11,9 +11,11 @@ import AzkarCategoriesPage from './components/AzkarCategoriesPage';
 import AzkarDisplayPage from './components/AzkarDisplayPage';
 import DuasCategoriesPage from './components/DuasCategoriesPage';
 import DuasPage from './components/DuasPage';
-
-// === السطر الجديد الذي أضفناه ===
 import SadaqaJariyaPage from './components/SadaqaJariyaPage'; 
+
+// --- الإضافة الجديدة ---
+// 1. استيراد صفحة التسبيح
+import TasbeehPage from './pages/TasbeehPage';
 
 function App() {
   return (
@@ -29,9 +31,11 @@ function App() {
         <Route path="/azkar/:categoryId" element={<AzkarDisplayPage />} />
         <Route path="/duas" element={<DuasCategoriesPage />} />
         <Route path="/duas/:categoryId" element={<DuasPage />} />
-
-        {/* === المسار الجديد الذي أضفناه === */}
         <Route path="/sadaqa-jariya" element={<SadaqaJariyaPage />} />
+
+        {/* --- الإضافة الجديدة --- */}
+        {/* 2. إضافة مسار لصفحة التسبيح */}
+        <Route path="/tasbeeh" element={<TasbeehPage />} />
 
       </Routes>
     </Router>
