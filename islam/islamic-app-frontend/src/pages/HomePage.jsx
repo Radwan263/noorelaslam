@@ -72,6 +72,14 @@ const HomePage = () => {
           <h2>الأذكار</h2>
           <p>حصن المسلم اليومي</p>
         </div>
+        
+        {/* 👇 === البطاقة الجديدة للسبحة الإلكترونية === 👇 */}
+        <div className={styles['home-card']} onClick={() => navigate('/tasbeeh')}>
+          <span className={styles['card-icon']}>📿</span>
+          <h2>السبحة الإلكترونية</h2>
+          <p>ابدأ التسبيح الآن</p>
+        </div>
+        
         <div className={styles['home-card']} onClick={() => navigate('/duas')}>
           <span className={styles['card-icon']}>🙌</span>
           <h2>أدعية وفضلها</h2>
@@ -89,12 +97,11 @@ const HomePage = () => {
         </div>
       </main>
 
-      {/* --- تم تعديل هذا الجزء --- */}
       <footer className={styles['home-footer']}>
         {/* مكون مواقيت الصلاة */}
         <PrayerTimes />
 
-        {/* === الجزء الجديد لحقوق الملكية والتواصل === */}
+        {/* الجزء الخاص بحقوق الملكية والتواصل */}
         <div className={styles.copyrightSection}>
           <p className={styles.copyrightText}>
             جميع الحقوق محفوظة &copy; {new Date().getFullYear()} Radwan Mohamed
