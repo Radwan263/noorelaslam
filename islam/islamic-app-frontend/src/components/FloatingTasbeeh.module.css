@@ -1,0 +1,28 @@
+/* src/components/FloatingTasbeeh.module.css */
+
+.floatingContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #00897b, #005f56);
+  color: white;
+  font-family: 'Cairo', sans-serif;
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+}
+
+.floatingCount {
+  font-size: 48px; /* حجم أصغر ليناسب النافذة الصغيرة */
+  font-weight: bold;
+  line-height: 1;
+}
+
+.floatingLabel {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-top: 5px;
+}
