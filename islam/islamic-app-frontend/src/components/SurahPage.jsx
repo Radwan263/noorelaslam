@@ -3,25 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import styles from './SurahPage.module.css';
 import surahPageMapping from './surahPageMapping';
 
-// --- القائمة النهائية بعد التحقق اليدوي لكل قارئ ---
 const recitersList = [
-  // الناجحون (تم التأكد منهم)
   { server: 'server7', id: 'basit', name: 'عبد الباسط عبد الصمد' },
+  { server: 'server13', id: 'Al-Hussary_128kb_m.mp3', name: 'محمود خليل الحصري' },
   { server: 'server8', id: 'frs_a', name: 'فارس عباد' },
-  { server: 'server11', id: 'qtm', name: 'ناصر القطامي' },
-  { server: 'server7', id: 'shur', name: 'سعود الشريم' },
-  
-  // المصححون (تم تصحيح أخطائهم)
-  { server: 'server13', id: 'hussary', name: 'محمود خليل الحصري' },
   { server: 'server12', id: 'jleel', name: 'خالد الجليل' },
   { server: 'server11', id: 'yasser', name: 'ياسر الدوسري' },
+  { server: 'server11', id: 'qtm', name: 'ناصر القطامي' },
   { server: 'server13', id: 'soudais', name: 'عبد الرحمن السديس' },
   { server: 'server8', id: 'afs', name: 'مشاري راشد العفاسي' },
   { server: 'server12', id: 'maher', name: 'ماهر المعيقلي' },
   { server: 'server10', id: 'minsh', name: 'محمد صديق المنشاوي' },
+  { server: 'server7', id: 'shur', name: 'سعود الشريم' },
   { server: 'server10', id: 'ajm', name: 'أحمد بن علي العجمي' },
 ];
-// ---------------------------------------------------------
 
 const SurahPage = () => {
   const navigate = useNavigate();
@@ -106,6 +101,7 @@ const SurahPage = () => {
         />
       </div>
 
+      {/* --- هذا هو القسم الذي تم تعديله --- */}
       <div className={styles.audioControls}>
         <select onChange={handleReciterChange} value={selectedReciter.id} className={styles.reciterSelect}>
           {recitersList.map(reciter => (
@@ -115,7 +111,19 @@ const SurahPage = () => {
         <button onClick={togglePlayPause} className={styles.playButton}>
           {isPlaying ? '❚❚ إيقاف' : '▶ تشغيل'}
         </button>
+        {/* --- هذا هو الزر الجديد --- */}
+        <a 
+          href={audioUrl} 
+          download 
+          className={`${styles.playButton} ${styles.downloadButton}`}
+          target="_blank" // يضمن الفتح في نافذة جديدة إذا لم يبدأ التحميل مباشرة
+          rel="noopener noreferrer"
+        >
+          ⤓ تحميل
+        </a>
+        {/* ------------------------- */}
       </div>
+      {/* ------------------------------------ */}
 
       <div className={styles.navigation}>
         <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>الصفحة التالية</button>
