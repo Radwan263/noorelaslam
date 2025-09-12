@@ -1,55 +1,66 @@
+/* --- الوضع الليلي الفاخر --- */
+
 .pageContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f4f1ea;
+  /* تطبيق الخلفية الداكنة التي أرسلتها */
+  background-image: url('/dark-pattern.jpg'); /* تأكد من وضع الصورة في مجلد public بهذا الاسم */
+  background-size: cover;
+  background-position: center;
   min-height: 100vh;
   font-family: 'Cairo', sans-serif;
+  padding: 10px 0; /* إضافة حشو داخلي بسيط */
 }
 
 .header {
-  width: 100%;
+  width: 95%;
+  max-width: 800px; /* زيادة العرض الأقصى ليتناسب مع التصميم الجديد */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: #e9e4d9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 10px 15px;
+  background-color: rgba(0, 0, 0, 0.3); /* خلفية شفافة للشريط العلوي */
+  border: 1px solid rgba(218, 165, 32, 0.3); /* بوردر ذهبي شفاف */
+  border-radius: 12px;
+  margin-bottom: 20px;
 }
 
 .backButton, .pageNumber {
   font-size: 16px;
   font-weight: bold;
-  color: #5c5241;
+  color: #f0e6d2; /* لون أبيض مائل للذهبي */
 }
 
 .backButton {
   background: none;
-  border: 1px solid #c9c1b2;
+  border: 1px solid #daa520; /* بوردر ذهبي */
   padding: 8px 15px;
   border-radius: 20px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s;
 }
 
 .backButton:hover {
-  background-color: #d9d2c5;
+  background-color: #daa520;
+  color: black;
 }
 
 .imageWrapper {
   margin: 20px 0;
   width: 95%;
-  max-width: 500px;
+  max-width: 550px; /* تعديل العرض ليتناسب مع البرواز */
   position: relative;
-  min-height: 300px; /* To prevent collapse while loading */
+  min-height: 300px;
 }
 
 .quranImage {
   width: 100%;
   height: auto;
   border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  border: 5px solid white;
+  /* البرواز الذهبي الفاخر حول الصفحة */
+  border: 8px solid #daa520;
+  box-shadow: 0 0 25px rgba(218, 165, 32, 0.5); /* توهج ذهبي حول البرواز */
 }
 
 .loader {
@@ -58,7 +69,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 18px;
-  color: #8c7f6c;
+  color: #f0e6d2; /* لون أبيض مائل للذهبي */
 }
 
 .audioControls {
@@ -67,61 +78,57 @@
   gap: 10px; 
   align-items: center; 
   width: 95%;
-  max-width: 500px;
+  max-width: 550px; /* نفس عرض الصورة */
   margin-bottom: 15px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(218, 165, 32, 0.3);
+  border-radius: 12px;
 }
 
 .reciterSelect {
-  flex-grow: 1; /* يجعل قائمة القراء تأخذ المساحة المتبقية */
+  flex-grow: 1;
   padding: 12px;
   border-radius: 8px;
-  border: 1px solid #c9c1b2;
-  background-color: white;
+  border: 1px solid #daa520;
+  background-color: #1a1a1a;
+  color: #f0e6d2;
   font-family: 'Cairo', sans-serif;
   font-size: 16px;
   direction: rtl;
 }
 
 .playButton, .downloadButton {
-  flex-shrink: 0; /* يمنع الأزرار من الانكماش */
+  flex-shrink: 0;
   width: 50px; 
   height: 50px; 
   padding: 0; 
-  border: none;
+  border: 1px solid #daa520;
   border-radius: 8px;
   font-size: 20px; 
-  font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s;
   display: flex; 
   align-items: center;
   justify-content: center;
+  background-color: transparent;
+  color: #daa520;
 }
 
-.playButton {
-  background-color: #8c7f6c;
-  color: white;
-}
-
-.playButton:hover {
-  background-color: #7a6e5c;
+.playButton:hover, .downloadButton:hover {
+  background-color: #daa520;
+  color: black;
 }
 
 .downloadButton {
-  background-color: #5a8c5a;
-  color: white;
   text-decoration: none;
-}
-
-.downloadButton:hover {
-  background-color: #4a7c4a;
 }
 
 .navigation {
   display: flex;
   justify-content: space-between;
   width: 95%;
-  max-width: 500px;
+  max-width: 550px;
   margin-bottom: 20px;
 }
 
@@ -130,20 +137,23 @@
   padding: 15px;
   font-size: 18px;
   font-weight: bold;
-  border-radius: 8px;
-  border: none;
+  border-radius: 12px;
+  border: 1px solid #daa520;
   cursor: pointer;
-  background-color: #d9d2c5;
-  color: #5c5241;
-  transition: background-color 0.2s;
+  background-color: rgba(218, 165, 32, 0.8);
+  color: black;
+  transition: all 0.3s;
 }
 
 .navigation button:hover {
-  background-color: #c9c1b2;
+  background-color: #daa520;
+  box-shadow: 0 0 15px rgba(218, 165, 32, 0.7);
 }
 
 .navigation button:disabled {
-  background-color: #e9e4d9;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(218, 165, 32, 0.2);
+  color: rgba(218, 165, 32, 0.4);
   cursor: not-allowed;
-  opacity: 0.6;
+  box-shadow: none;
 }
