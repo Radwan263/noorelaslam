@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './SurahPage.module.css';
-import surahPageMapping from './surahPageMapping'; // تأكد من وجود هذا الملف
+import surahPageMapping from './surahPageMapping';
 
-// --- القائمة النهائية والمعتمدة للقراء ---
 const recitersList = [
   { id: 'basit', name: 'عبد الباسط عبد الصمد' },
   { id: 'husr', name: 'محمود خليل الحصري' },
@@ -18,14 +17,13 @@ const recitersList = [
   { id: 'shur', name: 'سعود الشريم' },
   { id: 'ajm', name: 'أحمد بن علي العجمي' },
 ];
-// -----------------------------------------
 
 const SurahPage = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   
-  const [selectedReciterId, setSelectedReciterId] = useState('basit'); // القارئ الافتراضي
+  const [selectedReciterId, setSelectedReciterId] = useState('basit');
   const [audioUrl, setAudioUrl] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
@@ -44,7 +42,10 @@ const SurahPage = () => {
     }
     
     const formattedSurahNumber = String(surahNumber).padStart(3, '0');
-    const newAudioUrl = `https://server7.mp3quran.net/${selectedReciterId}/${formattedSurahNumber}.mp3`;
+    
+    // --- هذا هو السطر الذي تم تصحيحه ---
+    const newAudioUrl = `https://server11.mp3quran.net/${selectedReciterId}/${formattedSurahNumber}.mp3`;
+    // ------------------------------------
     setAudioUrl(newAudioUrl);
 
   }, [currentPage, selectedReciterId]);
