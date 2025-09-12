@@ -3,25 +3,33 @@
   flex-direction: column;
   height: 100vh;
   background-color: #f4f1e9;
-  font-family: sans-serif;
+  font-family: 'Cairo', sans-serif;
+  color: #333;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 10px 15px;
   background-color: #e6e0d4;
   border-bottom: 2px solid #d1c8b8;
+  flex-shrink: 0;
 }
 
 .backButton {
-  background: none;
-  border: 1px solid #8a7c66;
-  color: #5c4e3a;
-  padding: 5px 10px;
+  background-color: #8a7c66;
+  color: white;
+  border: none;
+  padding: 8px 12px;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.backButton:hover {
+  background-color: #6d5f4c;
 }
 
 .pageNumber {
@@ -37,7 +45,7 @@
   align-items: center;
   overflow: hidden;
   padding: 10px;
-  position: relative; /* مهم للـ loader */
+  position: relative;
 }
 
 .quranImage {
@@ -46,6 +54,7 @@
   object-fit: contain;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   border: 5px solid #fff;
+  background-color: #fff;
 }
 
 .loader {
@@ -54,12 +63,49 @@
   color: #8a7c66;
 }
 
+.audioControls {
+  display: flex;
+  align-items: stretch; /* لجعل العناصر بنفس الارتفاع */
+  gap: 10px;
+  padding: 10px 15px;
+  background-color: #d1c8b8;
+  flex-shrink: 0;
+}
+
+.reciterSelect {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #8a7c66;
+  background-color: #fff;
+  font-family: 'Cairo', sans-serif;
+  font-size: 16px;
+}
+
+.playButton {
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  background-color: #6d5f4c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  white-space: nowrap; /* لمنع التفاف النص */
+  transition: background-color 0.2s;
+}
+
+.playButton:hover {
+  background-color: #5c4e3a;
+}
+
 .navigation {
   display: flex;
   justify-content: space-around;
   padding: 15px;
   background-color: #e6e0d4;
   border-top: 2px solid #d1c8b8;
+  flex-shrink: 0;
 }
 
 .navigation button {
@@ -72,6 +118,11 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.navigation button:hover:not(:disabled) {
+  background-color: #6d5f4c;
 }
 
 .navigation button:disabled {
