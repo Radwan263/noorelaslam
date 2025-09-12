@@ -3,20 +3,23 @@ import { useNavigate } from 'react-router-dom';
 import styles from './SurahPage.module.css';
 import surahPageMapping from './surahPageMapping';
 
-// --- القائمة النهائية بالخادم والمعرف الصحيح لكل قارئ ---
+// --- القائمة النهائية بعد التحقق اليدوي لكل قارئ ---
 const recitersList = [
+  // الناجحون (تم التأكد منهم)
   { server: 'server7', id: 'basit', name: 'عبد الباسط عبد الصمد' },
-  { server: 'server7', id: 'husr', name: 'محمود خليل الحصري' },
   { server: 'server8', id: 'frs_a', name: 'فارس عباد' },
+  { server: 'server11', id: 'qtm', name: 'ناصر القطامي' },
+  { server: 'server7', id: 'shur', name: 'سعود الشريم' },
+  
+  // المصححون (تم تصحيح أخطائهم)
+  { server: 'server13', id: 'hussary', name: 'محمود خليل الحصري' },
   { server: 'server12', id: 'jleel', name: 'خالد الجليل' },
   { server: 'server11', id: 'yasser', name: 'ياسر الدوسري' },
-  { server: 'server11', id: 'qtm', name: 'ناصر القطامي' },
-  { server: 'server7', id: 'sds', name: 'عبد الرحمن السديس' },
-  { server: 'server7', id: 'afs', name: 'مشاري راشد العفاسي' },
-  { server: 'server11', id: 'maher', name: 'ماهر المعيقلي' },
-  { server: 'server7', id: 'minsh', name: 'محمد صديق المنشاوي' },
-  { server: 'server7', id: 'shur', name: 'سعود الشريم' },
-  { server: 'server7', id: 'ajm', name: 'أحمد بن علي العجمي' },
+  { server: 'server13', id: 'soudais', name: 'عبد الرحمن السديس' },
+  { server: 'server8', id: 'afs', name: 'مشاري راشد العفاسي' },
+  { server: 'server12', id: 'maher', name: 'ماهر المعيقلي' },
+  { server: 'server10', id: 'minsh', name: 'محمد صديق المنشاوي' },
+  { server: 'server10', id: 'ajm', name: 'أحمد بن علي العجمي' },
 ];
 // ---------------------------------------------------------
 
@@ -25,7 +28,6 @@ const SurahPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   
-  // الآن سنحفظ القارئ المختار كـ "كائن" كامل (server + id)
   const [selectedReciter, setSelectedReciter] = useState(recitersList[0]);
   const [audioUrl, setAudioUrl] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
@@ -45,10 +47,7 @@ const SurahPage = () => {
     }
     
     const formattedSurahNumber = String(surahNumber).padStart(3, '0');
-    
-    // --- بناء الرابط ديناميكيًا باستخدام الخادم والمعرف الصحيحين ---
     const newAudioUrl = `https://${selectedReciter.server}.mp3quran.net/${selectedReciter.id}/${formattedSurahNumber}.mp3`;
-    // ---------------------------------------------------------
     setAudioUrl(newAudioUrl);
 
   }, [currentPage, selectedReciter]);
