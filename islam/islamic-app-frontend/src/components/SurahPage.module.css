@@ -1,139 +1,113 @@
 .pageContainer {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  background-color: #f4f1e9;
+  align-items: center;
+  background-color: #f4f1ea;
+  min-height: 100vh;
   font-family: 'Cairo', sans-serif;
-  color: #333;
 }
 
 .header {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 15px;
-  background-color: #e6e0d4;
-  border-bottom: 2px solid #d1c8b8;
-  flex-shrink: 0;
+  padding: 10px 20px;
+  background-color: #e9e4d9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.backButton, .pageNumber {
+  font-size: 16px;
+  font-weight: bold;
+  color: #5c5241;
 }
 
 .backButton {
-  background-color: #8a7c66;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
+  background: none;
+  border: 1px solid #c9c1b2;
+  padding: 8px 15px;
+  border-radius: 20px;
   cursor: pointer;
-  font-size: 14px;
   transition: background-color 0.2s;
 }
 
 .backButton:hover {
-  background-color: #6d5f4c;
-}
-
-.pageNumber {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: #5c4e3a;
+  background-color: #d9d2c5;
 }
 
 .imageWrapper {
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  padding: 10px;
+  margin: 20px 0;
+  width: 95%;
+  max-width: 500px;
   position: relative;
+  min-height: 300px; /* To prevent collapse while loading */
 }
 
 .quranImage {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  border: 5px solid #fff;
-  background-color: #fff;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border: 5px solid white;
 }
 
 .loader {
   position: absolute;
-  font-size: 1.5em;
-  color: #8a7c66;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: #8c7f6c;
 }
 
+/* --- هذا هو القسم الذي تم إعادة تصميمه بالكامل --- */
 .audioControls {
   display: flex;
-  align-items: stretch; /* لجعل العناصر بنفس الارتفاع */
-  gap: 10px;
-  padding: 10px 15px;
-  background-color: #d1c8b8;
-  flex-shrink: 0;
+  direction: rtl; /* الأهم: يضمن الترتيب من اليمين لليسار */
+  gap: 10px; /* مسافة بين العناصر */
+  align-items: center; /* محاذاة عمودية في المنتصف */
+  width: 95%;
+  max-width: 500px;
+  margin-bottom: 15px;
 }
 
 .reciterSelect {
-  flex-grow: 1;
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #8a7c66;
-  background-color: #fff;
+  flex-grow: 1; /* يجعل قائمة القراء تأخذ المساحة المتبقية */
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #c9c1b2;
+  background-color: white;
   font-family: 'Cairo', sans-serif;
   font-size: 16px;
+  direction: rtl;
+}
+
+.playButton, .downloadButton {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap; /* يمنع التفاف النص داخل الزر */
 }
 
 .playButton {
-  padding: 10px 20px;
-  font-size: 1em;
-  font-weight: bold;
-  background-color: #6d5f4c;
+  background-color: #8c7f6c;
   color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  white-space: nowrap; /* لمنع التفاف النص */
-  transition: background-color 0.2s;
 }
 
 .playButton:hover {
-  background-color: #5c4e3a;
+  background-color: #7a6e5c;
 }
 
-.navigation {
-  display: flex;
-  justify-content: space-around;
-  padding: 15px;
-  background-color: #e6e0d4;
-  border-top: 2px solid #d1c8b8;
-  flex-shrink: 0;
-}
-
-.navigation button {
-  width: 45%;
-  padding: 12px;
-  font-size: 1.1em;
-  font-weight: bold;
-  background-color: #8a7c66;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.navigation button:hover:not(:disabled) {
-  background-color: #6d5f4c;
-}
-
-.navigation button:disabled {
-  background-color: #c5bba8;
-  cursor: not-allowed;
-}
 .downloadButton {
-  background-color: #5a8c5a; /* لون أخضر مختلف قليلاً */
-  text-decoration: none; /* لإزالة الخط تحت الرابط */
-  color: white; /* لون النص */
-  display: inline-flex; /* لجعله يتماشى مع الأزرار الأخرى */
+  background-color: #5a8c5a;
+  color: white;
+  text-decoration: none;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 }
@@ -141,4 +115,35 @@
 .downloadButton:hover {
   background-color: #4a7c4a;
 }
- 
+/* ---------------------------------------------------- */
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  width: 95%;
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+.navigation button {
+  width: 48%;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background-color: #d9d2c5;
+  color: #5c5241;
+  transition: background-color 0.2s;
+}
+
+.navigation button:hover {
+  background-color: #c9c1b2;
+}
+
+.navigation button:disabled {
+  background-color: #e9e4d9;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
