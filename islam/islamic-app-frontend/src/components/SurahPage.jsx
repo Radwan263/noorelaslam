@@ -1,177 +1,152 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import styles from './SurahPage.module.css';
-
-// --- قائمة القراء (لا تغيير هنا) ---
-const reciters = [
-    { identifier: 'ar.alafasy', name: 'مشاري راشد العفاسي' },
-    { identifier: 'ar.mahermuaiqly', name: 'ماهر المعيقلي' },
-    { identifier: 'ar.abdulbasitmurattal', name: 'عبد الباسط عبد الصمد (مرتل)' },
-    { identifier: 'ar.saoodshuraym', name: 'سعود الشريم' },
-    { identifier: 'ar.sudais', name: 'عبد الرحمن السديس' },
-    { identifier: 'ar.minshawi', name: 'محمد صديق المنشاوي (مرتل)' },
-    { identifier: 'ar.muhammadjibreel', name: 'محمد جبريل' },
-    { identifier: 'ar.husary', name: 'محمود خليل الحصري' },
-    { identifier: 'ar.ahmedajamy', name: 'أحمد بن علي العجمي' },
-    { identifier: 'ar.yasseraddousari', name: 'ياسر الدوسري' },
-    { identifier: 'ar.abdulbasitmujawwad', name: 'عبد الباسط عبد الصمد (مجود)' },
-    { identifier: 'ar.minshawimujawwad', name: 'محمد صديق المنشاوي (مجود)' },
-    { identifier: 'ar.husarymujawwad', name: 'محمود خليل الحصري (مجود)' },
-    { identifier: 'ar.abdullahbasfar', name: 'عبدالله بصفر' },
-    { identifier: 'ar.salahbudair', name: 'صلاح بو خاطر' },
-    { identifier: 'ar.faresabbad', name: 'فارس عباد' },
-    { identifier: 'ar.saadghamidi', name: 'سعد الغامدي' },
-    { identifier: 'ar.ibrahimakhbar', name: 'إبراهيم الأخضر' },
-];
+// بيانات بداية كل سورة في أي صفحة (مهم جدًا)
+import surahPageMapping from './surahPageMapping'; 
 
 const SurahPage = () => {
-    const { surahNumber } = useParams();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // حالات الصوت الجديدة
+  const [reciters, setReciters] = useState([]);
+  const [selectedReciter, setSelectedReciter] = useState(null);
+  const [audioUrl, setAudioUrl] = useState('');
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null); // للتحكم في عنصر الصوت
 
-    // --- حالات الواجهة ---
-    const [surahTextData, setSurahTextData] = useState(null);
-    const [surahAudioData, setSurahAudioData] = useState(null);
-    const [selectedReciter, setSelectedReciter] = useState(reciters[0].identifier);
-    const [loadingText, setLoadingText] = useState(true);
-    const [loadingAudio, setLoadingAudio] = useState(false);
-    const [error, setError] = useState(null);
+  const totalPages = 604;
+  const imageUrl = `https://qurancomplex.gov.sa/wp-content/uploads/2022/10/${currentPage}.png`;
 
-    // === الخطوة 1: حالات جديدة للتحكم في قائمة التشغيل ===
-    const [currentAyahIndex, setCurrentAyahIndex] = useState(0); // مؤشر للآية الحالية
-    const audioRef = useRef(null); // للتحكم في مشغل الصوت مباشرة
+  // 1. جلب قائمة القراء عند تحميل المكون
+  useEffect(() => {
+    const fetchReciters = async () => {
+      try {
+        const response = await axios.get('https://www.mp3quran.net/api/v3/reciters?language=ar');
+        // فلترة القراء لنأخذ فقط من لديهم تلاوة كاملة (مرتل)
+        const filteredReciters = response.data.reciters.filter(r => r.moshaf.some(m => m.name === 'مرتل'));
+        setReciters(filteredReciters);
+        // اختيار قارئ افتراضي (مثلاً: عبد الباسط عبد الصمد)
+        const defaultReciter = filteredReciters.find(r => r.id === 7);
+        setSelectedReciter(defaultReciter);
+      } catch (error) {
+        console.error("Failed to fetch reciters:", error);
+      }
+    };
+    fetchReciters();
+  }, []);
 
-    const currentSurahNumber = parseInt(surahNumber, 10);
-
-    // --- جلب نص السورة (لا تغيير هنا) ---
-    useEffect(() => {
-        if (!currentSurahNumber) return;
-        setLoadingText(true);
-        setError(null);
-        setSurahTextData(null);
-        setSurahAudioData(null);
-        setCurrentAyahIndex(0); // إعادة تعيين مؤشر الآية
-
-        fetch(`https://api.alquran.cloud/v1/surah/${currentSurahNumber}`)
-            .then(res => res.ok ? res.json() : Promise.reject('Error fetching text'))
-            .then(data => {
-                setSurahTextData(data.data);
-                setLoadingText(false);
-            })
-            .catch(err => {
-                setError('حدث خطأ أثناء تحميل نص السورة.');
-                setLoadingText(false);
-            });
-    }, [currentSurahNumber]);
-
-    // --- جلب صوت السورة (لا تغيير هنا) ---
-    useEffect(() => {
-        if (!currentSurahNumber || !selectedReciter) return;
-        setLoadingAudio(true);
-        setSurahAudioData(null);
-        setCurrentAyahIndex(0); // إعادة تعيين مؤشر الآية
-
-        fetch(`https://api.alquran.cloud/v1/surah/${currentSurahNumber}/${selectedReciter}`)
-            .then(res => res.ok ? res.json() : Promise.reject('Error fetching audio'))
-            .then(data => {
-                setSurahAudioData(data.data);
-                setLoadingAudio(false);
-            })
-            .catch(err => {
-                setError('حدث خطأ أثناء تحميل التلاوة الصوتية.');
-                setLoadingAudio(false);
-            });
-    }, [currentSurahNumber, selectedReciter]);
-
-    // === الخطوة 2: منطق تشغيل الآية التالية تلقائيًا ===
-    const handleAyahEnded = () => {
-        const isLastAyah = currentAyahIndex === surahAudioData.ayahs.length - 1;
-        if (!isLastAyah) {
-            // إذا لم تكن الآية الأخيرة، انتقل إلى التالية
-            setCurrentAyahIndex(prevIndex => prevIndex + 1);
+  // 2. تحديث رابط الصوت عند تغير القارئ أو الصفحة
+  useEffect(() => {
+    if (selectedReciter) {
+      // البحث عن السورة التي تبدأ في الصفحة الحالية
+      let surahNumber = 1;
+      for (let i = surahPageMapping.length - 1; i >= 0; i--) {
+        if (currentPage >= surahPageMapping[i].page) {
+          surahNumber = surahPageMapping[i].surah;
+          break;
         }
-    };
+      }
+      
+      // تنسيق رقم السورة ليكون 3 أرقام
+      const formattedSurahNumber = String(surahNumber).padStart(3, '0');
+      
+      // الحصول على رابط الخادم الخاص بالمصحف المرتل
+      const moshaf = selectedReciter.moshaf.find(m => m.name === 'مرتل');
+      if (moshaf) {
+        const newAudioUrl = `${moshaf.server}/${formattedSurahNumber}.mp3`;
+        setAudioUrl(newAudioUrl);
+      }
+    }
+  }, [currentPage, selectedReciter]);
 
-    // === الخطوة 3: تحديث مشغل الصوت عند تغير الآية ===
-    useEffect(() => {
-        if (audioRef.current) {
-            audioRef.current.play(); // تشغيل الآية الجديدة تلقائيًا
-        }
-    }, [currentAyahIndex]);
+  // 3. دوال التحكم في الصوت
+  const togglePlayPause = () => {
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
 
+  // دوال التنقل بين الصفحات
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+      setIsLoading(true);
+      setIsPlaying(false); // إيقاف الصوت عند تغيير الصفحة
+    }
+  };
 
-    // --- دوال التنقل (لا تغيير هنا) ---
-    const goToNextSurah = () => {
-        if (currentSurahNumber < 114) navigate(`/surah/${currentSurahNumber + 1}`);
-    };
-    const goToPreviousSurah = () => {
-        if (currentSurahNumber > 1) navigate(`/surah/${currentSurahNumber - 1}`);
-    };
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+      setIsLoading(true);
+      setIsPlaying(false); // إيقاف الصوت عند تغيير الصفحة
+    }
+  };
 
-    // --- عرض الواجهة ---
-    if (loadingText) return <div className={styles.statusMessage}>جاري تحميل السورة...</div>;
-    if (error) return <div className={styles.statusMessage} style={{ color: 'red' }}>{error}</div>;
-    if (!surahTextData) return <div className={styles.statusMessage}>لم يتم العثور على بيانات السورة.</div>;
+  const handleReciterChange = (event) => {
+    const reciterId = parseInt(event.target.value, 10);
+    const reciter = reciters.find(r => r.id === reciterId);
+    setSelectedReciter(reciter);
+    setIsPlaying(false); // إيقاف الصوت عند تغيير القارئ
+  };
 
-    return (
-        <div className={styles.surahPageContainer}>
-            {/* ... قسم الهيدر واختيار القارئ (لا تغيير هنا) ... */}
-            <div className={styles.surahHeader}>
-                <h1>{surahTextData.name}</h1>
-                <p>({surahTextData.englishName})</p>
-                <p>{surahTextData.revelationType === 'Meccan' ? 'مكية' : 'مدنية'} - {surahTextData.numberOfAyahs} آية</p>
-            </div>
+  return (
+    <div className={styles.pageContainer}>
+      {/* عنصر الصوت المخفي */}
+      <audio 
+        ref={audioRef} 
+        src={audioUrl} 
+        onEnded={() => setIsPlaying(false)}
+      />
 
-            <div className={styles.audioSection}>
-                <div className={styles.reciterSelector}>
-                    <label htmlFor="reciter-select">اختر القارئ:</label>
-                    <select id="reciter-select" value={selectedReciter} onChange={(e) => setSelectedReciter(e.target.value)}>
-                        {reciters.map(reciter => (<option key={reciter.identifier} value={reciter.identifier}>{reciter.name}</option>))}
-                    </select>
-                </div>
+      <div className={styles.header}>
+        <button onClick={() => navigate('/')} className={styles.backButton}>
+          الرئيسية
+        </button>
+        <div className={styles.pageNumber}>صفحة {currentPage}</div>
+      </div>
 
-                {loadingAudio && <p className={styles.audioStatus}>جاري تحميل التلاوة...</p>}
-                
-                {/* === الخطوة 4: تعديل مشغل الصوت ليعمل مع قائمة التشغيل === */}
-                {surahAudioData && surahAudioData.ayahs && surahAudioData.ayahs.length > 0 && (
-                    <div className={styles.audioPlayerWrapper}>
-                        <audio
-                            ref={audioRef}
-                            controls
-                            autoPlay
-                            src={surahAudioData.ayahs[currentAyahIndex].audio}
-                            onEnded={handleAyahEnded} // <-- هذا هو مفتاح الحل
-                            className={styles.audioPlayer}
-                        >
-                            متصفحك لا يدعم عنصر الصوت.
-                        </audio>
-                        <p className={styles.currentAyahIndicator}>
-                            الآية قيد التشغيل: {currentAyahIndex + 1} / {surahAudioData.ayahs.length}
-                        </p>
-                    </div>
-                )}
-            </div>
+      <div className={styles.imageWrapper}>
+        {isLoading && <div className={styles.loader}>جاري تحميل الصفحة...</div>}
+        <img
+          src={imageUrl}
+          alt={`صفحة ${currentPage} من القرآن الكريم`}
+          className={styles.quranImage}
+          onLoad={() => setIsLoading(false)}
+          style={{ display: isLoading ? 'none' : 'block' }}
+        />
+      </div>
 
-            {/* ... عرض الآيات وأزرار التنقل (لا تغيير هنا) ... */}
-            <div className={styles.ayahContainer}>
-                {surahTextData.ayahs.map((ayah, index) => (
-                    <div 
-                        key={ayah.number} 
-                        // تمييز الآية التي يتم تشغيلها
-                        className={`${styles.ayah} ${index === currentAyahIndex ? styles.ayahPlaying : ''}`}
-                    >
-                        <p className={styles.ayahText}>
-                            {ayah.text} <span className={styles.ayahNumber}>({ayah.numberInSurah})</span>
-                        </p>
-                    </div>
-                ))}
-            </div>
+      {/* شريط التحكم الجديد */}
+      <div className={styles.audioControls}>
+        <select onChange={handleReciterChange} value={selectedReciter ? selectedReciter.id : ''}>
+          {reciters.map(reciter => (
+            <option key={reciter.id} value={reciter.id}>
+              {reciter.name}
+            </option>
+          ))}
+        </select>
+        <button onClick={togglePlayPause} className={styles.playButton}>
+          {isPlaying ? '❚❚ إيقاف' : '▶ تشغيل'}
+        </button>
+      </div>
 
-            <div className={styles.navigationButtons}>
-                {currentSurahNumber > 1 && (<button onClick={goToPreviousSurah} className={styles.navButton}>→ السورة السابقة</button>)}
-                {currentSurahNumber < 114 && (<button onClick={goToNextSurah} className={styles.navButton}>السورة التالية ←</button>)}
-            </div>
-        </div>
-    );
+      <div className={styles.navigation}>
+        <button onClick={goToNextPage} disabled={currentPage === totalPages}>
+          الصفحة التالية
+        </button>
+        <button onClick={goToPreviousPage} disabled={currentPage === 1}>
+          الصفحة السابقة
+        </button>
+      </div>
+    </div>
+  );
 };
 
 export default SurahPage;
