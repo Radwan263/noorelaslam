@@ -3,20 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import styles from './SurahPage.module.css';
 import surahPageMapping from './surahPageMapping';
 
-// --- القائمة النهائية بالمعرفات الصحيحة 100% من الـ API ---
+// --- القائمة النهائية بالخادم والمعرف الصحيح لكل قارئ ---
 const recitersList = [
-  { id: 'Abd_El_Basit_Murattal_64kb_m.mp3', name: 'عبد الباسط عبد الصمد' },
-  { id: 'Al-Hussary_64kb_m.mp3', name: 'محمود خليل الحصري' },
-  { id: 'Fares_Abbad_64kb_m.mp3', name: 'فارس عباد' },
-  { id: 'Al-Galeel_64kb_m.mp3', name: 'خالد الجليل' },
-  { id: 'Yasser_Ad-Dussary_128kb_m.mp3', name: 'ياسر الدوسري' },
-  { id: 'Nasser_Al_qatami_128kb_m.mp3', name: 'ناصر القطامي' },
-  { id: 'Abdurrahmaan_As-Sudais_192kb_m.mp3', name: 'عبد الرحمن السديس' },
-  { id: 'Alafasy_128kb_m.mp3', name: 'مشاري راشد العفاسي' },
-  { id: 'Maher_AlMuaiqly_64kb_m.mp3', name: 'ماهر المعيقلي' },
-  { id: 'Al-Minshawi_Murattal_128kb_m.mp3', name: 'محمد صديق المنشاوي' },
-  { id: 'Saood_Ash-Shuraym_128kb_m.mp3', name: 'سعود الشريم' },
-  { id: 'Ahmed_Al_Ajmi_128kb_m.mp3', name: 'أحمد بن علي العجمي' },
+  { server: 'server7', id: 'basit', name: 'عبد الباسط عبد الصمد' },
+  { server: 'server7', id: 'husr', name: 'محمود خليل الحصري' },
+  { server: 'server8', id: 'frs_a', name: 'فارس عباد' },
+  { server: 'server12', id: 'jleel', name: 'خالد الجليل' },
+  { server: 'server11', id: 'yasser', name: 'ياسر الدوسري' },
+  { server: 'server11', id: 'qtm', name: 'ناصر القطامي' },
+  { server: 'server7', id: 'sds', name: 'عبد الرحمن السديس' },
+  { server: 'server7', id: 'afs', name: 'مشاري راشد العفاسي' },
+  { server: 'server11', id: 'maher', name: 'ماهر المعيقلي' },
+  { server: 'server7', id: 'minsh', name: 'محمد صديق المنشاوي' },
+  { server: 'server7', id: 'shur', name: 'سعود الشريم' },
+  { server: 'server7', id: 'ajm', name: 'أحمد بن علي العجمي' },
 ];
 // ---------------------------------------------------------
 
@@ -25,7 +25,8 @@ const SurahPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
   
-  const [selectedReciterId, setSelectedReciterId] = useState('Abd_El_Basit_Murattal_64kb_m.mp3'); // القارئ الافتراضي بالمعرف الصحيح
+  // الآن سنحفظ القارئ المختار كـ "كائن" كامل (server + id)
+  const [selectedReciter, setSelectedReciter] = useState(recitersList[0]);
   const [audioUrl, setAudioUrl] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef(null);
@@ -45,12 +46,18 @@ const SurahPage = () => {
     
     const formattedSurahNumber = String(surahNumber).padStart(3, '0');
     
-    // --- هذا هو السطر الذي تم تصحيحه بالخادم والمعرف الصحيح ---
-    const newAudioUrl = `https://server13.mp3quran.net/${selectedReciterId}/${formattedSurahNumber}.mp3`;
+    // --- بناء الرابط ديناميكيًا باستخدام الخادم والمعرف الصحيحين ---
+    const newAudioUrl = `https://${selectedReciter.server}.mp3quran.net/${selectedReciter.id}/${formattedSurahNumber}.mp3`;
     // ---------------------------------------------------------
     setAudioUrl(newAudioUrl);
 
-  }, [currentPage, selectedReciterId]);
+  }, [currentPage, selectedReciter]);
+
+  const handleReciterChange = (event) => {
+    const reciterId = event.target.value;
+    const reciter = recitersList.find(r => r.id === reciterId);
+    setSelectedReciter(reciter);
+  };
 
   const togglePlayPause = () => {
     if (isPlaying) {
@@ -101,7 +108,7 @@ const SurahPage = () => {
       </div>
 
       <div className={styles.audioControls}>
-        <select onChange={(e) => setSelectedReciterId(e.target.value)} value={selectedReciterId} className={styles.reciterSelect}>
+        <select onChange={handleReciterChange} value={selectedReciter.id} className={styles.reciterSelect}>
           {recitersList.map(reciter => (
             <option key={reciter.id} value={reciter.id}>{reciter.name}</option>
           ))}
