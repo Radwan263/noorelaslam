@@ -101,7 +101,6 @@ const SurahPage = () => {
         />
       </div>
 
-      {/* --- هذا هو القسم الذي تم تعديله --- */}
       <div className={styles.audioControls}>
         <select onChange={handleReciterChange} value={selectedReciter.id} className={styles.reciterSelect}>
           {recitersList.map(reciter => (
@@ -109,21 +108,19 @@ const SurahPage = () => {
           ))}
         </select>
         <button onClick={togglePlayPause} className={styles.playButton}>
-          {isPlaying ? '❚❚ إيقاف' : '▶ تشغيل'}
+          {isPlaying ? '❚❚' : '▶'}
         </button>
-        {/* --- هذا هو الزر الجديد --- */}
         <a 
           href={audioUrl} 
           download 
           className={`${styles.playButton} ${styles.downloadButton}`}
-          target="_blank" // يضمن الفتح في نافذة جديدة إذا لم يبدأ التحميل مباشرة
+          target="_blank"
           rel="noopener noreferrer"
+          title="تحميل"
         >
-          ⤓ تحميل
+          ⤓
         </a>
-        {/* ------------------------- */}
       </div>
-      {/* ------------------------------------ */}
 
       <div className={styles.navigation}>
         <button onClick={() => goToPage(currentPage + 1)} disabled={currentPage === totalPages}>الصفحة التالية</button>
