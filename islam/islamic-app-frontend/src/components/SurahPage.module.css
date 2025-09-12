@@ -164,3 +164,32 @@
   border-right: 4px solid #28a745;
   transform: scale(1.02);
 }
+/* ... كل الأنماط القديمة تبقى كما هي ... */
+
+.audioControls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background-color: #d1c8b8; /* لون أغمق قليلاً */
+}
+
+.audioControls select {
+  flex-grow: 1;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #8a7c66;
+  background-color: #fff;
+  font-family: 'Cairo', sans-serif;
+}
+
+.playButton {
+  padding: 8px 15px;
+  font-size: 1em;
+  font-weight: bold;
+  background-color: #6d5f4c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
