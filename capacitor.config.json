@@ -1,6 +1,6 @@
 {
   "appId": "com.radwan.noorelaslam",
   "appName": "Noor El Aslam",
-  "webDir": ".",
+  "webDir": "www",
   "bundledWebRuntime": false
 }
