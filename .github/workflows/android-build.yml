@@ -3,7 +3,7 @@ name: Build Android APK
 on:
   push:
     branches:
-      - main  # تأكد من أن هذا هو اسم الفرع الرئيسي لمشروعك
+      - main
 
 jobs:
   build:
@@ -23,8 +23,18 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Install dependencies and Capacitor
+      - name: Install dependencies
         run: npm install
+
+      - name: Create www directory and copy project files
+        run: |
+          mkdir www
+          cp index.html www/
+          cp style.css www/
+          cp main.js www/
+          if [ -d "img" ]; then
+            cp -r img www/
+          fi
 
       - name: Add Android platform
         run: npx cap add android
