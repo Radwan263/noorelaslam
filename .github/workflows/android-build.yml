@@ -9,7 +9,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     
-    # الخطوة 1: تحديد مسار العمل الصحيح
     defaults:
       run:
         working-directory: ./islam/islamic-app-frontend
@@ -18,11 +17,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # الخطوة 2: إعداد بيئة العمل
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -30,20 +33,16 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # الخطوة 3: بناء مشروع الويب
       - name: Install web dependencies
-        run: npm install # أو pnpm install إذا كنت تستخدم pnpm
+        run: pnpm install
 
       - name: Build web project
-        run: npm run build # هذا الأمر سينشئ مجلد dist
+        run: pnpm run build
 
-      # الخطوة 4: إعداد Capacitor وبناء تطبيق الأندرويد
       - name: Install Capacitor dependencies
-        run: npm install @capacitor/cli @capacitor/core @capacitor/android
+        run: pnpm add @capacitor/cli @capacitor/core @capacitor/android
 
       - name: Initialize Capacitor
-        # سيقوم بإنشاء ملف capacitor.config.json تلقائيًا
-        # ويضبط webDir على 'dist'
         run: npx cap init "Noor El Aslam" "com.radwan.noorelaslam" --web-dir "dist"
 
       - name: Add Android platform
@@ -55,10 +54,8 @@ jobs:
       - name: Build debug APK
         run: cd android && ./gradlew assembleDebug
 
-      # الخطوة 5: رفع ملف الـ APK
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: noorelaslam-apk
-          # المسار تغير لأننا نعمل داخل مجلد فرعي
           path: islam/islamic-app-frontend/android/app/build/outputs/apk/debug/app-debug.apk
