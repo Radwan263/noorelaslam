@@ -1,5 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// 1. قم بتغيير 'BrowserRouter' إلى 'HashRouter'
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 
 // استيراد الصفحات والمكونات الحالية
 import HomePage from './pages/HomePage';
@@ -14,11 +15,12 @@ import DuasPage from './components/DuasPage';
 import SadaqaJariyaPage from './components/SadaqaJariyaPage'; 
 
 // --- الإضافة الجديدة ---
-// 1. استيراد صفحة التسبيح
+// استيراد صفحة التسبيح
 import TasbeehPage from './pages/TasbeehPage';
 
 function App() {
   return (
+    // 2. الآن 'Router' هو في الحقيقة 'HashRouter'. لا حاجة لتغيير أي شيء آخر.
     <Router>
       <Routes>
         {/* المسارات القديمة */}
@@ -34,7 +36,7 @@ function App() {
         <Route path="/sadaqa-jariya" element={<SadaqaJariyaPage />} />
 
         {/* --- الإضافة الجديدة --- */}
-        {/* 2. إضافة مسار لصفحة التسبيح */}
+        {/* إضافة مسار لصفحة التسبيح */}
         <Route path="/tasbeeh" element={<TasbeehPage />} />
 
       </Routes>
