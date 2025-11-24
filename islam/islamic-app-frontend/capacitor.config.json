@@ -1,0 +1,11 @@
+{
+  "appId": "com.radwan.noorelaslam",
+  "appName": "Noor El Aslam",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "allowNavigation": [
+      "radwan2633.pythonanywhere.com"
+    ]
+  }
+}
