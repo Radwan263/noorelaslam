@@ -42,10 +42,14 @@ jobs:
       - name: Install Capacitor dependencies
         run: pnpm add @capacitor/cli @capacitor/core @capacitor/android
 
-      # --- تم حذف خطوة Initialize Capacitor من هنا ---
-
       - name: Add Android platform
         run: npx cap add android
+
+      - name: Enable Web Debugging
+        run: |
+          FILE_PATH=android/app/src/main/java/com/radwan/noorelaslam/MainActivity.java
+          sed -i '/super.onCreate(savedInstanceState);/i \    WebView.setWebContentsDebuggingEnabled(true);' $FILE_PATH
+          sed -i '/package com.radwan.noorelaslam;/a \import android.webkit.WebView;' $FILE_PATH
 
       - name: Sync web assets
         run: npx cap sync android
