@@ -30,7 +30,7 @@ jobs:
       - name: Set up JDK 21
         uses: actions/setup-java@v3
         with:
-          java-version: '21' # <-- هذا هو التغيير
+          java-version: '21'
           distribution: 'temurin'
 
       - name: Install web dependencies
@@ -42,8 +42,7 @@ jobs:
       - name: Install Capacitor dependencies
         run: pnpm add @capacitor/cli @capacitor/core @capacitor/android
 
-      - name: Initialize Capacitor
-        run: npx cap init "Noor El Aslam" "com.radwan.noorelaslam" --web-dir "dist"
+      # --- تم حذف خطوة Initialize Capacitor من هنا ---
 
       - name: Add Android platform
         run: npx cap add android
