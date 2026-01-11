@@ -8,57 +8,41 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
-    defaults:
-      run:
-        working-directory: ./islam/islamic-app-frontend
-
+    permissions:
+      contents: write
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
+      # 👇 هنا التعديل: خليناها نسخة 22
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 22
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+      - name: Install Dependencies
+        run: npm install
 
-      - name: Set up JDK 21
+      - name: Build React App
+        run: npm run build
+
+      - name: Sync Capacitor
+        run: npx cap sync
+
+      - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          distribution: 'zulu'
+          java-version: '17'
 
-      - name: Install web dependencies
-        run: pnpm install
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-      - name: Build web project
-        run: pnpm run build
+      - name: Build APK
+        working-directory: android
+        run: ./gradlew assembleDebug
 
-      - name: Install Capacitor dependencies
-        run: pnpm add @capacitor/cli @capacitor/core @capacitor/android
-
-      - name: Add Android platform
-        run: npx cap add android
-
-      - name: Enable Web Debugging
-        run: |
-          FILE_PATH=android/app/src/main/java/com/radwan/noorelaslam/MainActivity.java
-          sed -i '/super.onCreate(savedInstanceState);/i \    WebView.setWebContentsDebuggingEnabled(true);' $FILE_PATH
-          sed -i '/package com.radwan.noorelaslam;/a \import android.webkit.WebView;' $FILE_PATH
-
-      - name: Sync web assets
-        run: npx cap sync android
-
-      - name: Build debug APK
-        run: cd android && ./gradlew assembleDebug
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
         with:
-          name: noorelaslam-apk
-          path: islam/islamic-app-frontend/android/app/build/outputs/apk/debug/app-debug.apk
+          name: IslamicApp-Debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
