@@ -4,36 +4,37 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch: # عشان تقدر تشغله يدوي لو حبيت
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    
+    # 👇 ده السطر السحري اللي هيحل المشكلة
+    # بنقوله: كل الأوامر الجاية دي، نفذها جوه الفولدر ده
+    defaults:
+      run:
+        working-directory: ./islamic-app-frontend
+
     steps:
-      # 1. سحب الكود (أحدث نسخة)
       - uses: actions/checkout@v4
 
-      # 2. تجهيز نود 22 (عشان مكتبات Tailwind و Vite الجديدة)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      # 3. تسطيب المكتبات (بنستخدم legacy-peer-deps عشان نتفادى مشاكل التوافق)
       - name: Install Dependencies
         run: npm install --legacy-peer-deps
 
-      # 4. بناء الموقع (ده اللي كان ضارب المرة اللي فاتت)
       - name: Build React App
         run: npm run build
 
-      # 5. تجهيز كاباستور
       - name: Sync Capacitor
         run: npx cap sync
 
-      # 6. تجهيز الجافا للأندرويد
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -43,14 +44,14 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      # 7. استخراج ملف APK
       - name: Build APK
-        working-directory: android
+        # هنا بنحدد مكان الجرادل جوه الفولدر الفرعي
+        working-directory: ./islamic-app-frontend/android
         run: ./gradlew assembleDebug
 
-      # 8. الرفع (أحدث نسخة v4)
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: IslamicApp-Debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
+          # المسار الكامل للملف عشان يلاقيه ويرفعه
+          path: islamic-app-frontend/android/app/build/outputs/apk/debug/app-debug.apk
