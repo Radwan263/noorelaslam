@@ -11,8 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
-    # 👇 التعديل الجوهري: حددنا المسار الصحيح للمشروع
+
+    # 👇 تحديد مكان المشروع (اللي اكتشفناه سوا)
     defaults:
       run:
         working-directory: ./islam/islamic-app-frontend
@@ -20,20 +20,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # 1. تجهيز أداة pnpm (عشان تفهم الـ workspaces)
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      # 2. تجهيز Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: 'pnpm'
+          # لازم نحدد مكان ملف القفل عشان الكاش يشتغل صح
+          cache-dependency-path: './islam/islamic-app-frontend/pnpm-lock.yaml'
 
+      # 3. تسطيب المكتبات (باستخدام pnpm)
       - name: Install Dependencies
-        run: npm install --legacy-peer-deps
+        run: pnpm install --no-frozen-lockfile
 
+      # 4. بناء الموقع
       - name: Build React App
-        run: npm run build
+        run: pnpm run build
 
+      # 5. تجهيز كاباستور
       - name: Sync Capacitor
         run: npx cap sync
 
+      # 6. تجهيز الجافا
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -43,14 +57,14 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      # 7. بناء الـ APK
       - name: Build APK
-        # بندخل جوه فولدر android اللي جوه مسار المشروع
         working-directory: ./islam/islamic-app-frontend/android
         run: ./gradlew assembleDebug
 
+      # 8. الرفع
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: IslamicApp-Debug
-          # المسار الكامل عشان يرفع الملف الصح
           path: islam/islamic-app-frontend/android/app/build/outputs/apk/debug/app-debug.apk
