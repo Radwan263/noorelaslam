@@ -7,31 +7,50 @@ on:
   workflow_dispatch:
 
 jobs:
-  debug-and-build:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    
+    # 👇 التعديل الجوهري: حددنا المسار الصحيح للمشروع
+    defaults:
+      run:
+        working-directory: ./islam/islamic-app-frontend
+
     steps:
       - uses: actions/checkout@v4
 
-      # 1. الخطوة دي هتكشفلنا الملفات فين بالظبط (عشان منخمنش)
-      - name: 🕵️ Detective - Show Me Files
-        run: |
-          echo "📂 Listing Root Files:"
-          ls -la
-          echo "--------------------------------"
-          echo "🔎 Searching for package.json:"
-          find . -name "package.json" -not -path "*/node_modules/*"
-
-      # 2. إحنا هنحاول نبني، بس لو المسار غلط هيبان في الخطوة اللي فوق
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
       - name: Install Dependencies
-        # بنجرب نسطب في الرئيسية مؤقتاً لحد ما نشوف الخريطة
         run: npm install --legacy-peer-deps
 
       - name: Build React App
         run: npm run build
+
+      - name: Sync Capacitor
+        run: npx cap sync
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Build APK
+        # بندخل جوه فولدر android اللي جوه مسار المشروع
+        working-directory: ./islam/islamic-app-frontend/android
+        run: ./gradlew assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: IslamicApp-Debug
+          # المسار الكامل عشان يرفع الملف الصح
+          path: islam/islamic-app-frontend/android/app/build/outputs/apk/debug/app-debug.apk
