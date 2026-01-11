@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">IslamicApp</string>
+    <string name="title_activity_main">IslamicApp</string>
+    <string name="package_name">com.radwan.islamic</string>
+    <string name="custom_url_scheme">com.radwan.islamic</string>
+</resources>
