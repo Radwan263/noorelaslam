@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-// 👇 1. شيلنا HashRouter من هنا، وخلينا Routes و Route بس
+// 👇 1. شيلنا HashRouter/Router من هنا خالص
 import { Routes, Route } from 'react-router-dom';
 
-// استيراد الصفحات
+// استيراد الصفحات (زي ما هي عندك)
 import HomePage from './pages/HomePage';
 import QuranSection from './components/QuranSection';
 import SurahPage from './components/SurahPage';
@@ -16,13 +16,30 @@ import SadaqaJariyaPage from './components/SadaqaJariyaPage';
 import TasbeehPage from './pages/TasbeehPage';
 
 function App() {
-  
-  // ⚠️ ملحوظة: أنا لغيت كود "قطع النت" مؤقتاً
-  // عشان التطبيق يفتح معاك حتى لو النت فاصل وتتأكد إنه شغال
-  // لأن تطبيقات القرآن والأذكار المفروض تفتح أوفلاين عادي
+  // كود النت سيبه زي ما هو أو شيله مؤقتاً للتجربة
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
+  if (!isOnline) {
+    return (
+      <div style={{ textAlign: 'center', padding: '50px' }}>
+        <h1>لا يوجد اتصال بالإنترنت</h1>
+      </div>
+    );
+  }
 
   return (
-    // 👇 2. مسحنا الـ <Router> اللي كان هنا، وسيبنا الـ div أو الـ Routes علطول
+    // 👇 2. هنا كان فيه <Router>.. شلناه وحطينا div عادي
     <div className="app-container">
       <Routes>
         <Route path="/" element={<HomePage />} />
