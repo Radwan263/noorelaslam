@@ -3,7 +3,6 @@ import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 
 export default defineConfig({
-  // 👇 ده أهم سطر: عشان التطبيق يعرف يقرأ الملفات على الموبايل
   base: './',
   plugins: [react()],
   resolve: {
@@ -11,6 +10,18 @@ export default defineConfig({
       "@": path.resolve(new URL('.', import.meta.url).pathname, "./src"),
     },
   },
+  // 👇👇 ده الجزء الجديد اللي هيحل المشكلة بإذن الله
+  optimizeDeps: {
+    exclude: ['fsevents'] // بنقوله ماتحاولش تعالج الملف ده
+  },
+  build: {
+    rollupOptions: {
+      // وهنا بنقوله لو لقيته، اعتبره مش موجود وماتوقفش البناء
+      external: ['fsevents', 'path', 'fs'], 
+    },
+  },
+  // 👆👆 نهاية الجزء الجديد
+  
   server: {
     proxy: {
       '/api': {
