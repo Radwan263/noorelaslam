@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-// 👇 1. شيلنا HashRouter/Router من هنا خالص
+// 👇 لاحظ: استوردنا Routes و Route بس (بدون Router)
 import { Routes, Route } from 'react-router-dom';
 
-// استيراد الصفحات (زي ما هي عندك)
+// استيراد صفحاتك (تأكد إن المسارات دي صحيحة عندك)
 import HomePage from './pages/HomePage';
 import QuranSection from './components/QuranSection';
 import SurahPage from './components/SurahPage';
@@ -16,31 +16,36 @@ import SadaqaJariyaPage from './components/SadaqaJariyaPage';
 import TasbeehPage from './pages/TasbeehPage';
 
 function App() {
-  // كود النت سيبه زي ما هو أو شيله مؤقتاً للتجربة
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
+
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
+
     return () => {
       window.removeEventListener('online', handleOnline);
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
 
+  // ⚠️ أنا وقفت الكود ده مؤقتاً عشان لو النت فاصل عندك التطبيق يفتح ومايجيبش شاشة بيضاء
+  /*
   if (!isOnline) {
     return (
-      <div style={{ textAlign: 'center', padding: '50px' }}>
-        <h1>لا يوجد اتصال بالإنترنت</h1>
+      <div style={{ textAlign: 'center', padding: '50px', paddingTop: '40vh' }}>
+        <h2>لا يوجد اتصال بالإنترنت</h2>
+        <p>يرجى التحقق من الشبكة</p>
       </div>
     );
   }
+  */
 
   return (
-    // 👇 2. هنا كان فيه <Router>.. شلناه وحطينا div عادي
-    <div className="app-container">
+    // 👇 شلنا الـ <Router> من هنا خلاص، واستخدمنا div عادي
+    <div className="app-container" style={{ minHeight: '100vh' }}>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/quran" element={<QuranSection />} />
