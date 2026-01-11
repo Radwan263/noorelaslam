@@ -12,7 +12,7 @@ jobs:
     permissions:
       contents: write
 
-    # 👇 تحديد مكان المشروع (اللي اكتشفناه سوا)
+    # تحديد مكان العمل داخل الفولدر الصحيح
     defaults:
       run:
         working-directory: ./islam/islamic-app-frontend
@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # 1. تجهيز أداة pnpm (عشان تفهم الـ workspaces)
+      # 1. تجهيز pnpm
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
@@ -32,10 +32,9 @@ jobs:
         with:
           node-version: 22
           cache: 'pnpm'
-          # لازم نحدد مكان ملف القفل عشان الكاش يشتغل صح
           cache-dependency-path: './islam/islamic-app-frontend/pnpm-lock.yaml'
 
-      # 3. تسطيب المكتبات (باستخدام pnpm)
+      # 3. تسطيب المكتبات
       - name: Install Dependencies
         run: pnpm install --no-frozen-lockfile
 
@@ -43,7 +42,11 @@ jobs:
       - name: Build React App
         run: pnpm run build
 
-      # 5. تجهيز كاباستور
+      # 👇 الخطوة المنقذة: إنشاء فولدر الأندرويد لو مش موجود
+      - name: Add Android Platform
+        run: npx cap add android
+
+      # 5. تحديث ملفات كاباستور
       - name: Sync Capacitor
         run: npx cap sync
 
@@ -57,10 +60,12 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      # 7. بناء الـ APK
+      # 7. بناء الـ APK (مع إعطاء صلاحية التشغيل)
       - name: Build APK
         working-directory: ./islam/islamic-app-frontend/android
-        run: ./gradlew assembleDebug
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug
 
       # 8. الرفع
       - name: Upload APK
