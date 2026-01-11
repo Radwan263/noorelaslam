@@ -1,9 +1,9 @@
-// vite.config.js
 import path from "path"
 import react from "@vitejs/plugin-react"
 import { defineConfig } from "vite"
 
 export default defineConfig({
+  // 👇 ده أهم سطر: عشان التطبيق يعرف يقرأ الملفات على الموبايل
   base: './',
   plugins: [react()],
   resolve: {
@@ -13,11 +13,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      // أي طلب يبدأ بـ /api سيتم تحويله إلى الباك إند
       '/api': {
-        target: 'https://radwan2633.pythonanywhere.com', // رابط الباك إند الخاص بك
-        changeOrigin: true, // ضروري للتحويل الصحيح
-        rewrite: (path) => path.replace(/^\/api/, ''), // إزالة /api من بداية الطلب قبل إرساله
+        target: 'https://radwan2633.pythonanywhere.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },
