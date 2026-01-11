@@ -10,7 +10,7 @@ export default defineConfig({
       "@": path.resolve(new URL('.', import.meta.url).pathname, "./src"),
     },
   },
-  // 👇 ده التعديل الوحيد المطلوب عشان يمنع إيرور fsevents
+  // 👇 ده الكود اللي بيمنع المشاكل
   optimizeDeps: {
     exclude: ['fsevents']
   },
