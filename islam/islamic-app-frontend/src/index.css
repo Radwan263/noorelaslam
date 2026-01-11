@@ -1,32 +1,64 @@
 /* src/index.css */
-@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap');
+/* استيراد الخطوط (Cairo هو الأساسي الآن) */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap');
+
+:root {
+  /* ألوان الثيم الجديد (مستوحاة من الفيديو) */
+  --primary-color: #10b981;    /* الأخضر الزمردي */
+  --primary-dark: #047857;     /* أخضر غامق للزراير عند الضغط */
+  --bg-color: #f8fafc;         /* لون الخلفية (أوف وايت فاتح جداً) */
+  --text-main: #1f2937;        /* لون النص الأساسي (رمادي غامق) */
+  --text-light: #6b7280;       /* لون النص الفرعي */
+  --card-bg: #ffffff;          /* لون الكروت (أبيض صافي) */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+* {
+  box-sizing: border-box;
+}
 
 body {
-  /* 1. تحديد صورة الخلفية */
-  background-image: url('./assets/islamic-bg.jpg');
-
-  /* 2. جعل الخلفية تغطي الشاشة بالكامل */
-  background-size: cover;
-
-  /* 3. تثبيت الخلفية في مكانها عند التمرير */
-  background-attachment: fixed;
-
-  /* 4. توسيط الخلفية */
-  background-position: center;
-
-  /* 5. منع تكرار الخلفية إذا كانت أصغر من الشاشة */
-  background-repeat: no-repeat;
+  /* 1. حذفنا الصورة وحطينا لون هادي */
+  background-image: none;
+  background-color: var(--bg-color);
   
-  /* إضافات مقترحة لتحسين الخط والمظهر العام */
+  /* 2. تفعيل خط Cairo */
+  font-family: 'Cairo', sans-serif;
+  
+  /* 3. تظبيط الألوان */
+  color: var(--text-main);
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* تحسين شكل السكرول بار (شريط التمرير) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* تنسيق الكود لو موجود */
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* كلاس مساعد للكروت (عشان تستخدمه في العناصر) */
+.card-style {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  padding: 20px;
+  border: 1px solid #e5e7eb;
 }
