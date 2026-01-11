@@ -2,32 +2,23 @@
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    
-    <!-- أيقونة الموقع: تم تغيير /logo.png إلى ./logo.png -->
-    <link rel="icon" type="image/png" href="./logo.png" /> 
-    
+    <link rel="icon" type="image/png" href="/logo.png" /> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- وصف الموقع لتحسين محركات البحث (SEO) -->
-    <meta name="description" content="موقع نور الإسلام: دليلك اليومي لحياة إيمانية، يتضمن القرآن الكريم، الأحاديث، الأذكار، والأدعية." />
+    <meta name="description" content="نور الإسلام" />
 
-    <!-- استيراد الخطوط من Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-
     
     <title>نور الإسلام</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+        <div style="display:flex; justify-content:center; align-items:center; height:100vh; font-family:'Cairo';">
+            <h1>جاري تحميل التطبيق...</h1>
+        </div>
+    </div>
 
-    <!-- ====================================================== -->
-    <!-- === تم إضافة هذا السطر لتحميل مكتبة Supabase         === -->
-    <!-- ====================================================== -->
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    
-    <!-- هذا السطر هو نقطة انطلاق تطبيق React (Vite) الخاص بك: تم تغيير /src/main.jsx إلى ./src/main.jsx -->
-    <script type="module" src="./src/main.jsx"></script>
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
