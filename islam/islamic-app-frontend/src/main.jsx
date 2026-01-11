@@ -1,15 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.jsx';
-import './index.css';
-// 👇 1. استيراد HashRouter من المكتبة
-import { HashRouter } from 'react-router-dom';
+import path from "path"
+import react from "@vitejs/plugin-react"
+import { defineConfig } from "vite"
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    {/* 👇 2. تغليف التطبيق بـ HashRouter عشان يشتغل على الموبايل */}
-    <HashRouter>
-      <App />
-    </HashRouter>
-  </React.StrictMode>
-);
+export default defineConfig({
+  // 👇 ده أهم سطر: عشان التطبيق يعرف يقرأ الملفات على الموبايل
+  base: './',
+  plugins: [react()],
+  resolve: {
+    alias: {
+      "@": path.resolve(new URL('.', import.meta.url).pathname, "./src"),
+    },
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://radwan2633.pythonanywhere.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+  },
+})
