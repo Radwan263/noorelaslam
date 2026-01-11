@@ -1,9 +1,9 @@
-// 👇 1. استيراد المكتبة (ده أهم سطر كان ناقص)
 import { createClient } from '@supabase/supabase-js';
 
-// 2. قراءة المفاتيح من ملف البيئة
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// 👇 رابط مشروعك
+const supabaseUrl = "https://zovuyfpudtjvzrzphjap.supabase.co";
 
-// 👇 3. إنشاء الاتصال (بدون كلمة window)
+// 👇 مفتاح الاتصال (Anon Key)
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvdnV5ZnB1ZHRqdnpyenBoamFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTczODU3OTIsImV4cCI6MjA3Mjk2MTc5Mn0.VYpK6-CPtm7AuKVI0hiU_VBile1xnrHufZFiVcMr2i4";
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
