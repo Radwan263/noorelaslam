@@ -1,8 +1,9 @@
-// src/supabaseClient.js
+// 👇 استيراد الدالة من المكتبة اللي سطبناها (بدل window.supabase)
+import { createClient } from '@supabase/supabase-js';
 
-// هذا السطر يخبر Vite أن يقرأ المتغيرات الآمنة من ملف .env
+// قراءة المتغيرات من ملف .env (زي ما هي)
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-// هذا السطر ينشئ الاتصال باستخدام المكتبة التي حملناها في index.html
-export const supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+// 👇 إنشاء الاتصال بالطريقة الصحيحة
+export const supabase = createClient(supabaseUrl, supabaseAnonKey);
