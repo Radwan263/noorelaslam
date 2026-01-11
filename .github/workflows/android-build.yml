@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch: # عشان تقدر تشغله يدوي لو حبيت
 
 jobs:
   build:
@@ -11,25 +12,28 @@ jobs:
     permissions:
       contents: write
     steps:
-      # تحديث: استخدام checkout v4
+      # 1. سحب الكود (أحدث نسخة)
       - uses: actions/checkout@v4
 
-      # تحديث: استخدام setup-node v4 مع نسخة نود 22
+      # 2. تجهيز نود 22 (عشان مكتبات Tailwind و Vite الجديدة)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
+      # 3. تسطيب المكتبات (بنستخدم legacy-peer-deps عشان نتفادى مشاكل التوافق)
       - name: Install Dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
+      # 4. بناء الموقع (ده اللي كان ضارب المرة اللي فاتت)
       - name: Build React App
         run: npm run build
 
+      # 5. تجهيز كاباستور
       - name: Sync Capacitor
         run: npx cap sync
 
-      # تحديث: استخدام setup-java v4
+      # 6. تجهيز الجافا للأندرويد
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -39,11 +43,12 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
+      # 7. استخراج ملف APK
       - name: Build APK
         working-directory: android
         run: ./gradlew assembleDebug
 
-      # 👇 التعديل الأساسي: استخدام upload-artifact v4 (بدل v3 الموقوفة)
+      # 8. الرفع (أحدث نسخة v4)
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
