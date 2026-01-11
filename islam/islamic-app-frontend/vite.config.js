@@ -10,18 +10,10 @@ export default defineConfig({
       "@": path.resolve(new URL('.', import.meta.url).pathname, "./src"),
     },
   },
-  // 👇👇 ده الجزء الجديد اللي هيحل المشكلة بإذن الله
+  // 👇 ده التعديل الوحيد المطلوب عشان يمنع إيرور fsevents
   optimizeDeps: {
-    exclude: ['fsevents'] // بنقوله ماتحاولش تعالج الملف ده
+    exclude: ['fsevents']
   },
-  build: {
-    rollupOptions: {
-      // وهنا بنقوله لو لقيته، اعتبره مش موجود وماتوقفش البناء
-      external: ['fsevents', 'path', 'fs'], 
-    },
-  },
-  // 👆👆 نهاية الجزء الجديد
-  
   server: {
     proxy: {
       '/api': {
