@@ -1,3 +1,4 @@
+import BottomNav from './components/BottomNav';
 import React, { useState, useEffect } from 'react';
 // 👇 لاحظ: استوردنا Routes و Route بس (بدون Router)
 import { Routes, Route } from 'react-router-dom';
