@@ -1,45 +1,75 @@
 /* src/index.css */
-/* استيراد الخطوط (Cairo هو الأساسي الآن) */
+
+/* 1. استيراد الخطوط (Cairo و Amiri) */
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap');
 
-:root {
-  /* ألوان الثيم الجديد (مستوحاة من الفيديو) */
-  --primary-color: #10b981;    /* الأخضر الزمردي */
-  --primary-dark: #047857;     /* أخضر غامق للزراير عند الضغط */
-  --bg-color: #f8fafc;         /* لون الخلفية (أوف وايت فاتح جداً) */
-  --text-main: #1f2937;        /* لون النص الأساسي (رمادي غامق) */
-  --text-light: #6b7280;       /* لون النص الفرعي */
-  --card-bg: #ffffff;          /* لون الكروت (أبيض صافي) */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+/* 2. تعريف الألوان المتغيرة (هو ده السر 💡) */
+
+/* ☀️ وضع النهار (فخامة ووضوح) */
+body.light {
+  --primary-color: #10b981;    /* أخضر زمردي */
+  --primary-dark: #047857;
+  --bg-color: #f8fafc;         /* أوف وايت فاتح مريح (زي ما كان عندك) */
+  --text-main: #1f2937;        /* أسود رمادي احترافي */
+  --text-light: #6b7280;       /* رمادي للنصوص الفرعية */
+  --card-bg: #ffffff;          /* أبيض صافي للكروت */
+  --nav-bg: #ffffff;           /* خلفية القائمة السفلية */
+  --border-color: #e5e7eb;     /* حدود فاتحة */
+  --shadow-color: rgb(0 0 0 / 0.1);
 }
 
+/* 🌙 وضع الليل (راحة تامة وأبيض ناصع) */
+body.dark {
+  --primary-color: #34D399;    /* أخضر فاتح عشان ينور في الضلمة */
+  --primary-dark: #10b981;
+  --bg-color: #111827;         /* كحلي غامق جداً (Dark Navy) */
+  --text-main: #ffffff;        /* أبيض ناصع (زي ما طلبت) */
+  --text-light: #d1d5db;       /* فضي فاتح */
+  --card-bg: #1f2937;          /* رمادي غامق للكروت */
+  --nav-bg: #1f2937;           /* خلفية القائمة السفلية */
+  --border-color: #374151;     /* حدود غامقة */
+  --shadow-color: rgb(0 0 0 / 0.5);
+}
+
+/* 3. الإعدادات العامة */
 * {
   box-sizing: border-box;
 }
 
 body {
-  /* 1. حذفنا الصورة وحطينا لون هادي */
-  background-image: none;
+  /* استخدام المتغيرات عشان تتغير أوتوماتيك */
   background-color: var(--bg-color);
-  
-  /* 2. تفعيل خط Cairo */
-  font-family: 'Cairo', sans-serif;
-  
-  /* 3. تظبيط الألوان */
   color: var(--text-main);
+  
+  font-family: 'Cairo', sans-serif;
   margin: 0;
   line-height: 1.6;
+  padding-bottom: 80px; /* مسافة عشان القائمة السفلية متغطيش المحتوى */
+  
+  /* نعومة في التحويل بين الليل والنهار */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* تحسين شكل السكرول بار (شريط التمرير) */
+/* 4. تنسيق الكروت (مهم جداً يستخدم المتغيرات) */
+.card-style, .home-card {
+  background-color: var(--card-bg);
+  color: var(--text-main);
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px var(--shadow-color);
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 5. تحسين شكل السكرول بار */
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--bg-color); /* يتغير حسب الوضع */
 }
 ::-webkit-scrollbar-thumb {
   background: var(--primary-color);
@@ -49,16 +79,7 @@ body {
   background: var(--primary-dark);
 }
 
-/* تنسيق الكود لو موجود */
+/* تنسيق الكود */
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-
-/* كلاس مساعد للكروت (عشان تستخدمه في العناصر) */
-.card-style {
-  background-color: var(--card-bg);
-  border-radius: 16px;
-  box-shadow: var(--shadow-md);
-  padding: 20px;
-  border: 1px solid #e5e7eb;
 }
