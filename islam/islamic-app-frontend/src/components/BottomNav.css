@@ -1,0 +1,61 @@
+/* src/components/BottomNav.css */
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px; /* ارتفاع مناسب لللمس */
+  background-color: var(--nav-bg); /* بيتغير حسب الثيم */
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05); /* ظل خفيف لفوق */
+  z-index: 1000;
+  padding-bottom: 5px; /* عشان موبايلات الآيفون الحديثة */
+  backdrop-filter: blur(10px); /* تأثير زجاجي لو الخلفية شفافة */
+}
+
+.nav-item {
+  background: none;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light); /* لون رمادي في العادي */
+  font-family: 'Cairo', sans-serif;
+  cursor: pointer;
+  padding: 5px;
+  flex: 1; /* عشان ياخدوا مسافات متساوية */
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* الأيقونة */
+.nav-item .icon {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+  transition: transform 0.2s;
+}
+
+/* النص تحت الأيقونة */
+.nav-item .label {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+/* --- حالة النشاط (لما تدوس عليه) --- */
+.nav-item.active {
+  color: var(--primary-color); /* ياخد اللون الأخضر */
+}
+
+.nav-item.active .icon {
+  transform: translateY(-3px); /* رفعة بسيطة لفوق */
+}
+
+/* تأثير الضغط (Ripple Effect بسيط) */
+.nav-item:active {
+  transform: scale(0.95);
+}
+
