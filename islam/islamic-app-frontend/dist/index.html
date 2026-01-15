@@ -1,14 +1,27 @@
 <!doctype html>
-<html lang="en">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="./logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>التطبيق الإسلامي الشامل</title>
-    <script type="module" crossorigin src="/assets/index-NI_nab1q.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-9SNszv0m.css">
+    <title>نور الإسلام</title>
+    
+    <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+        // هيطلعلك رسالة فيها سبب العطل بالظبط
+        alert("🛑 عطل في التشغيل:\n" + message + "\nفي السطر: " + lineno);
+      };
+    </script>
+
+    <script type="module" crossorigin src="./assets/index-BYbwvmEl.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CDQcFLYx.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+        <div style="display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif;">
+            <h1>⏳ جاري تحميل التطبيق...</h1>
+        </div>
+    </div>
+    
   </body>
 </html>

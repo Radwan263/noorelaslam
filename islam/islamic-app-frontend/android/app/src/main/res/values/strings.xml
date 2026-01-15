@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Noor El Aslam</string>
+    <string name="title_activity_main">Noor El Aslam</string>
+    <string name="package_name">com.radwan.noorelaslam</string>
+    <string name="custom_url_scheme">com.radwan.noorelaslam</string>
+</resources>
