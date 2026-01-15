@@ -60,6 +60,7 @@ function App() {
         <Route path="/sadaqa-jariya" element={<SadaqaJariyaPage />} />
         <Route path="/tasbeeh" element={<TasbeehPage />} />
       </Routes>
+      <BottomNav />
     </div>
   );
 }
