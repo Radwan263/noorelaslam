@@ -2,20 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.jsx';
 import './index.css';
-// 👇 استيراد الراوتر الخاص بالموبايل (مهم جداً)
+// 👇 استيراد الراوتر الخاص بالموبايل
 import { HashRouter } from 'react-router-dom';
+// 👇 استيراد متحكم الثيم (عشان وضع الليل والنهار)
+import { ThemeProvider } from './context/ThemeContext';
 
 // ==========================================
-// 🚨 بداية الكود السحري لكشف الأخطاء 🚨
+// 🚨 بداية كود كشف الأخطاء (زي ما هو) 🚨
 // ==========================================
 
-// 1. كود بيمسك أي خطأ برمجي (Syntax Error / Crash)
 window.onerror = function(message, source, lineno, colno, error) {
-  // هيظهر رسالة تنبيه على الموبايل بالتفاصيل
   alert('❌ خطأ في الكود (System Error):\n' + message + '\n📍 في السطر: ' + lineno);
 };
 
-// 2. كود بيمسك أخطاء الشبكة والبيانات (Network / Promise Error)
 window.addEventListener('unhandledrejection', function(event) {
   alert('❌ خطأ في البيانات (Promise Error):\n' + event.reason);
 });
@@ -26,9 +25,12 @@ window.addEventListener('unhandledrejection', function(event) {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    {/* تغليف التطبيق بـ HashRouter عشان يشتغل APK */}
-    <HashRouter>
-      <App />
-    </HashRouter>
+    {/* 1. غلفنا التطبيق بـ ThemeProvider عشان الألوان تشتغل */}
+    <ThemeProvider>
+      {/* 2. وغلفناه بـ HashRouter عشان التنقل يشتغل في الـ APK */}
+      <HashRouter>
+        <App />
+      </HashRouter>
+    </ThemeProvider>
   </React.StrictMode>
 );
