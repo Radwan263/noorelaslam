@@ -3,11 +3,12 @@
 /* 1. الحاوية الرئيسية للصفحة */
 .home-page {
   padding: 20px;
-  max-width: 600px; /* نخلي العرض مناسب زي الموبايل */
+  max-width: 600px; /* عرض مناسب للموبايل */
   margin: 0 auto;   /* توسيط الصفحة */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: #fcfcfc; /* لون خلفية هادئ */
 }
 
 /* 2. الشريط العلوي (زرار البحث والقائمة) */
@@ -25,7 +26,7 @@
   border-radius: 50%;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
   font-size: 1.2rem;
-  color: var(--text-main); /* لون الأيقونة */
+  color: var(--text-main);
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -48,68 +49,71 @@
 
 .home-header h1 {
   font-size: 2rem;
-  color: var(--primary-color); /* اللون الأخضر الأساسي */
+  color: var(--primary-color);
   margin: 0;
   font-weight: 800;
 }
 
 .home-header p {
-  color: var(--text-light); /* لون رمادي فاتح للنص الفرعي */
+  color: var(--text-light);
   margin-top: 5px;
   font-size: 0.9rem;
 }
 
-/* 4. الشبكة (Grid) الخاصة بالكروت */
+/* 4. الشبكة (Grid) الخاصة بالكروت - التعديل الأساسي هنا 🚀 */
 .home-grid {
   display: grid;
-  grid-template-columns: 1fr; /* عمود واحد للموبايل */
-  gap: 15px;
+  grid-template-columns: repeat(2, 1fr); /* ✅ عمودين متساويين */
+  gap: 12px; /* المسافة بين الكروت */
   margin-bottom: 40px;
+  direction: rtl; /* الترتيب من اليمين لليسار */
 }
 
-/* 5. تصميم الكارت نفسه (أهم جزء!) */
+/* 5. تصميم الكارت نفسه (تعديل الحجم والبادنج) */
 .home-card {
-  background-color: white; /* خلفية بيضاء صافية */
+  background-color: white;
   border-radius: 16px;
-  padding: 20px;
+  padding: 15px; /* تقليل البادنج ليناسب العمودين */
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); /* ظل خفيف جداً */
-  border: 1px solid #f0f0f0; /* حدود خفيفة جداً */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f0f0f0;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  min-height: 130px; /* ✅ ارتفاع ثابت لضمان التناسق */
 }
 
 /* تأثير عند المرور على الكارت */
 .home-card:hover {
-  transform: translateY(-5px); /* يرتفع لفوق سنة */
-  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.15); /* ظل أخضر خفيف */
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.15);
   border-color: var(--primary-color);
 }
 
 /* الأيقونة داخل الكارت */
 .card-icon {
-  font-size: 2.5rem;
+  font-size: 2.2rem; /* تقليل حجم الأيقونة قليلاً */
   margin-bottom: 10px;
   display: block;
 }
 
 /* عنوان الكارت */
 .home-card h2 {
-  font-size: 1.2rem;
-  color: var(--text-main); /* لون أسود */
+  font-size: 1rem; /* ✅ تصغير الخط ليناسب العرض */
+  color: var(--text-main);
   margin: 5px 0;
   font-weight: 700;
+  line-height: 1.2;
 }
 
 /* وصف الكارت */
 .home-card p {
-  font-size: 0.85rem;
-  color: var(--text-light); /* رمادي فاتح */
+  font-size: 0.75rem; /* ✅ تصغير الوصف */
+  color: var(--text-light);
   margin: 0;
 }
 
@@ -150,7 +154,7 @@
     transform: scale(1.1);
 }
 
-/* --- القوائم الجانبية والبحث (Popups) --- */
+/* --- القوائم الجانبية والبحث --- */
 .overlay {
   position: fixed;
   top: 0;
@@ -165,7 +169,7 @@
 .side-menu {
   position: fixed;
   top: 0;
-  right: -100%; /* مخفية في البداية */
+  right: -100%;
   width: 250px;
   height: 100%;
   background: white;
@@ -199,7 +203,7 @@
 }
 
 .side-menu a:hover {
-  background-color: #f0fdf4; /* أخضر فاتح جداً */
+  background-color: #f0fdf4;
   color: var(--primary-color);
 }
 
@@ -242,3 +246,4 @@
   font-weight: bold;
   font-family: inherit;
 }
+
