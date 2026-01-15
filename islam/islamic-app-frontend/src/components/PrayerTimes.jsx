@@ -50,22 +50,44 @@ const FinalPrayerTimes = () => {
     setLoading(true);
     setError(null);
     try {
-      // طلب الإذن من المستخدم بشكل إجباري
-      const permission = await Geolocation.requestPermissions();
+      // 1. التحقق من الأذونات الحالية أولاً
+      const checkPermission = await Geolocation.checkPermissions();
       
-      if (permission.location === 'granted') {
-        const position = await Geolocation.getCurrentPosition();
+      let status = checkPermission.location;
+      
+      // 2. إذا لم يكن مسموحاً، نطلب الإذن
+      if (status !== 'granted') {
+        const requestPermission = await Geolocation.requestPermissions();
+        status = requestPermission.location;
+      }
+      
+      if (status === 'granted') {
+        // 3. محاولة جلب الموقع مع إعدادات مهلة زمنية (Timeout)
+        const position = await Geolocation.getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 10000 // 10 ثوانٍ كحد أقصى
+        });
+        
         const { latitude, longitude } = position.coords;
         localStorage.setItem('userLocation', JSON.stringify({ latitude, longitude }));
         fetchPrayerTimes(latitude, longitude);
       } else {
-        setError('يجب الموافقة على إذن الموقع لتحديد مواقيت الصلاة.');
-        setLoading(false);
+        setError('يجب الموافقة على إذن الموقع لتحديد مواقيت الصلاة بدقة.');
+        // خيار احتياطي: استخدام القاهرة كموقع افتراضي
+        useDefaultLocation();
       }
     } catch (err) {
-      setError('تأكد من تفعيل الـ GPS في موبايلك.');
-      setLoading(false);
+      console.error('GPS Error:', err);
+      setError('فشل تحديد الموقع. تأكد من تفعيل الـ GPS.');
+      useDefaultLocation();
     }
+  };
+
+  const useDefaultLocation = () => {
+    const defaultLoc = { latitude: 30.0444, longitude: 31.2357 }; // القاهرة
+    localStorage.setItem('userLocation', JSON.stringify(defaultLoc));
+    fetchPrayerTimes(defaultLoc.latitude, defaultLoc.longitude);
+    setLoading(false);
   };
 
   useEffect(() => {

@@ -4,4 +4,6 @@
     <string name="title_activity_main">IslamicApp</string>
     <string name="package_name">com.radwan.islamic</string>
     <string name="custom_url_scheme">com.radwan.islamic</string>
+    <string name="location_permission_title">إذن الموقع</string>
+    <string name="location_permission_description">يحتاج التطبيق للوصول إلى موقعك لتحديد مواقيت الصلاة بدقة بناءً على منطقتك الجغرافية.</string>
 </resources>
